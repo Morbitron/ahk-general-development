@@ -1,0 +1,259 @@
+
+
+<!DOCTYPE HTML><html class=''>
+<head>
+   <meta http-equiv='X-UA-Compatible' content='IE=Edge' />
+   <style class="cp-pen-styles">
+            *{
+              box-sizing: border-box;
+            }
+            *:before, *:after {
+              box-sizing: border-box;
+            }
+
+       body {
+           background: url('images/simulator_bk_1.jpg') no-repeat center center fixed;
+           background-size: cover;
+           color: #999;
+           font: 400 16px/1.5em sans-serif;
+           margin: 0;
+           width: 100%;
+           height:100%;
+            }
+     
+            h3 {
+              margin: 0;
+              font-family:'Times New Roman', Times, serif;
+
+            }
+
+            a {
+              color: #999;
+              text-decoration: none;
+            }
+
+            a:hover {
+              color: #1dabb8;
+            }
+
+            fieldset {
+              border: none;
+              margin: 0;
+            }
+
+            input {
+              border: none;
+              font-family: inherit;
+              font-size: inherit;
+              margin: 0;
+              -webkit-appearance: none;
+            }
+
+            input:focus {
+              outline: none;
+            }
+
+            input[type="submit"] {
+              cursor: pointer;
+            }
+
+            .clearfix {
+              *zoom: 1;
+            }
+            .clearfix:before, .clearfix:after {
+              content: ' ';
+              display: table;
+            }
+            .clearfix:after {
+              clear: both;
+            }
+
+            .container {
+              left: 50%;
+              position: fixed;
+              top: 50%;
+              -webkit-transform: translate(-50%, -50%);
+                      transform: translate(-50%, -50%);
+            }
+
+            /* ---------- LOGIN-FORM ---------- */
+            #login-form {
+              width: 300px;
+            }
+
+            #login-form h3 {
+              background-color: #000625;
+              border-radius: 5px 5px 0 0;
+              color: #fff;
+              font-size: 14px;
+              padding: 20px;
+              text-align: center;
+              text-transform: uppercase;
+            }
+
+            #login-form fieldset {
+              background: #fff;
+              border-radius: 0 0 5px 5px;
+              padding: 20px;
+              position: relative;
+            }
+
+            #login-form fieldset:before {
+              background-color: #fff;
+              content: "";
+              height: 8px;
+              left: 50%;
+              margin: -4px 0 0 -4px;
+              position: absolute;
+              top: 0;
+              -webkit-transform: rotate(45deg);
+              transform: rotate(45deg);
+              width: 8px;
+            }
+
+            #login-form input {
+              font-size: 14px;
+            }
+
+            #txtUsername, #txtPassword {
+              border: 1px solid #dcdcdc;
+              padding: 12px 10px;
+              width: 100%;
+            }
+
+            #txtUsername{
+              border-radius: 3px 3px 0 0;
+            }
+
+            #txtPassword{
+              border-top: none;
+              border-radius: 0px 0px 3px 3px;
+            }
+
+            #btnLogin {
+              background: #000625;
+              border-radius: 3px;
+              color: #fff;
+              float: right;
+              font-weight: bold;
+              margin-top: 20px;
+              padding: 12px 20px;
+            }
+
+            #login-form button:hover {
+              background: #000625;
+            }
+
+            #login-form footer {
+              font-size: 12px;
+              margin-top: 16px;
+            }
+
+            .info {
+              background: #e5e5e5;
+              border-radius: 50%;
+              display: inline-block;
+              height: 20px;
+              line-height: 20px;
+              margin: 0 10px 0 0;
+              text-align: center;
+              width: 20px;
+            }
+       </style>
+		<title id="PageTitle">Login</title>
+		<META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
+  		<script type="text/javascript">
+			var browserName=navigator.appName;
+			var theme='1';
+			var maximize=false;
+			var hidemenu=false;
+			//Terms of use | conditions d'utilisation
+			function legalPopup(url) {			    
+			    leftVal = (screen.width - 580)/2;
+                topVal = (screen.height - 500)/2;
+				popupWindow = window.open(url,"legal","width=580,height=500,left="+leftVal+",top="+topVal+",toolbar=no,status=no,resizable=no,scrollbars=yes");
+				popupWindow.focus();
+			}						
+			function LoadCompleted(){
+				//startTime();
+				Resize();
+				//document.body.style.margin='0px';
+				//document.body.style.visibility='';
+				var txtUser = document.getElementById("txtUsername");
+				var txtPass = document.getElementById("txtPassword");
+				if(txtUser.value==''){
+					txtUser.focus();
+				}else{
+					txtPass.focus();					
+				}				
+			}
+			function SaveUser(){
+			    var today = new Date();			    
+			    var nextMonth;
+			    var nextYear;
+			    if (today.getMonth() == 12) {
+			        nextMonth = 1;
+			        nextYear = today.getYear() + 1;
+			    } else {
+			        nextMonth = today.getMonth() + 1;
+			        nextYear = today.getYear();
+			    }
+                var nextDate = new Date(nextYear, nextMonth, 28);
+                setCookie("User", document.getElementById("txtUsername").value, nextDate);
+			}
+			function setCookie(name, value, expires, path, domain, secure)
+			{			 
+				document.cookie= name + "=" + escape(value) +
+					((expires) ? "; expires=" + expires.toGMTString() : "") +
+					((path) ? "; path=" + path : "") +
+					((domain) ? "; domain=" + domain : "") +
+					((secure) ? "; secure" : "");
+			}
+			function Resize(){
+				//var tbl=document.getElementById('Table2');
+				//var cc=document.getElementById('CenterCell');
+				//var ct=document.getElementById('CenterTable');
+				//tbl.style.left=cc.offsetLeft+ct.offsetLeft;
+				//tbl.style.top=cc.offsetTop+ct.offsetTop;
+			}
+			function ValidData()
+			{
+			    var txtUser = document.getElementById('txtUsername');
+			    var valTxtUser = document.getElementById('txtUsername').value.toLowerCase().replace("cae.ca\\", "");
+			    valTxtUser = valTxtUser.replace("caecn\\", "");
+			    txtUser.value = valTxtUser;
+			}
+    </script>
+	</head>
+	<body onload="if (top!=self) top.location.href='Login.aspx'; LoadCompleted()">
+        <div id="image">
+            <div class="container">
+               <div id="login-form">
+		            <form name="Form1" method="post" action="login.aspx?ReturnUrl=%2fsystem%2fmCommand.asp" id="Form1">
+<div>
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUJNTA0NDM5OTIwD2QWAgIBD2QWAgIJDw9kFgIeB29uQ2xpY2sFFWphdmFzY3JpcHQ6U2F2ZVVzZXIoKWRkQZneGDmz21wjZHf/rr3oGJnTKTM=" />
+</div>
+
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="C2EE9ABB" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEWBALNxOLLAwKl1bK4CQK1qbSRCwKC3IeGDFShXoghENEHlZGaL1NOTtSFZUPa" />
+</div>	
+                        <h3>SimIssues Log In</h3>
+                        <fieldset>
+                            <span id="lblUser" style="color:#000625;">User</span>
+                            <input name="txtUsername" type="text" id="txtUsername" />
+                            <span id="lblPassword" style="color:#000625;">Password</span>
+                            <input name="txtPassword" type="password" id="txtPassword" />
+                            <input type="submit" name="btnLogin" value="Login" onclick="return ValidData();javascript:SaveUser();" id="btnLogin" /> 
+                            <footer class="clearfix">
+                               
+                            </footer>
+                        </fieldset>
+        		    </form>
+               </div> <!-- end login-form -->
+            </div>
+       </div>
+		<script>LoadCompleted()</script>
+	</body>
+</HTML>

@@ -1,0 +1,204 @@
+
+DialogBox('https://simissues.cae.com/main/issue_new.asp', '', 'dialogWidth=800px;dialogHeight=700px;scroll=no;resizable=yes;status=no;');
+
+DialogBox('https://simissues.cae.com/main/find_issue.asp', window, 'dialogWidth:550px;dialogHeight:200px;status:no;scroll:no');
+
+https://simissues.cae.com/index.asp?sessid=2a8ad31a-8ab4-47e3-afdd-94dd00a1506d
+
+
+
+
+
+https://simissues.cae.com/main/table_body.asp?last_viewed=11432200082#displayHere
+
+https://simissues.cae.com/main/snaglist_top.asp?last_viewed=11432200082
+
+
+
+https://simissues.cae.com/main/snaglist.asp
+
+
+https://simissues.cae.com/main/snagdetails.asp
+
+
+https://simissues.cae.com/system/mCommand.asp?cmd=issue_details&issueid=11432200082
+
+
+
+https://simissues.cae.com/main/simple.asp
+
+
+SUB PAGES -------------------------------------
+
+https://simissues.cae.com/main/action_report_html.asp?issueid=11432200082
+
+https://simissues.cae.com/ProjectInfo/ProjectManagment.aspx?GID=67d55a4f-a674-4a20-b53e-dab35e896229&proj=114322
+
+https://simissues.cae.com/main/snag_history.asp?issue_id=11432200082
+
+----------------------------------------------
+
+
+
+parent.window.location.href='https://simissues.cae.com/system/mCommand.asp?cmd=issue_details&issueid=' + bigArray[snagGlobal][2] + '&index=' + snagGlobal;
+
+https://simissues.cae.com/main/add_work_note.asp?issue_id=' + bigArray[snagGlobal][2],'','Width=850px,Height=600px,scrollbars=yes,statusbar=no,resize=no
+
+
+
+
+
+
+
+
+
+
+//------------------------------------------------------------
+//              Code with http requests
+//------------------------------------------------------------
+
+
+
+            if (convReturn != null) {
+                if (convReturn.split('_')[0] == '0') {
+                    xmlhttp.open("GET", "conv.asp?func=removeLinkToIssue&par=" + bigArray[snagGlobal][2], true);
+                } else {
+                    xmlhttp.open("GET", "conv.asp?func=linkACConvIssue&par=" + bigArray[snagGlobal][2] + "&par2=" + convReturn.split('_')[0], true);
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4) {
+                        if (xmlhttp.responseText == 'true') {
+                            document.all.conversion.innerHTML = (convReturn != '') ? '<B>' + convReturn.split('_')[1] + '</B>' : document.all.conversion.innerHTML;
+                        } else {
+                            alert(xmlhttp.responseText);
+                        }
+                    }
+                }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//------------------------------------------------------------
+//              For SimIssues Only
+//------------------------------------------------------------
+function DialogBox(pageUrl, pageArg, pageOptions, title) {
+    this.pageUrl = pageUrl;
+    this.pageArg = pageArg;
+    this.pageOptions = pageOptions;
+    this.width = '200px';
+    this.height = '200px';
+    this.title = title;
+    this.imagesFolder = '/images';
+    if (this.pageOptions != null) {
+        var res = this.pageOptions.split(";");
+        for (var ii = 0; ii < res.length; ii++) {
+            var idxw = res[ii].toLowerCase().indexOf('dialogwidth');
+            var idxh = res[ii].toLowerCase().indexOf('dialogheight');
+            var eqsign = res[ii].toLowerCase().indexOf('=') > -1 ? "=" : (res[ii].toLowerCase().indexOf(':') > -1 ? ":" : null);
+            if (idxw > -1 && eqsign != null) {
+                this.width = res[ii].toLowerCase().split(eqsign)[1];
+            }
+            if (idxh > -1 && eqsign != null) {
+                this.height = res[ii].toLowerCase().split(eqsign)[1];
+            }
+        }
+    }
+    return new dialog({ url: this.pageUrl, parameters: this.pageArg, width: this.width, height: this.height, title: this.title, imagesFolder: this.imagesFolder });
+}
+//------------------------------------------------------------
+//              End - For SimIssues Only
+//------------------------------------------------------------
+
+
+
+
+
+
+
+				var bigArray = new Array()
+				bigArray[0] = new Array();
+bigArray[0][0]="1";
+bigArray[0][1]="1";
+bigArray[0][2]="11432200082";
+					bigArray[0][3]="Design incomplete or incorrect";
+					bigArray[0][4]="C-SVC";
+					bigArray[0][5]="Civil Simfinity Virtual Cockpit Designers";
+					bigArray[0][6]="1.4.50.5 - Graphic issue: The SELCAL placard should be greater in size to cover the black background or the black background should be made the same color as the placard.\n\n[DEBRIEF] : PERSON";
+					bigArray[0][7]="PAUL SCOTT";
+					bigArray[0][8]="";
+					bigArray[0][9]="";
+					bigArray[0][10]="10/26/2017";
+					bigArray[0][11]="82";
+					bigArray[0][12]="";
+					bigArray[0][13]="10/26/2017";
+					bigArray[0][14]="10/31/2017 8:59:18 AM";
+					bigArray[0][15]="";
+					bigArray[0][16]="Issue still valid, unless CN not implemented in Load 1_4_50_62, please check with Rabah.\nS.Meziti  TP.";
+					bigArray[0][17]="";
+					bigArray[0][18]="Reopened";
+					bigArray[0][19]="SNAG";
+					bigArray[0][20]="C";
+					bigArray[0][21]="NOTHING";
+					bigArray[0][22]="Classroom Training Devices";
+					bigArray[0][23]="In-House Acceptance";
+					bigArray[0][24]="114322";
+					bigArray[0][25]="UPS B747-8F IPT #1";
+					bigArray[0][26]="rivard";
+					bigArray[0][27]="RIVARD";
+					bigArray[0][28]="DAVID";
+					bigArray[0][29]="ldesrochers";
+					bigArray[0][30]="DESROCHERS";
+					bigArray[0][31]="LOIC";
+					bigArray[0][32]="";
+					bigArray[0][33]="";
+					bigArray[0][34]="10";
+					bigArray[0][35]="70400";
+					bigArray[0][36]="11432200082";
+					bigArray[0][37]="";
+					bigArray[0][38]="7";
+					bigArray[0][39]="2";
+					bigArray[0][40]="3";
+					bigArray[0][41]="4";
+					bigArray[0][42]="99I";
+					bigArray[0][43]="5";
+					bigArray[0][44]="";
+					bigArray[0][45]="rhissin";
+					bigArray[0][46]="HISSIN";
+					bigArray[0][47]="RAMZI";
+					bigArray[0][48]="";
+					bigArray[0][49]="";
+					bigArray[0][50]="";
+					bigArray[0][51]="simoneau";
+					bigArray[0][52]="SIMONEAU";
+					bigArray[0][53]="SYLVAIN";
+					bigArray[0][54]="ccsups";
+					bigArray[0][55]="";
+					bigArray[0][56]="";
+					bigArray[0][57]="1";
+					bigArray[0][58]="";
+					bigArray[0][59]="N";
+					bigArray[0][60]="IHA";
+					bigArray[0][61]="11/16/2017";
+					bigArray[0][62]="";
+					bigArray[0][63]="";
+					bigArray[0][64]="";
+					bigArray[0][65]="";
+					bigArray[0][66]="";
+					bigArray[0][67]="1.4.50.5";
+					bigArray[0][68]="12";
+					bigArray[0][69]="12";
+					bigArray[0][70]="0";
+					
+
+			

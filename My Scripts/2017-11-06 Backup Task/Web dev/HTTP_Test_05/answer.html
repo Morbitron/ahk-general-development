@@ -1,0 +1,560 @@
+
+<!--<?xml version="1.0">-->
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+<meta http-equiv='X-UA-Compatible' content='IE=Edge' />
+<META NAME="GENERATOR" Content="Microsoft Visual Studio 6.0">
+<meta http-equiv="Expires" content="-1">
+<meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
+<TITLE>Summary Page for LOIC DESROCHERS</TITLE>
+
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+
+    <script type="text/javascript" src="js/jquery.min.js"></script>
+    <script type="text/javascript" src="js/Dialog.js"></script>
+    <link type="text/css" rel="Stylesheet" href="js/Dialog.css" />
+    <script src="Scripts/toastmessage/src/main/javascript/jquery.toastmessage.js"></script>
+    <link href="Scripts/toastmessage/src/main/resources/css/jquery.toastmessage.css" rel="stylesheet" />
+
+
+<STYLE>
+	TH{font-family:Verdana,Arial;font-weight:bold;font-size:11px;background-color:#333399;color:white;}
+	TH.subtitle{font-family:Verdana,Arial;font-weight:bold;font-size:10px;background-color:#6495ed;color:white;}
+	TD{font-family:Verdana,Arial;font-size:10px;padding-left:5px;background-color:#cccccc;}
+	TD.followup{font-family:Verdana,Arial;font-size:10px;padding-left:5px;background-color:#999999;}
+	TD.escalated{font-family:Verdana,Arial;font-size:10px;padding-left:5px;background-color:#99cc99;}
+	TD.escalated2{font-family:Verdana,Arial;font-size:10px;padding-left:5px;background-color:#99cccc;}
+	TD.tatactive{font-family:Verdana,Arial;font-size:10px;padding-left:5px;background-color:#ccccff;}
+	.showDiv {display: none;}
+</STYLE>
+ <script>
+     $("#showLoading").show();
+     $(document).ready(function () {
+         $("#showLoading").hide();
+         $("#divMain").fadeIn(2000);
+         var url = "GetMessage.ashx";
+            $.ajax({
+                dataType: "json",
+                url: url,
+                type: "POST",
+                contentType: "application/json; charset=utf-8",
+                async: true,
+                cache: false,
+                success: function (msg) {
+                    $().toastmessage('showToast', {
+                        text: msg.d,
+                        sticky: false,
+                        position: 'top-right',
+                        type: 'notice',
+                        closeText: '',
+                        close: function () {
+                           // console.log("toast is closed ...");
+                        
+                        }
+                    });
+                },
+                error: function (result) {
+                    if (result.responseText.trim().length > 0) {
+                        $().toastmessage('showToast', {
+                            text: result.responseText,
+                            sticky: false,
+                            stayTime:  60000,
+                            position: 'top-right',
+                            type: 'notice',
+                            closeText: '',
+                            close: function () {
+                                // console.log("toast is closed ...");
+
+                            }
+
+                        });
+                    }
+                }
+            });
+     });
+ 
+  </script>
+<SCRIPT language="JavaScript1.2" type="text/javascript">
+    var myTimer; //don't delete this object - it is for tooltips
+//    function projectInfo() {
+//        alert('ok');
+//        var mnemonic = window.showModalDialog('https://simissues.cae.com/main/select_project.asp', '', 'dialogWidth=550px;dialogHeight=250px;scroll=no;resizable=yes;status=no;');
+//        if (mnemonic != "cancel") {
+//            if (window.showModalDialog('https://simissues.cae.com/main/project_left.asp?project=' + mnemonic, '', 'dialogWidth=750px;dialogHeight=550px;scroll=no;resizable=yes;status=no;') != 0) {
+//                parent.location.reload(); 
+//            }
+//        }
+//    }
+    function showPopUp() {
+    }
+    function mouseOverHelp(helptext, control) {
+        if (helptext == "Immediate Action Required") {
+            var strText = "<UL><B>Statuses included:</B><BR><BR>";
+            strText = strText + "<LI>Unconfirmed";
+            strText = strText + "<LI>New";
+            strText = strText + "<LI>Reassigned";
+            strText = strText + "<LI>Re-opened";
+            strText = strText + "<LI>Declined";
+            strText = strText + "</UL>";
+            strText = strText + "<B>Target:</B> To action such issues within 2 weekdays.<BR>";
+            strText = strText + "<!--<B>In Red:</B> Issues not actioned within 2 weekdays.-->";
+        } else if (helptext == "In Work") {
+            var strText = "<B>In Work:</B><BR><BR>";
+            strText = strText + "active issues that belong to you and for which you're required to perform work.";
+            strText = strText + "<BR>";
+        } else if (helptext == "On Hold") {
+            var strText = "<B>On Hold:</B><BR><BR>";
+            strText = strText + "issues that belong to you and for which you're required to follow up with a 3rd party";
+            strText = strText + "<UL><B>Sub-statuses included:</B><BR><BR>";
+            strText = strText + "<LI>Pending DIR";
+            strText = strText + "<LI>Pending update";
+            strText = strText + "<LI>Pending H/W delivery";
+            strText = strText + "<LI>Pending Negotiation";
+            strText = strText + "</UL>";
+            strText = strText + "<BR>";
+        } else if (helptext == "On Offer") {
+            var strText = "<B>On Offer:</B><BR><BR>";
+            strText = strText + "issues offered to you for validation/testing.";
+            strText = strText + "<BR>";
+        } else if (helptext == "Requested Info") {
+            var strText = "<B>Requested Info:</B><BR><BR>";
+            strText = strText + "issues for which you need to provide additional information for successful completion.";
+            strText = strText + "<BR>";
+        } else if (helptext == "Escalated") {
+            var strText = "<B>Escalated:</B><BR><BR>";
+            strText = strText + "issues that have been in \"Immediate Action Required\" state for more than 2 weekdays.";
+            strText = strText + "<BR>";
+        } else if (helptext == "ECD Overdue") {
+            var strText = "<B>ECD Overdue (hot):</B><BR><BR>";
+            strText = strText + "issues not offered before the ECD date(Estimated Completion Date).";
+            strText = strText + "<P>Severity is also taken into account in the generation of the color code.";
+            strText = strText + " Bright red indicates a severity A issue which is overdue.";
+            strText = strText + "<P>All statuses are included except \"On Offer\", \"Closed\", \"Reassigned\", \"Re-Opened\", \"Declined\", \"New\" and \"On Hold - Pending DIR\".";
+            strText = strText + "<P><B>Note:</B> Your supervisor will be notified via email to help address the issues in a timely manner.";
+            strText = strText + "<P>(<I>Emails accociated with escalation</I> are being launched for severity A issues on Post-RFT projects.)";
+            strText = strText + "<BR>";
+        } else if (helptext == "ECD 1 Week") {
+            var strText = "<B>ECD within 1 week (warm):</B><BR><BR>";
+            strText = strText + "issues approaching the ECD date. Focus should be put on these issues to avoid escalation.";
+            strText = strText + "<P>Severity is also taken into account in the generation of the color code.";
+            strText = strText + " Orange indicates a severity A issue approaching ECD date.";
+            strText = strText + "<P>All statuses are included except \"On Offer\", \"Closed\", \"Reassigned\", \"Re-Opened\", \"Declined\", \"New\" and \"On Hold - Pending DIR\".";
+            strText = strText + "<BR>";
+        } else if (helptext == "ECD 2 Week") {
+            var strText = "<B>ECD within 2 week (warm):</B><BR><BR>";
+            strText = strText + "issues approaching the ECD date. Focus should be put on these issues to avoid escalation.";
+            strText = strText + "<P>Severity is also taken into account in the generation of the color code.";
+            strText = strText + " Orange indicates a severity A issue approaching ECD date.";
+            strText = strText + "<P>All statuses are included except \"On Offer\", \"Closed\", \"Reassigned\", \"Re-Opened\", \"Declined\", \"New\" and \"On Hold - Pending DIR\".";
+            strText = strText + "<BR>";
+        } else if (helptext == "ECD All Other") {
+            var strText = "<B>All other issues (cool):</B><BR><BR>";
+            strText = strText + "issues for which there is more than 1 week before the ECD date.";
+            strText = strText + "<P>Severity is also taken into account in the generation of the color code.";
+            strText = strText + " Yellow indicates a severity A issue.";
+            strText = strText + "<P>All statuses are included except \"On Offer\", \"Closed\", \"Reassigned\", \"Re-Opened\", \"Declined\", \"New\" and \"On Hold - Pending DIR\".";
+            strText = strText + "<BR>";
+        } else if (helptext == "Escalated Backlog") {
+            var strText = "<B>Escalated Backlog:</B><BR><BR>";
+            strText = strText + "<UL><B>Rules:</B><BR><BR>";
+            strText = strText + "<LI>Severity A older than 6 months";
+            strText = strText + "<LI>Severity B older than 8 months";
+            strText = strText + "<LI>Severity C older than 10 months";
+            strText = strText + "</UL>";
+            strText = strText + "<P>All statuses are included except \"On Hold\", \"Reassigned\", \"Re-Opened\", \"Declined\" and \"New\".";
+            strText = strText + "<P>Emails associated with escalation are being launched for severity A issues Post-RFT projects.";
+            strText = strText + "<BR>";
+        } else if (helptext == "Escalated ECD RBD") {
+            var strText = "<B>Escalated ECD > RBD:</B><BR><BR>";
+            strText = strText + "issues for which the commitment date (ECD) exceeds the Required By Date (RBD).";
+            strText = strText + "<P>Your supervisor will be notified via email to help address the issue in a a timely manner.";
+            strText = strText + "<P>For Post-RFT projects the Required By Date (RBD) is set to 20 - 45 - 60 days.";
+            strText = strText + "<P>All statuses are included except \"Reassigned\", \"Re-Opened\", \"Declined\" and \"New\".";
+            strText = strText + "<BR>";
+        } else if (helptext == "Follow Up On Offer") {
+            var strText = "<B>Follow Up On Offer:</B><BR><BR>";
+            strText = strText + "issues  offered by you, where you are last person who worked on the issue (Previous/Follow up assignee).";
+            strText = strText + "<P>Issues will be returned to you when \"Re-opened\".";
+            strText = strText + "<BR>";
+        } else if (helptext == "Follow Up Requested Info") {
+            var strText = "<B>Follow Up Requested Info:</B><BR><BR>";
+            strText = strText + "issues  for which you requested additional information.";
+            strText = strText + "<P>Issues will be returned to you when answered by current assignee (\"Re-opened\").";
+            strText = strText + "<BR>";
+        } else if (helptext == "Follow Up Closed") {
+            var strText = "<B>Follow Up Closed (14 last days):</B><BR><BR>";
+            strText = strText + "issues  offered by you that have been closed in the last 14 days.";
+            strText = strText + "<BR>";
+        } else if (helptext == "TAT Exceeding") {
+            var strText = "<B>TAT Exceeding CAE Objective:</B><BR><BR>";
+            strText = strText + "issues for which the Turn Around Time has exceeded CAE's objective.";
+            strText = strText + "<P>TAT is the number of days which keep growing if CAE is owner of snag. CAE's Turn Around Time (TAT) Objectives are: 10-30-40 days for severity A-B-C issues.";
+            strText = strText + "<BR>";
+        } else if (helptext == "TAT - 5 days") {
+            var strText = "<B>TAT - 5 days:</B><BR><BR>";
+            strText = strText + "issues which will fail the TAT in five days.";
+            strText = strText + "<P>TAT is the number of days which keep growing if CAE is owner of snag.";
+            strText = strText + "<BR>";
+        } else if (helptext == "TAT - 10 days") {
+            var strText = "<B>TAT - 10 days:</B><BR><BR>";
+            strText = strText + "issues for which the Turn Around Time has exceeded CAE's objective by more then 10 days.";
+            strText = strText + "<P>TAT is the number of days which keep growing if CAE is owner of snag.";
+            strText = strText + "<BR>";
+        }
+        var whereToWrite = document.getElementById('spanHelp');
+        whereToWrite.innerHTML = strText;
+
+        var body = document.getElementsByTagName('BODY')[0];
+        actionHelp.style.top = (window.event.y + 10 + body.scrollTop + actionHelp.scrollHeight < body.clientHeight + body.scrollTop) ? window.event.y + 10 + body.scrollTop : window.event.y + 10 + body.scrollTop - 200;
+        actionHelp.style.left = window.event.x - 205;
+        myTimer = setTimeout("actionHelp.style.display='';", 500);
+    }
+    function mouseOutHelp(control) {
+        window.clearTimeout(myTimer);
+        actionHelp.style.display = 'none';
+        var whereToWrite = document.getElementById('spanHelp');
+        whereToWrite.innerHTML = "";
+    }
+</SCRIPT>
+
+</HEAD>
+
+
+
+<BODY bgcolor=#6495ed topmargin=0>
+<form>
+<DIV id=severityHelp style="display:none;background-color:#6495ed;border-width:1px;border-style:solid;border-color:black;position:absolute;left:300px;top:100px;width:250px;filter:progid:DXImageTransform.Microsoft.Shadow(color='#000000', Direction=135, Strength=20);">
+	<TABLE border=0 cellpadding=5>
+		<TR>
+			<TD style="background-color:#ffff66;">
+				<UL><B>Severity Definition:</B><BR><BR>
+					<LI style="text-align:justify;">A - Major impact on training/testing or certification issue causing restriction on training
+					<LI style="text-align:justify;">B - Minor impact on training/testing
+					<LI style="text-align:justify;">C - No impact on training/testing (includes documentation)
+				</UL>
+			</TD>
+		</TR>
+	</TABLE>
+</DIV>
+<DIV id=actionHelp style="display:none;background-color:#6495ed;border-width:1px;border-style:solid;border-color:black;position:absolute;left:300px;top:100px;width:200px;filter:progid:DXImageTransform.Microsoft.Shadow(color='#000000', Direction=135, Strength=20);">
+	<TABLE border=0 cellpadding=5>
+		<TR>
+			<TD style="background-color:#ffff66;"><SPAN id="spanHelp"></SPAN></TD>
+		</TR>
+	</TABLE>
+</DIV>
+
+<DIV align="center" id="showLoading" style="height:100%;width:100%">
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+<IMG src="images/ajax-loader_5.gif" border=0>
+</DIV>
+<DIV align="left"  id="divMain" class="showDiv">
+<TABLE align="center" width="705" border=0  height="300">
+<TR><TD colspan=2 style="BACKGROUND-COLOR: #6495ed" align=right><IMG src="simissues_logo.gif" border=0><BR><I>
+CS&amp;T Version 5.0a
+</I></TD></TR>
+<TR>
+<TD width="30%" height="100%" style="BACKGROUND-COLOR: #6495ed" valign="top">
+	<TABLE  border=0 cellspacing=0 cellpadding=0 height="100%" style="vertical-align:top">
+		<TR>
+			<TD valign=top  style="BACKGROUND-COLOR: #6495ed;background-image:url(sim_bck.gif);background-repeat:no-repeat;background-position:bottom;width:200px;">
+				<SPAN style="color:#ffffff;BACKGROUND-COLOR: #6495ed;"><B>Welcome,<BR>LOIC DESROCHERS<BR>(User)</B></SPAN>
+				<P>
+				<UL><B>Quick Links:</B>
+				    
+					<LI><A href="#" style="COLOR: white" onclick="var oo = new top.DialogBox('https://simissues.cae.com/main/issue_new.asp','','dialogWidth=800px;dialogHeight=700px;scroll=no;resizable=yes;status=no;');oo.onClose = function (event, result) {  window.location = window.location; };" title="Create New Issue">Create New Issue</A>
+					
+                            <LI><A href="#" style="COLOR: white" onclick="var oo = new top.DialogBox('https://simissues.cae.com/main/find_issue.asp',window,'dialogWidth:550px;dialogHeight:200px;status:no;scroll:no');oo.onClose = function (event, result) { return false;};" title="Find Issue">Find Issue</A>
+					        <LI><A href="https://simissues.cae.com/ASPTransition_Project.asp" style="COLOR: white" title="Get Project Info">Get Project Info</A>
+                        
+    
+					        <LI><A href="#" style="COLOR: white" onclick="window.open('https://simissues.cae.com/simissues_reports/default.aspx');return false;" title="Performance Reports">Performance Reports</A>
+                            
+    
+					        <LI><A href="https://simissues.cae.com/ASPTransition.asp" style="COLOR: white" title="Group/Team Management">Group/Team Management</A>
+    
+					<LI><A href="#" style="COLOR: white" onclick="window.open('https://simissues.cae.com/main/orgchart_dev2.asp');return false;" title="Application Orgcharts">Application Orgcharts</A>
+					<LI><A href="#" style="COLOR: white" onclick="window.open('https://simissues.cae.com/pdf/HelpforNewSnagUtility.doc');return false;" title="User Guide">User Guide</A>
+					
+					<LI><A href="#" style="COLOR: white" onclick="var oo = new top.DialogBox('https://simissues.cae.com/main/help.asp?txt=sev_def','parent','dialogWidth:350px;dialogHeight:500px;dialogTop:0px;dialogLeft:0px;resizable:yes;status:no;'); oo.onClose = function (event, result) { return false;};" title="Latest Improvements">Severity Definitions</A>
+					<LI><A href="https://simissues.cae.com/main/bye_bye.asp" style="COLOR: white"  title="Log Out">Log Out</A>
+                   
+                    
+					<LI><A href="#" style="color:white" onclick="var oo = new top.DialogBox('https://simissues.cae.com/main/cust_summary.asp','','dialogHeight:250px;dialogWidth:300px;scroll:no;status:no;', 'Customize Summary Page');oo.onClose = function (event, result) { if(result =='true') { self.location.reload();  }  };" title="Edit my summary page">Customize Summary Page</A>
+					<BR><BR>
+					<LI><A href="#" style="color:white" onclick="window.open('https://simissues.cae.com/pdf/Helpcontractor.doc');return false;" title="FAQ: CAE Contractors request access to SimSearch.">CAE Contractors Access SimSearch Request</A> </br></br>
+					
+				</UL>
+			</TD>
+		</TR>
+		<!--<TR>
+			<TD valign=bottom  style="BACKGROUND-COLOR: #6495ed"><IMG SRC="sim_bck.gif" border=0>
+			</TD>
+		</TR>-->
+	</TABLE>
+</TD>
+<TD style="BACKGROUND-COLOR: #6495ed" valign=top>
+<TABLE width="100%" border=0 cellspacing=2><!--  style="border-collapse:collapse;border-style:solid;border-width:2px;border-color:#FFFFFF;" rules=all>-->
+        <COLGROUP>
+<COL width="60%">
+<COL width="10%" style="FONT-WEIGHT: bold; TEXT-ALIGN: center">
+<COL width="10%" style="FONT-WEIGHT: bold; TEXT-ALIGN: center">
+<COL width="10%" style="FONT-WEIGHT: bold; TEXT-ALIGN: center">
+<COL width="10%" style="FONT-WEIGHT: bold; TEXT-ALIGN: center"><!--<COL width=10% style="text-align:center;font-weight:bold;">-->
+	<TR>
+		<TH>Status</TH>
+		<TH><SPAN style="color:white;cursor:default;" onmouseover="//myTimer=setTimeout('severityHelp.style.display=\'\';',500);severityHelp.style.top=window.event.y+10;severityHelp.style.left=window.event.x-255;" onmouseout="//window.clearTimeout(myTimer);severityHelp.style.display='none';">A</SPAN></TH>
+		<TH><SPAN style="color:white;cursor:default;" onmouseover="//myTimer=setTimeout('severityHelp.style.display=\'\';',500);severityHelp.style.top=window.event.y+10;severityHelp.style.left=window.event.x-255;" onmouseout="//window.clearTimeout(myTimer);severityHelp.style.display='none';">B</SPAN></TH>
+		<TH><SPAN style="color:white;cursor:default;" onmouseover="//myTimer=setTimeout('severityHelp.style.display=\'\';',500);severityHelp.style.top=window.event.y+10;severityHelp.style.left=window.event.x-255;" onmouseout="//window.clearTimeout(myTimer);severityHelp.style.display='none';">C</SPAN></TH>
+		<TH><SPAN style="color:white;cursor:default;" onmouseover="//myTimer=setTimeout('severityHelp.style.display=\'\';',500);severityHelp.style.top=window.event.y+10;severityHelp.style.left=window.event.x-255;" onmouseout="//window.clearTimeout(myTimer);severityHelp.style.display='none';">Other</SPAN></TH><!--<TH>Other</TH>-->
+	</TR>
+	
+<TR>
+		<TH colspan=5>Stats for LOIC DESROCHERS</TH>
+	</TR>
+	<TR>
+		<TH colspan=5 class="subtitle">Status List</TH>
+	</TR>
+	
+	<TR>
+		<TD style="padding:0;"><TABLE border=0 cellspacing=0 cellpadding=0 width=100%><TR><TD><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=action;0&list_type=personal" style="color:black;" onmouseover="mouseOverHelp('Immediate Action Required',this);" onmouseout="mouseOutHelp(this);">Immediate Action Required</A></TD></TR></TABLE></TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD><!--<TD></TD>-->
+	</TR><!--<TR>
+		<TD>New</TD>
+		<TD></TD>
+		<TD></TD>
+		<TD></TD>
+		<TD></TD>
+		<TD></TD>
+	</TR>-->
+	
+	<TR>
+		<TD><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=inwork;0&list_type=personal" style="COLOR: black;" onmouseover="mouseOverHelp('In Work',this);" onmouseout="mouseOutHelp(this);">In Work</A></TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD><!--<TD></TD>-->
+	</TR>
+	<TR>
+		<TD><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=onhold;0&list_type=personal" style="COLOR: black;" onmouseover="mouseOverHelp('On Hold',this);" onmouseout="mouseOutHelp(this);">On Hold</A></TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD><!--<TD></TD>-->
+	</TR><!--<TR>
+		<TD>Reassigned</TD>
+		<TD></TD>
+		<TD></TD>
+		<TD></TD>
+		<TD></TD>
+		<TD></TD>
+	</TR>-->
+	
+	<TR>
+		<TD><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=onoffer;0&list_type=personal" style="COLOR: black;" onmouseover="mouseOverHelp('On Offer',this);" onmouseout="mouseOutHelp(this);">On Offer</A></TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD><!--<TD></TD>-->
+	</TR><!--<TR>
+		<TD>Reopen</TD>
+		<TD></TD>
+		<TD></TD>
+		<TD></TD>
+		<TD></TD>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>Declined</TD>
+		<TD></TD>
+		<TD></TD>
+		<TD></TD>
+		<TD></TD>
+		<TD></TD>
+	</TR>
+	<TR>
+		<TD>Closed</TD>
+		<TD></TD>
+		<TD></TD>
+		<TD></TD>
+		<TD></TD>
+		<TD></TD>
+	</TR>-->
+	<TR>
+		<TD><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=requesting;0&list_type=personal" style="COLOR: black;" onmouseover="mouseOverHelp('Requested Info',this);" onmouseout="mouseOutHelp(this);">Requested Info</A></TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD><!--<TD></TD>-->
+	</TR>
+	<TR>
+		<TD><TABLE border=0 cellpadding=0 cellspacing=0 width=100%><TR><TD><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=notclosed;0&list_type=personal" style="COLOR: black;font-weight:bold;" title="Total Not Closed">Total Not Closed</A></TD><TD style="text-align:right;">&nbsp;</TD></TR></TABLE></TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD>
+		<TD>&nbsp;</TD><!--<TD></TD>-->
+	</TR>
+	
+			<TR>
+				<TH colspan=5 class="subtitle">Priorities (based on ECD)</TH>
+			</TR>
+	<TR>
+		<TD class=escalated><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=-1;0&list_type=personal" style="COLOR: black;" onmouseover="mouseOverHelp('ECD Overdue',this);" onmouseout="mouseOutHelp(this);">ECD Overdue (Escalated)</A></TD>
+		<TD class=escalated >&nbsp;</TD>
+		<TD class=escalated >&nbsp;</TD>
+		<TD class=escalated >&nbsp;</TD>
+		<TD class=escalated >&nbsp;</TD><!--<TD></TD>-->
+	</TR>
+	<TR>
+		<TD class=escalated><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=-2;0&list_type=personal" style="COLOR: black;" onmouseover="mouseOverHelp('ECD 1 Week',this);" onmouseout="mouseOutHelp(this);">ECD within 1 week</A></TD>
+		<TD class=escalated >&nbsp;</TD>
+		<TD class=escalated >&nbsp;</TD>
+		<TD class=escalated >&nbsp;</TD>
+		<TD class=escalated >&nbsp;</TD><!--<TD></TD>-->
+	</TR>
+	
+	<TR>
+		<TD class=escalated><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=-6;0&list_type=personal" style="COLOR: black;" onmouseover="mouseOverHelp('ECD 2 Week',this);" onmouseout="mouseOutHelp(this);">ECD within 2 week</A></TD>
+		<TD class=escalated >&nbsp;</TD>
+		<TD class=escalated >&nbsp;</TD>
+		<TD class=escalated >&nbsp;</TD>
+		<TD class=escalated >&nbsp;</TD><!--<TD></TD>-->
+	</TR>
+	
+	
+	<TR>
+		<TD class=escalated><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=-4;0&list_type=personal" style="COLOR: black;" onmouseover="mouseOverHelp('ECD All Other',this);" onmouseout="mouseOutHelp(this);">ECD Remaining</A></TD>
+		<TD class=escalated >&nbsp;</TD>
+		<TD class=escalated >&nbsp;</TD>
+		<TD class=escalated >&nbsp;</TD>
+		<TD class=escalated >&nbsp;</TD>
+	</TR>
+			<TR>
+				<TH colspan=5 class="subtitle">Backlog</TH>
+			</TR>
+	<TR>
+		<TD class=escalated2><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=-5;0&list_type=personal" style="COLOR: black;" onmouseover="mouseOverHelp('Escalated Backlog',this);" onmouseout="mouseOutHelp(this);">Escalated Backlog Issues</A></TD>
+		<TD class=escalated2>&nbsp;</TD>
+		<TD class=escalated2>&nbsp;</TD>
+		<TD class=escalated2>&nbsp;</TD>
+		<TD class=escalated2>&nbsp;</TD>
+	</TR>
+	<TR>
+		<TD class=escalated2><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=-3;0&list_type=personal" style="COLOR: black;" onmouseover="mouseOverHelp('Escalated ECD RBD',this);" onmouseout="mouseOutHelp(this);">Escalated ECD &gt; RBD</A></TD>
+		<TD class=escalated2>&nbsp;</TD>
+		<TD class=escalated2>&nbsp;</TD>
+		<TD class=escalated2>&nbsp;</TD>
+		<TD class=escalated2>&nbsp;</TD>
+	</TR>
+			<TR>
+				<TH colspan=5 class="subtitle">Follow Up</TH>
+			</TR>
+	<TR>
+		<TD class=followup><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=onoffer;0&assigneeType=previous&list_type=personal" style="COLOR: black;" onmouseover="mouseOverHelp('Follow Up On Offer',this);" onmouseout="mouseOutHelp(this);">Follow Up On Offer</A></TD>
+		<TD class=followup>&nbsp;</TD>
+		<TD class=followup>&nbsp;</TD>
+		<TD class=followup>2</TD>
+		<TD class=followup>&nbsp;</TD><!--<TD></TD>-->
+	</TR>
+	<TR>
+		<TD class=followup><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=requesting;0&assigneeType=previous&list_type=personal" style="COLOR: black;" onmouseover="mouseOverHelp('Follow Up Requested Info',this);" onmouseout="mouseOutHelp(this);">Follow Up Requested Info</A></TD>
+		<TD class=followup>&nbsp;</TD>
+		<TD class=followup>&nbsp;</TD>
+		<TD class=followup>&nbsp;</TD>
+		<TD class=followup>&nbsp;</TD><!--<TD></TD>-->
+	</TR>
+	<TR>
+		<TD class=followup><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=closed14days;0&assigneeType=previous&list_type=personal" style="COLOR: black;" onmouseover="mouseOverHelp('Follow Up Closed',this);" onmouseout="mouseOutHelp(this);">Follow Up Closed (14 last days)</A></TD>
+		<TD class=followup>&nbsp;</TD>
+		<TD class=followup>&nbsp;</TD>
+		<TD class=followup>&nbsp;</TD>
+		<TD class=followup>&nbsp;</TD><!--<TD></TD>-->
+	</TR>
+	
+	
+			<TR>
+				<TH colspan=5 class="subtitle">TAT Active</TH>
+			</TR>
+	<TR>
+		<TD class=tatactive><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=-7;0&list_type=personal" style="COLOR: black;" onmouseover="mouseOverHelp('TAT Exceeding',this);" onmouseout="mouseOutHelp(this);">TAT Exceeding CAE Objective</A></TD>
+		<TD class=tatactive>&nbsp;</TD>
+		<TD class=tatactive>&nbsp;</TD>
+		<TD class=tatactive>&nbsp;</TD>
+		<TD class=tatactive>&nbsp;</TD><!--<TD></TD>-->
+	</TR>
+
+	<TR>
+		<TD class=tatactive><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=-8;0&list_type=personal" style="COLOR: black;" onmouseover="mouseOverHelp('TAT - 5 days',this);" onmouseout="mouseOutHelp(this);">TAT - 5 days</A></TD>
+		<TD class=tatactive>&nbsp;</TD>
+		<TD class=tatactive>&nbsp;</TD>
+		<TD class=tatactive>&nbsp;</TD>
+		<TD class=tatactive>&nbsp;</TD><!--<TD></TD>-->
+	</TR>
+
+	<TR>
+		<TD class=tatactive><A href="https://simissues.cae.com/system/mcommand.asp?cmd=go_to_filtered_list&filter=-9;0&list_type=personal" style="COLOR: black;" onmouseover="mouseOverHelp('TAT - 10 days',this);" onmouseout="mouseOutHelp(this);">TAT - 10 days</A></TD>
+		<TD class=tatactive>&nbsp;</TD>
+		<TD class=tatactive>&nbsp;</TD>
+		<TD class=tatactive>&nbsp;</TD>
+		<TD class=tatactive>&nbsp;</TD><!--<TD></TD>-->
+	</TR>
+	
+	
+<!--<TR>
+		<TD class=escalated>RBD (Required-by Date) Overdue</TD>
+		<TD class=escalated </TD>
+		<TD class=escalated </TD>
+		<TD class=escalated </TD>
+		<TD class=escalated </TD>
+	</TR>
+	<TR>
+		<TD class=escalated>RBD Due within 1 week</TD>
+		<TD class=escalated </TD>
+		<TD class=escalated </TD>
+		<TD class=escalated </TD>
+		<TD class=escalated </TD>
+	</TR>
+	
+	
+-->
+
+</TABLE>
+</TD></TR></TABLE>
+		
+			<BR><BR>
+			<TABLE align="center" width=70% bgcolor=#6E6E6E>
+			<TR>
+			<TD><P align=justify style="font-family:arial,verdana;font-size:7pt;color:black;"><FONT color=red>IMPORTANT NOTICE:</FONT> This web portal/site must not include any information that could provide a person with detailed knowledge of the inherent properties and performance characteristics or that may allow the use of this knowledge to reproduce or replicate the goods, or enhance the performance of a similar article, the release  of which may be restricted by Canada's Controlled Goods Regulation and/or the U.S. Arms Export Control Act as specified in paragraph 126.5 of the International Traffic in Arms Regulations (ITAR). This type of information must be provided under separate cover and may be released only pursuant to an approved export permit or export license/TAA per ITAR 126.5.</P></TD>
+			</TR>
+			</TABLE>
+		
+
+            <div align="center">
+                <SPAN  style="FONT-SIZE: 10px; COLOR: white; FONT-FAMILY: Verdana,Arial;">© 2003-2006 CAE Inc. All rights reserved.</SPAN>
+            </div>
+</DIV>
+
+</form>
+<FORM id="index" name="index" method="post" action="https://simissues.cae.com/main/manage.asp" target="_new"><input type="hidden" id="password" name="password" value="dontchangeprivilege"></FORM>
+</BODY>
+
+</HTML>

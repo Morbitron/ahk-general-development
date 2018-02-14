@@ -1,0 +1,12 @@
+#NoEnv
+#SingleInstance ignore
+#Include SaveHImage2File.ahk
+
+hIcon := DllCall("LoadIcon", "UPtr", 0, "UInt", 32513, "UPtr") ; load a system icon
+result := SaveHImage2File(hIcon, A_Desktop "\test.ico", "icon") ; save the icon to a file
+MsgBox % "finished: " . (result ? "succeeded" : "failed") ; report to user
+
+hbmp := DllCall("LoadBitmap", "UPtr", 0, "UInt", 32745, "UPtr")
+result := SaveHImage2File(hbmp, A_Desktop "\test.bmp", "bitmap") ; save the bitmap to a file
+MsgBox % "finished: " . (result ? "succeeded" : "failed") ; report to user
+return

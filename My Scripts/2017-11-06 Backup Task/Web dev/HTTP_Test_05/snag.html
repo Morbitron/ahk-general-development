@@ -1,0 +1,2121 @@
+
+
+<!--COPYRIGHT CAE ELECTRONICS Ltd.-->
+
+
+
+
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+<meta http-equiv='X-UA-Compatible' content='IE=Edge' />	
+	<meta name=vs_targetSchema content="http://schemas.microsoft.com/intellisense/ie5">
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<TITLE>Snag Details</TITLE>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui.js"></script>    
+    <script type="text/javascript" src="../js/Dialog.js"></script>
+
+    <link type="text/css" rel="Stylesheet" href="../js/Dialog.css" />
+    <link href="../js/datepicker.css" rel="stylesheet" type="text/css" />
+    <script src="../js/datepicker.js" type="text/javascript"></script>
+	<SCRIPT language="JavaScript" src="https://simissues.cae.com/main/utilscripts.js"></SCRIPT>
+	<LINK href="https://simissues.cae.com/Scripts/styles.css" rel=stylesheet type=text/css>
+	<SCRIPT language="Javascript")>
+		var strStatus
+		strStatus = "Version 5.0a" + "  -  User: ldesrochers  -  Privilege: User         "
+		var i=1;
+		setTimeout("setStatus(i);",1000);
+		function setStatus(a){
+			window.status = strStatus//.substr(0,a);
+			i++;
+			if(i>strStatus.length){i=1;}
+			//setTimeout("setStatus(i);",100);
+		}
+		var old_priority=0;
+		var view_att=null;
+		var dirty=0;
+		var change="";
+		var arrSnags=new Array();
+		var strChanges="";
+		var strWorkNotes="";
+		function dirtyIt(addchange, what){
+			//alert(addchange);
+			if(addchange.toLowerCase()!="keywords"){
+				var objArgs = new Object();
+				objArgs.Change = addchange;
+				objArgs.WorkNotes = strWorkNotes;
+				//var result = window.showModalDialog('worknotes.asp',objArgs,'dialogWidth:400px;dialogHeight:300px;status:no;');
+                var result = null;
+                var oo = new top.DialogBox('worknotes.asp',objArgs,'dialogWidth:400px;dialogHeight:300px;status:no;');
+                oo.onClose = function (event, result) { 
+				    if(result){strWorkNotes=result;}
+                    dlgdirtyIt(addchange, what);
+                }
+			}
+			else
+            {
+                dlgdirtyIt(addchange, what);
+            }
+			//alert(strChanges); return false;
+		}
+
+
+        function getCalendar(txtDate,addchange, what, oldval)
+        {   this.IsDirtyDate = true;
+            var txtDt = document.getElementById(txtDate);
+            $(txtDt).datepicker({ format: 'dd-M-yyyy', autoclose: true, todayHighlight: true });
+            
+            $(txtDt).datepicker().on('hide', function(ev){
+               IsDirty(txtDate,addchange, what, oldval);
+                
+            });
+
+            $(txtDt).datepicker('show');
+         }
+
+         function IsDirty(txtDate,addchange, what, oldval)
+         {
+            var txtctrl =  document.getElementById(txtDate);
+            if ((txtctrl.value) != oldval)  
+            {
+                if (this.IsDirtyDate == true)
+                {
+                    dirtyIt(addchange, what);
+                    this.IsDirtyDate = false;
+                }
+            }
+            
+         }
+
+        function dlgdirtyIt(addchange, what)
+        {
+            if (addchange=='severity ') {
+				    if  (what.value=='') {
+					    alert('ERROR:  You cannot remove the severity of this item');
+					    document.getElementById('priority').options.selectedIndex = old_priority;
+					    return false;
+				    }else{
+					    document.getElementById('isstype_sel').disabled=false;
+					    old_priority = document.getElementById('priority').options.selectedIndex;
+				    }
+			    }
+			    if ((addchange=='ECD') || (addchange=='Required_By_Date')){
+				    ecdChange();
+			    }
+			    document.snagForm.changes.disabled=false;
+			    //document.snagForm.changes_info.disabled=false;
+			    dirty = 1;
+			    var arrWhat = what.id.split("_");
+			    var index = strChanges.indexOf(arrWhat[0] + "=");
+
+			    if (addchange=='DIR') {
+				    if(what.value == ''){
+					    what.value = ' '
+				    }
+			    }
+
+			    if (index != -1) {   // already in string, need to override value
+				    strStart = strChanges.substring(0, index);
+				    strEnd = strChanges.substring(index, strChanges.length);
+				    strStart = strStart + strEnd.substring(0, strEnd.indexOf("=") + 1);
+				    strEnd = strEnd.substring(strEnd.indexOf("&"), strEnd.length);
+                    strChanges = strStart + escape(what.value) + strEnd;
+ 
+			    }
+			    else if(addchange=='org_lvl'){
+			        change = change + addchange + " ";
+			        strChanges = strChanges + "org_lvl" + "=" + escape(what.value) + "&";
+			    }
+			    else {
+				    change = change + addchange + " ";
+                    strChanges = strChanges + arrWhat[0] + "=" + escape(what.value) + "&";
+       
+				  
+			    }
+
+
+        }
+
+		function updateWarning(issueid) {
+				if (issueid != 'general') {
+					if(confirm("Issue info ( " + change + ") was changed. Click <OK> to save the changes or <Cancel> to quit without saving.")) {
+						updateChanges(issueid);
+					}
+				} else {
+					alert ("Changes were not saved.");
+					return false;
+				}
+				dirty = 0;
+				change = "";
+				strChanges = "";
+				return true;
+		}
+
+		function updateChanges(issueid){
+                
+                
+				strChanges = strChanges + "issueid=" + issueid;
+				if(strWorkNotes!=""){strChanges = strChanges + "&worknotes=" + escape(strWorkNotes);}
+
+				strTosendAll = 'https://simissues.cae.com/system/mcommand.asp?cmd=update_issue_info&' + strChanges;
+				strTosendAll = strTosendAll + "&ecdflag=" + document.getElementById("ecd_gt_rbd").value;
+
+				if (strTosendAll.length > 2070 ) {
+
+   						alert("You reach the limit of characters you can enter.  There might be different reasons for it:  \n1- under Tools, Internet Options, Advanced, make sure 'use JAVA (SUN) for <applet id=Applet1> requires restart' is NOT CHECKED.  \n2- your setup does not support the length of your input:  please strip it down or add an attachment instead. \nLimit: 2070 encoded characters;  You entered: " + strTosendAll.length + " encoded characters.");
+						return false;
+
+				} else 
+                {
+                        var updateResult = null;
+                        
+                        var oo = new top.DialogBox(strTosendAll);
+                        oo.onClose = function (event, result) { 
+                            updateResult = result;
+                            if (updateResult == 0)
+                            {
+							    alert("Error! Try again later, please.")
+							    return false;
+						    }
+                            else
+                            {
+    							parent.window.location.href='https://simissues.cae.com/system/mCommand.asp?cmd=issue_details&issueid=' + bigArray[snagGlobal][2] + '&index=' + snagGlobal;
+						    }
+               				dirty = 0;
+				            change = "";
+				            strChanges = "";
+				            return true;
+                        }
+				
+				}
+		}
+
+		function pageSnags(cursnag, action){
+			
+				if(dirty==1){updateWarning(bigArray[snagGlobal][2]);}
+				if((snagGlobal!=0) &&(cursnag.id=="prev")){
+                   
+                   
+					populateForm(parseInt(snagGlobal)-1);
+                   
+
+				}else if((cursnag.id=="next")&& (parseInt(snagGlobal)!=bigArray.length-1)){
+                    
+					populateForm(parseInt(snagGlobal)+1);
+                    
+				}else{
+				var c=document.getElementById('myMessage');
+				var prev_bt=document.getElementById('prev');
+				var next_bt=document.getElementById('next');
+				prev_bt.disabled=true;
+				next_bt.disabled=true;
+				c.style.visibility = "visible";//"<FONT size=2 color=red>Please, wait...</FONT>";
+				self.location.href="https://simissues.cae.com/main/snagdetails.asp?page="+cursnag.id;
+				}
+		}
+
+	var serverURL = "https://simissues.cae.com/main/simple.asp";
+	var aspObject;
+	var co;
+
+	function ecdChange(){
+		var rbdElem = document.getElementById('reqbydate');
+		var ecdElem = document.getElementById('ecddate');
+		var ecdFlag = document.getElementById('ecd_gt_rbd');
+		if(rbdElem.tagName.toUpperCase()=="SPAN"){
+			var rbdDateVal = rbdElem.innerHTML;//parseDate(bigArray[index][61])
+		}else{
+			var rbdDateVal = rbdElem.value;
+		}
+		var i;
+		var arrMonths=new Array('January','February','March','April','May','June','July','August','September','October','November','December');
+		for(i=0;i<arrMonths.length;i++){
+			if(arrMonths[i].substr(0,3)==ecdElem.value.split('-')[1]){break;}
+		}
+		var ecdDate = new Date(ecdElem.value.split('-')[2],i,ecdElem.value.split('-')[0]);
+		//if (rbdElem.value!=null){
+			if(rbdDateVal!=''){
+				for(i=0;i<arrMonths.length;i++){
+					if(arrMonths[i].substr(0,3)==rbdDateVal.split('-')[1]){break;}
+				}
+				var rbdDate = new Date(rbdDateVal.split('-')[2],i,rbdDateVal.split('-')[0]);
+				if(ecdDate>rbdDate){
+					alert("Your ECD date is beyond the Required by Date.\nThis issue will be escalated to your immediate supervisor if it is categorized as an issue where escalation occurs (according to severity, Post-RFT).\nPlease, explain the reasons for this in Work Notes.");
+					ecdFlag.value="true";
+				}else{
+					ecdFlag.value="";
+				}
+			}
+		//}
+
+	}
+
+ function adjustFrames()
+    {
+       
+        if (!(window.navigator.appName == "Microsoft Internet Explorer"))
+            {
+               try
+               {
+                    var btn = document.getElementById("changes");
+                    btn.value = btn.value + "  ";
+                    var fr = document.getElementById("fldInformation1");
+                    fr.style.width = "94%";
+                    var fr = document.getElementById("fldInformation2");
+                    fr.style.width = "94%";
+                    var fr = document.getElementById("fldInformation3");
+                    fr.style.width = "94%";
+                    var fr = document.getElementById("fldInformation4");
+                    fr.style.width = "94%";
+                    var fr = document.getElementById("fldInformation5");
+                    fr.style.width = "94%";
+               }
+               catch (e)
+               {
+               }
+
+
+            }
+        else
+            {
+               try
+               {
+                var btn = document.getElementById("changes");
+                btn.value = btn.value + "  ";
+                var fr = document.getElementById("fldInformation1");
+                fr.style.width = "98%";
+                var fr = document.getElementById("fldInformation2");
+                fr.style.width = "98%";
+                var fr = document.getElementById("fldInformation3");
+                fr.style.width = "98%";
+                var fr = document.getElementById("fldInformation4");
+                fr.style.width = "98%";
+                var fr = document.getElementById("fldInformation5");
+                fr.style.width = "98%";
+               }
+               catch (r)
+               {
+               }
+
+            }
+    }
+	function changePhase(what){
+
+		var myelem = document.getElementById(what);
+		var priorElem = document.getElementById('priority');
+		var rbdElem = document.getElementById('reqbydate');
+		var ecdElem = document.getElementById('ecddate');
+		var rdElem = document.getElementById('raiseddate');
+		var selVal=myelem.options[myelem.options.selectedIndex].value;
+		var arrMonths=new Array('January','February','March','April','May','June','July','August','September','October','November','December');
+		var rbdDate=new Date();
+
+
+
+		if((selVal=="8") || (selVal=="9") || (selVal=="10")){
+			if(priorElem.options.selectedIndex!=0){
+				var selIndPrior = priorElem.options.selectedIndex;
+				var strRdate= rdElem.innerHTML.split(',')[0];
+				for(i=0;i<arrMonths.length;i++){
+					if(arrMonths[i].substr(0,3)==strRdate.split('-')[1]){break;}
+				}
+
+				//Here is the change made 10/18/2006
+				var toDay = new Date(strRdate.replace('&nbsp;','').split('-')[2],i,strRdate.split('-')[0]);
+
+				//alert(toDay)
+
+				if(priorElem.options[selIndPrior].value==1){
+					rbdDate=DateAdd(toDay,"10",0,0);
+
+					alert(rbdDate)
+
+					rbdElem.value=DateAdd(toDay,"10",0,0).getDate() + "-" + arrMonths[DateAdd(toDay,"10",0,0).getMonth()].substr(0,3) + "-" + DateAdd(toDay,"10",0,0).getFullYear();
+				}else if(priorElem.options[selIndPrior].value==2){
+					rbdDate=DateAdd(toDay,"30",0,0);
+
+					alert(rbdDate)
+
+					rbdElem.value=DateAdd(toDay,"30",0,0).getDate() + "-" + arrMonths[DateAdd(toDay,"30",0,0).getMonth()].substr(0,3) + "-" + DateAdd(toDay,"30",0,0).getFullYear();
+				}else if(priorElem.options[selIndPrior].value==3){
+					rbdDate=DateAdd(toDay,"40",0,0);
+
+					alert(rbdDate)
+
+					rbdElem.value=DateAdd(toDay,"40",0,0).getDate() + "-" + arrMonths[DateAdd(toDay,"40",0,0).getMonth()].substr(0,3) + "-" + DateAdd(toDay,"40",0,0).getFullYear();
+				}else if(priorElem.options[selIndPrior].value==4){
+					rbdDate=DateAdd(toDay,"60",0,0);
+
+					alert(rbdDate)
+
+					rbdElem.value=DateAdd(toDay,"60",0,0).getDate() + "-" + arrMonths[DateAdd(toDay,"60",0,0).getMonth()].substr(0,3) + "-" + DateAdd(toDay,"60",0,0).getFullYear();
+				}
+
+
+				dirtyIt("RequiredByDate",rbdElem);
+			}
+			ecdChange();
+
+		}
+	}
+
+	function checkSLC(slc)
+    {
+        if (slc.checked == true)
+         {
+            var strKeywords = document.getElementById("keywords").value;
+            document.getElementById("keywords").value  = strKeywords + ' ' + 'flightcrew';
+            }
+         else
+         {
+            var strKeywords = document.getElementById("keywords").value;
+            document.getElementById("keywords").value   = strKeywords.replace('flightcrew','');
+         }
+     
+         dirtyIt("slc",slc);
+         var objKeyWord = document.getElementById("keywords");
+         dirtyIt("keywords",objKeyWord);
+        
+    }
+	</SCRIPT>
+
+<SCRIPT language="JavaScript1.2" type="text/javascript">
+    function setCols(txt) {
+        if (navigator.userAgent.toLowerCase().indexOf("firefox") > -1) {
+            txt.cols = "69";
+        }
+        else {
+            txt.cols = "83";
+
+        }
+
+    }
+function add_note() {
+	if (window.open('https://simissues.cae.com/main/add_work_note.asp?issue_id=' + bigArray[snagGlobal][2],'','Width=850px,Height=600px,scrollbars=yes,statusbar=no,resize=no') ) {
+		//parent.window.location.href='https://simissues.cae.com/system/mCommand.asp?cmd=issue_details&issueid=' + bigArray[snagGlobal][2];
+		return;
+	}
+}
+
+function change_user(what) {
+    //if (window.showModalDialog('https://simissues.cae.com/main/change_user.asp?snagID=' + bigArray[snagGlobal][2] + '&what=' + what,'','dialogWidth=600px;dialogHeight=300px;scroll=no;status=no;resize=no;') ) {
+    
+    var oo = new top.DialogBox('https://simissues.cae.com/main/change_user.asp?snagID=' + bigArray[snagGlobal][2] + '&what=' + what + '&mnem=' + bigArray[snagGlobal][24] , '', 'dialogWidth=600px;dialogHeight=300px;scroll=no;status=no;resize=no;');
+    oo.onClose = function (event, result) 
+    { 
+            if (result == true)
+            {
+		        parent.window.location.href='https://simissues.cae.com/system/mCommand.asp?cmd=issue_details&issueid=' + bigArray[snagGlobal][2];
+		        return;
+            }
+	}
+}
+function change_group(what) {
+    //var newGroup = 	window.showModalDialog('https://simissues.cae.com/main/group_empl.asp?act=name&empl=' + bigArray[snagGlobal][29],'','dialogWidth=600px;dialogHeight=300px;scroll=no;status=no;resize=no;')
+    var oo = new top.DialogBox('https://simissues.cae.com/main/group_empl.asp?act=name&empl=' + bigArray[snagGlobal][29],'','dialogWidth=600px;dialogHeight=300px;scroll=no;status=no;resize=no;');
+    oo.onClose = function (event, result) {
+        var newGroup = result;
+        if (newGroup) {
+            if (newGroup == "onlyone") {
+                alert("You can not modify assignee's group because he is registered in one group only.");
+            } else {
+                var whatShow = document.getElementById('assGroup');
+                var strShow = newGroup.split("___")[1] + "&nbsp;<INPUT type='button' class='myButton2' name='changeOrigin' id='changeOrigin' value='Modify' onclick='change_group();'><INPUT type='hidden' id='entity' name='entity' value=''>";
+                whatShow.innerHTML = strShow;
+                whatShow = document.getElementById('entity');
+                whatShow.value = newGroup.split("___")[0];
+                dirtyIt("assigne group", whatShow);
+            }
+
+            //parent.window.location.href='https://simissues.cae.com/system/mCommand.asp?cmd=issue_details&issueid=' + bigArray[snagGlobal][2];
+            return;
+        }
+    }
+}
+function printSnag(){
+	//var printformat=snagForm.format;
+	//for(var i=0;i<printformat.length;i++){
+	//	if(printformat[i].checked)break;
+	//}
+	var format = snagForm.format.options[snagForm.format.options.selectedIndex].value;
+	if(format=='pdfNEW')window.open('https://simissues.cae.com/main/action_report4.asp?issueid='+ bigArray[snagGlobal][2],'pdf_page','status=no, toolbar=no, menubar=no, location=no, scrollbars=yes, resizable=yes');
+	if(format=='pdf')window.open('https://simissues.cae.com/main/action_report.asp?issueid='+ bigArray[snagGlobal][2],'pdf_page','status=no, toolbar=no, menubar=no, location=no, scrollbars=yes, resizable=yes');
+	if(format=='html')window.open('https://simissues.cae.com/main/action_report_html.asp?issueid='+ bigArray[snagGlobal][2],'pdf_page','status=no, toolbar=no, menubar=no, location=no, scrollbars=yes, resizable=yes');
+}
+function backToList(){
+	if (dirty==1){updateWarning(bigArray[snagGlobal][2]);}
+	top.window.location.href='https://simissues.cae.com/main/snaglist.asp?last_viewed='+ bigArray[snagGlobal][2];
+}
+function sendChanges(){
+	if (dirty==1) {updateChanges(bigArray[snagGlobal][2]);}
+}
+
+function showHistory(){
+	w=screen.width-1;
+	h=screen.height-1;
+	window.open('https://simissues.cae.com/system/mcommand.asp?cmd=history_view&issue_id='+bigArray[snagGlobal][2],'history_window','toolbar=no,menubar=no,location=no,top=0,left=0,width='+w+',height='+h+',status=yes,resizable=yes,scrollbars=yes');
+}
+
+function ManageAssets() {
+    w = screen.width - 1;
+    h = screen.height - 1;
+    window.open('https://simissues.cae.com/main/ManageAssets.aspx?issue_id=' + bigArray[snagGlobal][2], 'ManageAssets', 'toolbar=no,menubar=no,location=no,top=0,left=0,width=' + w + ',height=' + h + ',status=yes,resizable=yes,scrollbars=yes');
+}
+
+
+function checktakeaction(currentassignee, sessionuser) {
+    $(function () {
+        if (currentassignee != sessionuser) {
+            $("#action").attr('disabled', 'disabled');
+        }
+        else {
+            $("#action").removeAttr('disabled');
+        }
+    });
+}
+
+function takeAction(){
+	//if (dirty==1){updateChanges(bigArray[snagGlobal][2]);}
+    //returnValue = window.showModalDialog('https://simissues.cae.com/main/snagaction1_4.asp?snagnum=' + bigArray[snagGlobal][2] + '&mnem=' + bigArray[snagGlobal][24], '', 'dialogWidth=600px;dialogHeight=350px;scroll=no;status=no;resize=no;dialogLeft:500;dialogTop:10');
+    var oo = new top.DialogBox('https://simissues.cae.com/main/snagaction1_4.asp?snagnum=' + bigArray[snagGlobal][2] + '&mnem=' + bigArray[snagGlobal][24], '', 'dialogWidth=600px;dialogHeight=350px;scroll=no;status=no;resize=no;dialogLeft:500;dialogTop:10');
+    oo.onClose = function (event, result) {
+        returnValue = result;
+        if (returnValue == 'refresh') {
+
+            parent.window.location.href = 'https://simissues.cae.com/system/mCommand.asp?cmd=issue_details&issueid=' + bigArray[snagGlobal][2] + '&index=' + snagGlobal;
+
+        } else if (returnValue == 'reply') {
+            strChanges += "req_info=response&";
+            strChanges += "replyclosed=false&";
+            dirty = 1;
+            sendChanges();
+        } else if (returnValue == 'reply_closed') {
+            strChanges += "req_info=response&";
+            strChanges += "replyclosed=true&";
+            dirty = 1;
+            sendChanges();
+        }
+    }
+}
+var attach_window;
+function addAttachments() {
+    //window.open('https://simissues.cae.com/main/snagaction6.asp?snagnum=' + bigArray[snagGlobal][2],'attach_window','width=600,height=200');
+    if (attach_window == null) {
+        attach_window = window.open('https://simissues.cae.com/main/ASPTransitionUpload.asp?snagnum=' + bigArray[snagGlobal][2], 'attach_window', 'Width=600px,Height=350px,scrollbars=yes,statusbar=no,resize=no');
+        attach_window.moveTo(30, 30);
+    }
+    else {
+        attach_window.focus();
+    }
+}
+function addIntNotes() {
+	window.open('https://simissues.cae.com/main/add_int_note.asp?issue_id=' + bigArray[snagGlobal][2],'','Width=700px,Height=600px,scrollbars=yes,statusbar=no,resize=no') ;
+	//window.showModalDialog('https://simissues.cae.com/main/snagaction5.asp?snagnum=' + bigArray[snagGlobal][2],'','dialogWidth=800px;dialogHeight=300px;scroll=no;status=no;resize=no;');
+}
+function changeConv(){
+    //var convReturn=window.showModalDialog('assign_conv.asp?projid='+projMnem+'&iss_id='+bigArray[snagGlobal][2] ,'','dialogWidth:700px;dialogHeight:200px;status:no;scroll:no');
+    var oo = new top.DialogBox('assign_conv.asp?projid=' + projMnem + '&iss_id=' + bigArray[snagGlobal][2], '', 'dialogWidth:700px;dialogHeight:200px;status:no;scroll:no');
+    oo.onClose = function (event, result) {
+        var convReturn = result;
+        if (convReturn != " _ " && convReturn != "") {
+            var xmlhttp = false;
+            try {
+                xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+            } catch (e) {
+                try {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                } catch (E) {
+                    try {
+                        xmlhttp = new XMLHttpRequest();
+                    }
+                    catch (f) {
+                        xmlhttp = false;
+                    }
+                }
+            }
+
+            if (convReturn != null) {
+                if (convReturn.split('_')[0] == '0') {
+                    xmlhttp.open("GET", "conv.asp?func=removeLinkToIssue&par=" + bigArray[snagGlobal][2], true);
+                } else {
+                    xmlhttp.open("GET", "conv.asp?func=linkACConvIssue&par=" + bigArray[snagGlobal][2] + "&par2=" + convReturn.split('_')[0], true);
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4) {
+                        if (xmlhttp.responseText == 'true') {
+                            document.all.conversion.innerHTML = (convReturn != '') ? '<B>' + convReturn.split('_')[1] + '</B>' : document.all.conversion.innerHTML;
+                        } else {
+                            alert(xmlhttp.responseText);
+                        }
+                    }
+                }
+                xmlhttp.send(null);
+            }
+            
+        }
+    }
+}
+
+
+
+function chargeNumber(){
+	//if (window.showModalDialog('https://simissues.cae.com/main/chargeNumber.asp?issue_id=' + bigArray[snagGlobal][2] + '&number=' + bigArray[snagGlobal][8],'','dialogWidth=300px;dialogHeight=150px;scroll=no;status=no;resize=no;') ) {
+
+    var oo = new top.DialogBox('https://simissues.cae.com/main/chargeNumber.asp?issue_id=' + bigArray[snagGlobal][2] + '&number=' + bigArray[snagGlobal][8], '', 'dialogWidth=300px;dialogHeight=150px;scroll=no;status=no;resize=no;');
+    oo.onClose = function (event, result) {
+        if (result == true) {
+            parent.window.location.href = 'https://simissues.cae.com/system/mCommand.asp?cmd=issue_details&issueid=' + bigArray[snagGlobal][2];
+            return;
+        }
+    }
+}
+function getConversions(issid){
+	co=displConv.getACConvListForIssue(issid.toString());
+	return co.return_value;
+}
+function getDIRinfo() {
+	window.open('dir_display.asp?snagnum=' + bigArray[snagGlobal][2],'dir_window','width=600,height=600');
+}
+function projectInfo(){
+var mnemonic = window.showModalDialog('https://simissues.cae.com/main/select_project.asp','','dialogWidth=550px;dialogHeight=250px;scroll=no;resizable=yes;status=no;');
+if (mnemonic != "cancel"){
+if (window.showModalDialog('https://simissues.cae.com/main/project_left.asp?project='+mnemonic,'','dialogWidth=750px;dialogHeight=550px;scroll=no;resizable=yes;status=no;')!=0){parent.location.reload();}
+}
+}
+function emailSnag() {
+
+    //var tocc=window.showModalDialog('https://simissues.cae.com/main/ccselect.asp?cmd=email_issue&project='+bigArray[snagGlobal][24]+'','','dialogWidth:550px;dialogHeight:600px');
+    var oo = new top.DialogBox('https://simissues.cae.com/main/ccselect.asp?cmd=email_issue&project='+bigArray[snagGlobal][24]+'','','dialogWidth:550px;dialogHeight:600px');
+    oo.onClose = function (event, result) {
+        var tocc = result;
+        if (tocc != "") {
+            //if(confirm(tocc)){
+            //window.showModalDialog('https://simissues.cae.com/system/mcommand.asp?cmd=email_issue&iss_id=' + bigArray[snagGlobal][2] + '&' + tocc, '', 'dialogWidth:100px;dialogHeight:100px');
+            var oo1 = new top.DialogBox('https://simissues.cae.com/system/mcommand.asp?cmd=email_issue&iss_id=' + bigArray[snagGlobal][2] + '&' + tocc, '', 'dialogWidth:100px;dialogHeight:100px');
+            oo1.onClose = function (event, result) { }
+
+            //}
+        }
+    }
+}
+//-->
+</script>
+<style>
+	.infoheader {font-family:verdana; font-size:10pt; }
+	.normtext {font-family:verdana; font-size:10pt; }
+	textarea {font-family:verdana; font-size:8pt; }
+	.infotext	{font-family:verdana; font-size:8pt; font-weight:bold; }
+	.infotext2	{font-family:verdana; font-size:8pt; text-decoration:underline;}
+	.myButton {width:100px; font-family:verdana; font-size:8pt; }
+	.myButton2 {width:70px; font-family:verdana; font-size:8pt; }
+	.myButton3 {width:125px; font-family:verdana; font-size:8pt; }
+	select	{font-family:verdana; font-size:8pt; }
+</style>
+<STYLE>
+	TD{font-family:Verdana,Arial;font-size:10px;}
+
+	body {font-family:verdana; font-size:10px;}
+	select	{width:150px; font-family:verdana; font-size:8pt; }
+	#usermessage {font-family:verdana; font-size:10px;font-weight:bold;}
+</STYLE>
+
+</HEAD>
+
+<BODY  bgcolor="#D8D5D5"  leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  onunload="if (dirty==1){updateWarning('general');} adjustFrames();" onclick="//closeCalendar();">
+<SCRIPT language="JavaScript1.2" type="text/javascript" src="https://simissues.cae.com/scripts/calendar2.js"></SCRIPT>
+				<!--<script language="javascript" src="java_rs/jsrsClient.js"></script>
+<script language="JavaScript" src="https://simissues.cae.com/_ScriptLibrary/rs.htm"></script>
+<script language="JavaScript">RSEnableRemoteScripting("https://simissues.cae.com/_ScriptLibrary");</script>-->
+<FORM id=form1 name=form1 ><INPUT type=hidden id=issueid name=issueid value=""></FORM>
+
+	<SCRIPT language='Javascript'>var arrSuperCust= new Array();var arrCustEmpl = new Array;arrSuperCust[0]='ccsaa8';arrSuperCust[1]='ccsaacesing';arrSuperCust[2]='ccsaacha';arrSuperCust[3]='ccsaapho';arrSuperCust[4]='ccsaatc';arrSuperCust[5]='ccsacanadtor';arrSuperCust[6]='ccsacanadvan';arrSuperCust[7]='ccsacclsim';arrSuperCust[8]='ccsachina';arrSuperCust[9]='ccsada';arrSuperCust[10]='ccsadacel';arrSuperCust[11]='ccsaegeanair';arrSuperCust[12]='ccsaerlin';arrSuperCust[13]='ccsaerm';arrSuperCust[14]='ccsaero';arrSuperCust[15]='ccsaeroflot';arrSuperCust[16]='ccsaerol';arrSuperCust[17]='ccsaerosas';arrSuperCust[18]='ccsaeroservice';arrSuperCust[19]='ccsafranc';arrSuperCust[20]='ccsaheli';arrSuperCust[21]='ccsahk';arrSuperCust[22]='ccsaindia';arrSuperCust[23]='ccsairalgerie';arrSuperCust[24]='ccsairasia';arrSuperCust[25]='ccsairbeij';arrSuperCust[26]='ccsairbus';arrSuperCust[27]='ccsairbus380';arrSuperCust[28]='ccsairbusan';arrSuperCust[29]='ccsairbusdev';arrSuperCust[30]='ccsairbusmia';arrSuperCust[31]='ccsalaska';arrSuperCust[32]='ccsalital';arrSuperCust[33]='ccsalliance';arrSuperCust[34]='ccsalteonatl';arrSuperCust[35]='ccsalteongat';arrSuperCust[36]='ccsalteonkor';arrSuperCust[37]='ccsalteonlgb';arrSuperCust[38]='ccsalteonlut';arrSuperCust[39]='ccsalteonman';arrSuperCust[40]='ccsalteonmex';arrSuperCust[41]='ccsalteonmia';arrSuperCust[42]='ccsalteonsea';arrSuperCust[43]='ccsalteonsing';arrSuperCust[44]='ccsalteonspa';arrSuperCust[45]='ccsalteonyun';arrSuperCust[46]='ccsamalta';arrSuperCust[47]='ccsameric';arrSuperCust[48]='ccsana';arrSuperCust[49]='ccsanewzl';arrSuperCust[50]='ccsaseast';arrSuperCust[51]='ccsasiana';arrSuperCust[52]='ccsastp';arrSuperCust[53]='ccsatlas';arrSuperCust[54]='ccsatr';arrSuperCust[55]='ccsatransat';arrSuperCust[56]='ccsatrsing';arrSuperCust[57]='ccsatrt';arrSuperCust[58]='ccsausair';arrSuperCust[59]='ccsavenger';arrSuperCust[60]='ccsavia';arrSuperCust[61]='ccsawa';arrSuperCust[62]='ccsba';arrSuperCust[63]='ccsbaeans';arrSuperCust[64]='ccsbaepre';arrSuperCust[65]='ccsbaewood';arrSuperCust[66]='ccsbatnj';arrSuperCust[67]='ccsbbaddal';arrSuperCust[68]='ccsbbadmtl';arrSuperCust[69]='ccsbgi';arrSuperCust[70]='ccsboeingaus';arrSuperCust[71]='ccsboeingsea';arrSuperCust[72]='ccsboeingssg';arrSuperCust[73]='ccsbradmtl';arrSuperCust[74]='ccsbtfsa';arrSuperCust[75]='ccsbu';arrSuperCust[76]='ccscaa';arrSuperCust[77]='ccscadf';arrSuperCust[78]='ccscaea';arrSuperCust[79]='ccscaealtau';arrSuperCust[80]='ccscaebur';arrSuperCust[81]='ccscaeden';arrSuperCust[82]='ccscaeemi';arrSuperCust[83]='ccscaefscams';arrSuperCust[84]='ccscaefscbru';arrSuperCust[85]='ccscaefscdal';arrSuperCust[86]='ccscaefscmaa';arrSuperCust[87]='ccscaemad';arrSuperCust[88]='ccscaemex';arrSuperCust[89]='ccscaemos';arrSuperCust[90]='ccscaemtl';arrSuperCust[91]='ccscaenfld';arrSuperCust[92]='ccscaephx';arrSuperCust[93]='ccscaerom';arrSuperCust[94]='ccscaesap';arrSuperCust[95]='ccscaesea';arrSuperCust[96]='ccscaesha';arrSuperCust[97]='ccscaesimdal';arrSuperCust[98]='ccscaesin';arrSuperCust[99]='ccscaetor';arrSuperCust[100]='ccscaevan';arrSuperCust[101]='ccscafc';arrSuperCust[102]='ccscaic';arrSuperCust[103]='ccscannorth';arrSuperCust[104]='ccscargol';arrSuperCust[105]='ccscatchile';arrSuperCust[106]='ccscathay';arrSuperCust[107]='ccscatkorea';arrSuperCust[108]='ccscauc';arrSuperCust[109]='ccscaverton';arrSuperCust[110]='ccschinae';arrSuperCust[111]='ccschinan';arrSuperCust[112]='ccschinas';arrSuperCust[113]='ccschka';arrSuperCust[114]='ccscia';arrSuperCust[115]='ccscms';arrSuperCust[116]='ccscoex';arrSuperCust[117]='ccscomac';arrSuperCust[118]='ccscomair';arrSuperCust[119]='ccscontin';arrSuperCust[120]='ccscopa';arrSuperCust[121]='ccscos';arrSuperCust[122]='ccscsmt';arrSuperCust[123]='ccscspd';arrSuperCust[124]='ccscst';arrSuperCust[125]='ccscswa';arrSuperCust[126]='ccscswf';arrSuperCust[127]='ccscza';arrSuperCust[128]='ccsczecha';arrSuperCust[129]='ccsdeccan';arrSuperCust[130]='ccsdelta';arrSuperCust[131]='ccsdemo';arrSuperCust[132]='ccsdemo1';arrSuperCust[133]='ccsdemo4';arrSuperCust[134]='ccsdemo5';arrSuperCust[135]='ccsdlh';arrSuperCust[136]='ccsdlhbre';arrSuperCust[137]='ccsdlhbrl';arrSuperCust[138]='ccsdlhmuc';arrSuperCust[139]='ccsdlhuk';arrSuperCust[140]='ccsdlhvie';arrSuperCust[141]='ccsdragon';arrSuperCust[142]='ccsegat';arrSuperCust[143]='ccsegypta';arrSuperCust[144]='ccsembams';arrSuperCust[145]='ccsembap';arrSuperCust[146]='ccsembra';arrSuperCust[147]='ccsembramtl';arrSuperCust[148]='ccsembry';arrSuperCust[149]='ccsembzrh';arrSuperCust[150]='ccsemirat';arrSuperCust[151]='ccsess';arrSuperCust[152]='ccsethiopian';arrSuperCust[153]='ccsetihad';arrSuperCust[154]='ccsetop';arrSuperCust[155]='ccsets';arrSuperCust[156]='ccseva';arrSuperCust[157]='ccsfaaa';arrSuperCust[158]='ccsfaaokc';arrSuperCust[159]='ccsfedexanc';arrSuperCust[160]='ccsfedexmaw';arrSuperCust[161]='ccsfedexmhc';arrSuperCust[162]='ccsfedexmin';arrSuperCust[163]='ccsfinnai';arrSuperCust[164]='ccsfltsimco';arrSuperCust[165]='ccsfscbud';arrSuperCust[166]='ccsfscdal';arrSuperCust[167]='ccsfsiamst';arrSuperCust[168]='ccsfsiasia';arrSuperCust[169]='ccsfsilgb';arrSuperCust[170]='ccsfsislc';arrSuperCust[171]='ccsfsiwes';arrSuperCust[172]='ccsfsizuri';arrSuperCust[173]='ccsgaruda';arrSuperCust[174]='ccsgecap';arrSuperCust[175]='ccsgood';arrSuperCust[176]='ccsgoodrichfs';arrSuperCust[177]='ccsgulfair';arrSuperCust[178]='ccshainan';arrSuperCust[179]='ccshamburg';arrSuperCust[180]='ccshams';arrSuperCust[181]='ccshoneyglen';arrSuperCust[182]='ccshoneyphoe';arrSuperCust[183]='ccshoneywic';arrSuperCust[184]='ccsiaa';arrSuperCust[185]='ccsiberia';arrSuperCust[186]='ccsicare';arrSuperCust[187]='ccsictskl';arrSuperCust[188]='ccsindepa';arrSuperCust[189]='ccsindian';arrSuperCust[190]='ccsindra';arrSuperCust[191]='ccsinterdelhi';arrSuperCust[192]='ccsjac';arrSuperCust[193]='ccsjal';arrSuperCust[194]='ccsjalcae';arrSuperCust[195]='ccsjas';arrSuperCust[196]='ccsjet2';arrSuperCust[197]='ccsjetaw';arrSuperCust[198]='ccsjetblue';arrSuperCust[199]='ccsjta';arrSuperCust[200]='ccskali';arrSuperCust[201]='ccskast';arrSuperCust[202]='ccskeny';arrSuperCust[203]='ccskhalifa';arrSuperCust[204]='ccskidde';arrSuperCust[205]='ccsklm';arrSuperCust[206]='ccskorean';arrSuperCust[207]='ccskuwait';arrSuperCust[208]='ccsliehb';arrSuperCust[209]='ccsliehblggh';arrSuperCust[210]='ccslion';arrSuperCust[211]='ccsmalaysia';arrSuperCust[212]='ccsmea';arrSuperCust[213]='ccsmegg';arrSuperCust[214]='ccsmeggittpis';arrSuperCust[215]='ccsmesa';arrSuperCust[216]='ccsmitsub';arrSuperCust[217]='ccsmitsui';arrSuperCust[218]='ccsmoog';arrSuperCust[219]='ccsmooney';arrSuperCust[220]='ccsmxcana';arrSuperCust[221]='ccsnam';arrSuperCust[222]='ccsnasa';arrSuperCust[223]='ccsnca';arrSuperCust[224]='ccsnita';arrSuperCust[225]='ccsnoras';arrSuperCust[226]='ccsnorthw';arrSuperCust[227]='ccsolympic';arrSuperCust[228]='ccsoxfal';arrSuperCust[229]='ccsoxfden';arrSuperCust[230]='ccspaa';arrSuperCust[231]='ccspaat';arrSuperCust[232]='ccspaifamem';arrSuperCust[233]='ccspaifamia';arrSuperCust[234]='ccspaifamin';arrSuperCust[235]='ccspaifastr';arrSuperCust[236]='ccspark';arrSuperCust[237]='ccsparkerfbw';arrSuperCust[238]='ccsparkerhsd';arrSuperCust[239]='ccspegasus';arrSuperCust[240]='ccsperu';arrSuperCust[241]='ccspoli';arrSuperCust[242]='ccsprod';arrSuperCust[243]='ccspw';arrSuperCust[244]='ccsqantas';arrSuperCust[245]='ccsqatair';arrSuperCust[246]='ccsquadsys';arrSuperCust[247]='ccsram';arrSuperCust[248]='ccsrwl';arrSuperCust[249]='ccsryanair';arrSuperCust[250]='ccssaa';arrSuperCust[251]='ccssabena';arrSuperCust[252]='ccssanfran';arrSuperCust[253]='ccssas';arrSuperCust[254]='ccssaudi';arrSuperCust[255]='ccssaudiar';arrSuperCust[256]='ccssf';arrSuperCust[257]='ccsshanghai';arrSuperCust[258]='ccssia';arrSuperCust[259]='ccssichuan';arrSuperCust[260]='ccssierraaero';arrSuperCust[261]='ccssilkair';arrSuperCust[262]='ccssimcom';arrSuperCust[263]='ccssingfc';arrSuperCust[264]='ccsskym';arrSuperCust[265]='ccssofia';arrSuperCust[266]='ccssogit';arrSuperCust[267]='ccssouthw';arrSuperCust[268]='ccsspuca';arrSuperCust[269]='ccssuzo';arrSuperCust[270]='ccsswissbsl';arrSuperCust[271]='ccsswissfra';arrSuperCust[272]='ccsswissmuc';arrSuperCust[273]='ccsswisszrh';arrSuperCust[274]='ccstcan';arrSuperCust[275]='ccstfckaufer';arrSuperCust[276]='ccsthaiair';arrSuperCust[277]='ccsthyclass';arrSuperCust[278]='ccstransaero';arrSuperCust[279]='ccsturkal';arrSuperCust[280]='ccsuaeaf';arrSuperCust[281]='ccsual';arrSuperCust[282]='ccsuhcas';arrSuperCust[283]='ccsusairwcha';arrSuperCust[284]='ccsusairwpit';arrSuperCust[285]='ccsusairwpsa';arrSuperCust[286]='ccsusaphoenix';arrSuperCust[287]='ccsviet';arrSuperCust[288]='ccsvirg';arrSuperCust[289]='ccswestjt';arrSuperCust[290]='ccsxiamen';arrSuperCust[291]='ccsyeftc';arrSuperCust[292]='ccsyuxiang';arrSuperCust[293]='ccszfb';</SCRIPT>
+		<OPTION Value=customer÷></OPTION>
+		<SCRIPT language=Javascript>isCustMailDisplay=false;</script>
+	
+<SCRIPT language=Javascript>
+function buildCustEmplList(arrTemp,sel_ctrl){
+	try{
+		
+		
+		var numOfOptions = sel_ctrl.options.length;
+		
+		for(var a=0;a<numOfOptions;a++){
+			sel_ctrl.remove(0);
+		}
+						var oOption= document.createElement("OPTION");
+						sel_ctrl.add(oOption);
+						oOption.innerText = '-----Select Name------';
+						oOption.value = '';
+						oOption=null;
+		for(var i=0;i<arrTemp.length;i++){
+						var oOption= document.createElement("OPTION");
+						sel_ctrl.add(oOption);
+						oOption.innerText = arrTemp[i];
+						oOption.value = arrTemp[i];
+						oOption=null;
+		}
+		return 1;
+	}catch(e){
+		return 0;
+	}
+}
+</SCRIPT>
+<SCRIPT language=Javascript>
+				var bigArray = new Array()
+				bigArray[0] = new Array();
+bigArray[0][0]="1";
+bigArray[0][1]="1";
+bigArray[0][2]="11432200082";
+					bigArray[0][3]="Design incomplete or incorrect";
+					bigArray[0][4]="C-TP";
+					bigArray[0][5]="Civil Test Pilots";
+					bigArray[0][6]="1.4.50.5 - Graphic issue: The SELCAL placard should be greater in size to cover the black background or the black background should be made the same color as the placard.\n\n[DEBRIEF] : PERSON";
+					bigArray[0][7]="PAUL SCOTT";
+					bigArray[0][8]="";
+					bigArray[0][9]="";
+					bigArray[0][10]="10/26/2017";
+					bigArray[0][11]="82";
+					bigArray[0][12]="";
+					bigArray[0][13]="10/26/2017";
+					bigArray[0][14]="11/10/2017 1:52:50 PM";
+					bigArray[0][15]="";
+					bigArray[0][16]="please revalidate with latest load";
+					bigArray[0][17]="";
+					bigArray[0][18]="On Offer";
+					bigArray[0][19]="SNAG";
+					bigArray[0][20]="C";
+					bigArray[0][21]="NOTHING";
+					bigArray[0][22]="Classroom Training Devices";
+					bigArray[0][23]="In-House Acceptance";
+					bigArray[0][24]="114322";
+					bigArray[0][25]="UPS B747-8F IPT #1";
+					bigArray[0][26]="rivard";
+					bigArray[0][27]="RIVARD";
+					bigArray[0][28]="DAVID";
+					bigArray[0][29]="smeziti";
+					bigArray[0][30]="MEZITI";
+					bigArray[0][31]="SALIM";
+					bigArray[0][32]="";
+					bigArray[0][33]="";
+					bigArray[0][34]="10";
+					bigArray[0][35]="8669";
+					bigArray[0][36]="11432200082";
+					bigArray[0][37]="";
+					bigArray[0][38]="6";
+					bigArray[0][39]="2";
+					bigArray[0][40]="3";
+					bigArray[0][41]="4";
+					bigArray[0][42]="99I";
+					bigArray[0][43]="5";
+					bigArray[0][44]="";
+					bigArray[0][45]="rhissin";
+					bigArray[0][46]="HISSIN";
+					bigArray[0][47]="RAMZI";
+					bigArray[0][48]="";
+					bigArray[0][49]="";
+					bigArray[0][50]="";
+					bigArray[0][51]="ldesrochers";
+					bigArray[0][52]="DESROCHERS";
+					bigArray[0][53]="LOIC";
+					bigArray[0][54]="ccsups";
+					bigArray[0][55]="";
+					bigArray[0][56]="";
+					bigArray[0][57]="1";
+					bigArray[0][58]="";
+					bigArray[0][59]="N";
+					bigArray[0][60]="IHA";
+					bigArray[0][61]="11/16/2017";
+					bigArray[0][62]="";
+					bigArray[0][63]="";
+					bigArray[0][64]="";
+					bigArray[0][65]="";
+					bigArray[0][66]="";
+					bigArray[0][67]="1.4.50.5";
+					bigArray[0][68]="24";
+					bigArray[0][69]="24";
+					bigArray[0][70]="0";
+					
+
+			</SCRIPT>
+			<DIV id="myMessage" style="width:300px;height:50px;position:absolute;left:300;top:300;visibility:hidden;color:red;background-color:gray;font-size:16px;font-family:verdana;text-align:center;border:solid 2 black;">Please, wait...</DIV>
+				<TABLE  border="0" cellspacing="0" cellpadding="0" style="width:100%;height:100%;">
+				<FORM name="snagForm" id="snagForm">
+				<!-- New part BEGINNING-->
+				<TR><TD bgcolor="#6495ed" height="40">
+							<TABLE border="0" cellspacing="0" cellpadding="3" width="100%" height="70%">
+								<TR height=40><td  nowrap width=200>
+                                        <ul>
+										<LI><A href='#' onclick="parent.location.href='https://simissues.cae.com/index.asp?sessid=c92d70cd-7c86-436b-b8a5-e623bc53d085';" style="color:white;font-family:verdana;font-size:10px;text-decoration:underline;">Summary Page</A>
+                                      
+										
+                                                <LI><A href='#' onclick="var oo = new top.DialogBox('issue_new.asp','','dialogWidth=800px;dialogHeight=700px;scroll=no;resizable=yes;status=no;'); oo.onClose = function (event, result) {	if (result == true){ parent.bodyframe.location.reload(); parent.headerframe.location.reload();}}"  style="color:white;font-family:verdana;font-size:10px;text-decoration:underline;">New Issue</A>
+                                        
+                                       
+	<!--<LI><A href='#' onclick="projectInfo();return false;"  style="color:white;font-family:verdana;font-size:10px;text-decoration:underline;">Project Info</A>-->
+                                        
+                                            <LI><A href='#' onclick="window.open('https://simissues.cae.com/ASPTransition_ProjectSub.asp','window','menubar=1,resizable=1,width=1000,height=700');return false;" style="color:white;font-family:verdana;font-size:10px;;text-decoration:underline;">Project Info</A>
+                                             
+                                        </ul>
+
+									</td>
+									<td  nowrap width=150>
+                                    
+										<LI><A href="#" style="COLOR: white;text-decoration:underline;" onclick="var oo = new top.DialogBox('https://simissues.cae.com/main/find_issue.asp',window,'dialogWidth:550px;dialogHeight:200px;status:no;scroll:no'); oo.onClose = function (event, result) { return false;}">Find Issue</A>
+                                    
+										<LI><A href='#' onclick="backToList();return false;"  style="color:white;font-family:verdana;font-size:10px;text-decoration:underline;">Back to List</A>
+                                        <LI><A href="#" onclick="var oo = new top.DialogBox('https://simissues.cae.com/main/help.asp?txt=main_list',parent,'dialogWidth:300px;dialogHeight:400px;dialogTop:0px;dialogLeft:0px;resizable:yes;status:no;');oo.onClose = function (event, result) {};" id=help name=help  style="color:white;font-family:verdana;font-size:10px;text-decoration:underline;">Help</A><INPUT type=hidden name="projects" id="projects" value="">
+									</td>
+									<TD align="center"   nowrap width=20>
+										<INPUT type=image src="https://simissues.cae.com/images/one_page_back.gif" name=prev id="prev" value="Previous" title="Previous Item" onclick="pageSnags(this);return false;" style="border-color:white;border-width:1px;border-style:solid;" width=13 height=10>&nbsp;
+									</TD>
+									<TD align="center" width=300 style="color:white;font-family:verdana;font-size:12px;"  nowrap>
+										<SPAN id="counter"></SPAN><INPUT type=hidden id=ecd_gt_rbd name=ecd_gt_rbd value="">
+									</TD>
+									<TD align="center"   nowrap width=20>
+										<INPUT type=image src="https://simissues.cae.com/images/one_page_fwd.gif" name=next id="next" value="Next" title="Next Item" onclick="pageSnags(this);return false;" style="border-color:white;border-width:1px;border-style:solid;" width=13 height=10>
+									</TD>
+									<td align=center valign=middle><input type=button class=mybutton value="Back to List" style="width:120px;font-size:7pt;" onclick="backToList();return false;" id=button1 name=button1></td>
+									<TD style="font-family:verdana;font-size:10px;" align=right><IMG src="https://simissues.cae.com/simissues_logo.gif" border=0><BR><I>
+CS&amp;T Version 5.0a
+</I>&nbsp;</TD>
+									</TR>
+							</TABLE>
+				</TD></TR>
+				<TR><TD style="padding: 5px;" valign="top">
+					<FIELDSET style="width: 98%;"  id="fldInformation1" align="left">
+						<LEGEND class=infoheader id=refInformation></LEGEND>
+							<TABLE border="0" cellspacing="0" cellpadding="0" width=100% height=100%>
+								<TR>
+									<TD width=65%><DIV id="issue_details">
+										<TABLE border="0" cellspacing="0" cellpadding="3" width=100% height=100%>
+											<TR>
+												<TD colspan=3 class="infotext">
+												
+												<!--<INPUT type=button class=mybutton name=int_notes id=int_notes  value="Internal Notes" onclick="addIntNotes();">-->
+												
+												<INPUT type=button class=mybutton name=attachments id=attachments  value="Attachments" onclick="addAttachments();">
+												<INPUT type=button class=mybutton name=action id=action  value="Take Action" onclick="takeAction();">
+												</TD>
+												<TD class="infotext">
+												<INPUT type=button disabled class=mybutton name=changes id=changes  value="Submit Changes" onclick="sendChanges();">
+												</TD>
+											</TR>
+											<TR><TD colspan=4>
+											<DIV id="issue_request_info" style="display:none;"><TABLE border="0" cellspacing="0" cellpadding="3" width=100% height=100%>
+											<TR>
+												<TD class="infotext" valign=top>Additional information required on Problem Description for CAE to action the issue.</TD>
+											</TR></TABLE></DIV>
+											</TD>
+											</TR>
+											<TR>
+												<TD width=15% class="infoheader">&nbsp;Assignee:</TD>
+												<TD colspan=3 class="infotext"><SPAN id=assignee></SPAN>
+												</TD>
+												<!--<TD width=22%><INPUT type=button class=mybutton name=changes id=changes  value="Submit Changes" onclick="sendChanges();"></TD>-->
+											</TR>
+
+											
+											<TR>
+												<TD class="infoheader">&nbsp;Group:</TD>
+												<TD colspan=3 class="infotext"><SPAN id= assGroup></SPAN>
+												</TD>
+											</TR>
+											
+											<TR>
+												<TD class="infoheader">&nbsp;Status:</TD>
+												<TD class="infotext"><SPAN id=status></SPAN></TD>
+												<TD class="infoheader" align=right>DIR:</TD>
+												<TD class="infotext"><SPAN id=dir></SPAN></TD>
+											</TR>
+											
+											<TR>
+												<TD class="infoheader">&nbsp;ATA/REF:</TD>
+												<TD class="infotext">
+												<SELECT style='width:300px' name=refer id=refer onchange="dirtyIt('ATA ',this);" >
+<OPTION value=''>Select ATA/Reference</OPTION>
+
+															<OPTION value="00A">00A - Desktop Simulation</OPTION>
+														
+															<OPTION value="00D">00D - Integration Specialist</OPTION>
+														
+															<OPTION value="01">01 - Project Management</OPTION>
+														
+															<OPTION value="01A">01A - Project Management - Update Services</OPTION>
+														
+															<OPTION value="04">04 - Flight</OPTION>
+														
+															<OPTION value="16">16 - Sound</OPTION>
+														
+															<OPTION value="21">21 - ECS (Environmental Control System)</OPTION>
+														
+															<OPTION value="21A">21A - ECS (Air Conditioning)</OPTION>
+														
+															<OPTION value="21P">21P - ECS (Pressurization and Doors)</OPTION>
+														
+															<OPTION value="22">22 - Auto Pilot</OPTION>
+														
+															<OPTION value="22C">22C - H/W AutopilotServos-Flight Controls</OPTION>
+														
+															<OPTION value="22F">22F - S/F FAC</OPTION>
+														
+															<OPTION value="22H">22H - FMGC/FMGEC</OPTION>
+														
+															<OPTION value="23">23 - Communications</OPTION>
+														
+															<OPTION value="23A">23A - ACARS</OPTION>
+														
+															<OPTION value="23C">23C - Communications (CMS)</OPTION>
+														
+															<OPTION value="23F">23F - FANS</OPTION>
+														
+															<OPTION value="23O">23O - OPAS ( Ancillaries)</OPTION>
+														
+															<OPTION value="23T">23T - CMV / ETACS</OPTION>
+														
+															<OPTION value="23V">23V - Communications(Digital Voice)</OPTION>
+														
+															<OPTION value="23W">23W - System Update</OPTION>
+														
+															<OPTION value="24">24 - Ancillaries(Elec)</OPTION>
+														
+															<OPTION value="25">25 - Hardware(EQUIP)</OPTION>
+														
+															<OPTION value="25R">25R - Role Equipment</OPTION>
+														
+															<OPTION value="26">26 - Ancillaries(Fire)</OPTION>
+														
+															<OPTION value="26E">26E - ECS (Fire)</OPTION>
+														
+															<OPTION value="27">27 - Control Forces</OPTION>
+														
+															<OPTION value="27A">27A - G Systems</OPTION>
+														
+															<OPTION value="27E">27E - EFCS</OPTION>
+														
+															<OPTION value="27F">27F - Ancillaries(Flaps/Slats)</OPTION>
+														
+															<OPTION value="27P">27P - Fly-by-wire - PFC</OPTION>
+														
+															<OPTION value="27W">27W - Stall Protection Computer</OPTION>
+														
+															<OPTION value="28">28 - Ancillaries(Fuel)</OPTION>
+														
+															<OPTION value="29">29 - Ancillaries(Hyd)</OPTION>
+														
+															<OPTION value="30">30 - ECS (Ice & Rain )</OPTION>
+														
+															<OPTION value="30A">30A - Ice & Rain (Ancillaries)</OPTION>
+														
+															<OPTION value="30E">30E - Ice & Rain (Engines)</OPTION>
+														
+															<OPTION value="30F">30F - Ice & Rain (Flight Instruments)</OPTION>
+														
+															<OPTION value="30M">30M - MAD Simulation</OPTION>
+														
+															<OPTION value="30W">30W - Military Aircraft Training Systems Group</OPTION>
+														
+															<OPTION value="31">31 - Cockpit Display (EIS,EICAS,ECAM,FWC)</OPTION>
+														
+															<OPTION value="31A">31A - DEFDAU, ADAS,ACMS</OPTION>
+														
+															<OPTION value="31B">31B - Military Autopilot</OPTION>
+														
+															<OPTION value="31C">31C - Military Flight Controls</OPTION>
+														
+															<OPTION value="31E">31E - EFIS,EICAS</OPTION>
+														
+															<OPTION value="31F">31F - Military Flight</OPTION>
+														
+															<OPTION value="31H">31H - Military H/W Autopilot</OPTION>
+														
+															<OPTION value="31M">31M - Avionics Software</OPTION>
+														
+															<OPTION value="31Q">31Q - Military Engines</OPTION>
+														
+															<OPTION value="31R">31R - Avionics(Aids)</OPTION>
+														
+															<OPTION value="31S">31S - Military Sound</OPTION>
+														
+															<OPTION value="31T">31T - Military Motion</OPTION>
+														
+															<OPTION value="31W">31W - Flight Warning System (Caws, Mawea, WES,WEU)</OPTION>
+														
+															<OPTION value="32">32 - Ancillaries(Gear/Brakes)</OPTION>
+														
+															<OPTION value="32B">32B - Ancillaries(Brakes)</OPTION>
+														
+															<OPTION value="32G">32G - Ancillaries(Landing Gear)</OPTION>
+														
+															<OPTION value="32H">32H - Hoist / Hook</OPTION>
+														
+															<OPTION value="33">33 - Ancillaries(Lighting)</OPTION>
+														
+															<OPTION value="34">34 - Radio Navigation</OPTION>
+														
+															<OPTION value="34A">34A - Flight Instruments</OPTION>
+														
+															<OPTION value="34B">34B - Radio Aids Support</OPTION>
+														
+															<OPTION value="34C">34C - TCAS</OPTION>
+														
+															<OPTION value="34D">34D - Doppler, Tans</OPTION>
+														
+															<OPTION value="34E">34E - EFIS</OPTION>
+														
+															<OPTION value="34F">34F - H/W (REHOST) FMGC,FMGEC,FMS</OPTION>
+														
+															<OPTION value="34G">34G - GPWS</OPTION>
+														
+															<OPTION value="34I">34I - Navigation(INS,IRS,AHRS)</OPTION>
+														
+															<OPTION value="34J">34J - H/W TCAS</OPTION>
+														
+															<OPTION value="34K">34K - S/W FMC,FMGC,FMGEC</OPTION>
+														
+															<OPTION value="34L">34L - FLIR</OPTION>
+														
+															<OPTION value="34M">34M - S/W GPWS</OPTION>
+														
+															<OPTION value="34N">34N - GPS , MMR(GPS)</OPTION>
+														
+															<OPTION value="34P">34P - HGS,HUD</OPTION>
+														
+															<OPTION value="34R">34R - Military Communications</OPTION>
+														
+															<OPTION value="34T">34T - Avionics(TMS)</OPTION>
+														
+															<OPTION value="34U">34U - Electronic Warfare</OPTION>
+														
+															<OPTION value="34V">34V - Radar</OPTION>
+														
+															<OPTION value="34W">34W - Weather Radar</OPTION>
+														
+															<OPTION value="34X">34X - Avionics Interface</OPTION>
+														
+															<OPTION value="34Z">34Z - AESS</OPTION>
+														
+															<OPTION value="35">35 - Ancillaries(Oxygen)</OPTION>
+														
+															<OPTION value="35E">35E - ECS (Oxygen)</OPTION>
+														
+															<OPTION value="36">36 - ECS (Pneumatic)</OPTION>
+														
+															<OPTION value="37A">37A - RWR</OPTION>
+														
+															<OPTION value="37B">37B - CFD</OPTION>
+														
+															<OPTION value="37C">37C - IRCM</OPTION>
+														
+															<OPTION value="40E">40E - Simulated Panels Interface</OPTION>
+														
+															<OPTION value="40F">40F - ARINC 429 Rehost Interface</OPTION>
+														
+															<OPTION value="40H">40H - EPIC Interface</OPTION>
+														
+															<OPTION value="40M">40M - S/W MCDU</OPTION>
+														
+															<OPTION value="40O">40O - S/W OMS/OEBS</OPTION>
+														
+															<OPTION value="40S">40S - ARINC 629 Interface</OPTION>
+														
+															<OPTION value="40T">40T - RS232/RS422/RS485 Bus</OPTION>
+														
+															<OPTION value="45">45 - Bite,CMC</OPTION>
+														
+															<OPTION value="45-21A">45-21A - BITE - Air Conditioning</OPTION>
+														
+															<OPTION value="45-21P">45-21P - BITE - Pressurization and Doors</OPTION>
+														
+															<OPTION value="45-23">45-23 - BITE - Communications</OPTION>
+														
+															<OPTION value="45-23T">45-23T - BITE - CMV / ETACS</OPTION>
+														
+															<OPTION value="45-24">45-24 - BITE - Electrics</OPTION>
+														
+															<OPTION value="45-26">45-26 - BITE - Fire</OPTION>
+														
+															<OPTION value="45-27F">45-27F - BITE - High Lift System</OPTION>
+														
+															<OPTION value="45-28">45-28 - BITE - Fuel</OPTION>
+														
+															<OPTION value="45-29">45-29 - BITE - Hydraulics</OPTION>
+														
+															<OPTION value="45-30">45-30 - BITE - Ice and Rain Protection</OPTION>
+														
+															<OPTION value="45-31">45-31 - BITE - Cockpit Display System</OPTION>
+														
+															<OPTION value="45-32B">45-32B - BITE - Brakes</OPTION>
+														
+															<OPTION value="45-32C">45-32C - BITE - Nosewheel Steering</OPTION>
+														
+															<OPTION value="45-32CN">45-32CN - BITE - Nosewheel Steering</OPTION>
+														
+															<OPTION value="45-32G">45-32G - BITE - Landing Gear</OPTION>
+														
+															<OPTION value="45-34">45-34 - BITE - Navigation</OPTION>
+														
+															<OPTION value="45-34A">45-34A - BITE - Flight Instruments/ADIRS(ADR)</OPTION>
+														
+															<OPTION value="45-34F">45-34F - BITE - FMS</OPTION>
+														
+															<OPTION value="45-34I">45-34I - BITE - ADIRS(IR)</OPTION>
+														
+															<OPTION value="45-34N">45-34N - BITE - MMR(GPS)</OPTION>
+														
+															<OPTION value="45-34P">45-34P - BITE - HUD</OPTION>
+														
+															<OPTION value="45-34R">45-34R - BITE - RAIMP</OPTION>
+														
+															<OPTION value="45-34X">45-34X - BITE - AFDX/IOM</OPTION>
+														
+															<OPTION value="45-34Z">45-34Z - BITE - AESS</OPTION>
+														
+															<OPTION value="45-35">45-35 - BITE - Oxygen</OPTION>
+														
+															<OPTION value="45-36">45-36 - BITE - Pneumatics</OPTION>
+														
+															<OPTION value="45-46N">45-46N - BITE - NSS</OPTION>
+														
+															<OPTION value="45-49">45-49 - BITE - APU</OPTION>
+														
+															<OPTION value="45-71">45-71 - BITE - Engines</OPTION>
+														
+															<OPTION value="46">46 - ATSU,ATC</OPTION>
+														
+															<OPTION value="46N">46N - NSS</OPTION>
+														
+															<OPTION value="49">49 - Ancillaries(APU)</OPTION>
+														
+															<OPTION value="49E">49E - ECS (APU)</OPTION>
+														
+															<OPTION value="502A">502A - ATA AL32</OPTION>
+														
+															<OPTION value="52">52 - ECS (Doors)</OPTION>
+														
+															<OPTION value="53">53 - Motion(H/W+Performance)</OPTION>
+														
+															<OPTION value="60A">60A - Items Systems Modeling (Military)</OPTION>
+														
+															<OPTION value="60B">60B - Tactical Visual Interface</OPTION>
+														
+															<OPTION value="61">61 - Tactical Visual Interface (Military)</OPTION>
+														
+															<OPTION value="62">62 - Items Trajectory Modeling</OPTION>
+														
+															<OPTION value="71">71 - Engines</OPTION>
+														
+															<OPTION value="71G">71G - Engines - General Electric</OPTION>
+														
+															<OPTION value="71P">71P - Engines - Pratt</OPTION>
+														
+															<OPTION value="71R">71R - Engines RollsRoyce</OPTION>
+														
+															<OPTION value="73">73 - Engine - Fuel and Control</OPTION>
+														
+															<OPTION value="74">74 - Engine - Start and Ignition</OPTION>
+														
+															<OPTION value="75">75 - Engine - Air</OPTION>
+														
+															<OPTION value="77">77 - Engine - Indicating(vibration)</OPTION>
+														
+															<OPTION value="78">78 - Engine - Reversers</OPTION>
+														
+															<OPTION value="79">79 - Engine - Oil</OPTION>
+														
+															<OPTION value="80">80 - Engine - Starting</OPTION>
+														
+															<OPTION value="85">85 - Visual Project Manager</OPTION>
+														
+															<OPTION value="85A">85A - Visual Vendor(not CAE)</OPTION>
+														
+															<OPTION value="85C">85C - Visual Graphics Simulation</OPTION>
+														
+															<OPTION value="85D">85D - Visual Data Base</OPTION>
+														
+															<OPTION value="85E">85E - Advanced Database</OPTION>
+														
+															<OPTION value="85F">85F - Visual Firmware</OPTION>
+														
+															<OPTION value="85G">85G - Visual GATES Traffic Simulation</OPTION>
+														
+															<OPTION value="85GM">85GM - Taxi Aid Camera System</OPTION>
+														
+															<OPTION value="85H">85H - Visual Hardware</OPTION>
+														
+															<OPTION value="85I">85I - Simulator Visual Interface</OPTION>
+														
+															<OPTION value="85M">85M - CAE Visual Database - Military</OPTION>
+														
+															<OPTION value="85R">85R - Visual Real Time</OPTION>
+														
+															<OPTION value="85S">85S - Visual Special Features</OPTION>
+														
+															<OPTION value="85T">85T - Visual Software Utility</OPTION>
+														
+															<OPTION value="85U">85U - Military Visual</OPTION>
+														
+															<OPTION value="91A">91A - Military Project Management</OPTION>
+														
+															<OPTION value="92">92 - DN1 Cabinet</OPTION>
+														
+															<OPTION value="92A">92A - Motion & C/L Support</OPTION>
+														
+															<OPTION value="97">97 - Hardware (Post RFT)</OPTION>
+														
+															<OPTION value="97A">97A - Mechanical Engineering</OPTION>
+														
+															<OPTION value="97C">97C - Circuit Design</OPTION>
+														
+															<OPTION value="97D">97D - Publications</OPTION>
+														
+															<OPTION value="97ITS">97ITS - Simfinity</OPTION>
+														
+															<OPTION value="97M">97M - SimXXI Diagnostics System</OPTION>
+														
+															<OPTION value="97P">97P - Power system & safety</OPTION>
+														
+															<OPTION value="97R">97R - Rehost</OPTION>
+														
+															<OPTION value="97S">97S - OSU(Utilities, computer...)</OPTION>
+														
+															<OPTION value="97T">97T - Computer diagnostics</OPTION>
+														
+															<OPTION value="99">99 - Instructor Facility</OPTION>
+														
+															<OPTION value="999">999 - ATM</OPTION>
+														
+															<OPTION value="99A">99A - Debrief</OPTION>
+														
+															<OPTION value="99B">99B - Integrated Diagnostic System</OPTION>
+														
+															<OPTION value="99E">99E - Tactical Instructor Facility</OPTION>
+														
+															<OPTION value="99F">99F - Malfunctions</OPTION>
+														
+															<OPTION value="99I">99I - Classroom Training Devices</OPTION>
+														
+															<OPTION value="99R">99R - ATC Simulation</OPTION>
+														
+															<OPTION value="99S">99S - Snapshot/RAP</OPTION>
+														
+															<OPTION value="99V">99V - Digital Voice</OPTION>
+														
+															<OPTION value="99W">99W - Weather Model</OPTION>
+														
+															<OPTION value="N10">N10 - Purchase</OPTION>
+														
+															<OPTION value="N11">N11 - Subcontracted</OPTION>
+														
+															<OPTION value="N12">N12 - Aircraft Part</OPTION>
+														
+															<OPTION value="N13">N13 - Purchased CAE's liability</OPTION>
+														
+															<OPTION value="N14">N14 - Subcontracted CAE's liability</OPTION>
+														
+															<OPTION value="N15">N15 - Aircraft part CAE's liability</OPTION>
+														
+															<OPTION value="N16">N16 - Deviation Rework CAE</OPTION>
+														
+															<OPTION value="N17">N17 - AIMS (Magnetic test)</OPTION>
+														
+															<OPTION value="N18">N18 - Assembly PCB</OPTION>
+														
+															<OPTION value="N19">N19 - Mechanical chassis</OPTION>
+														
+															<OPTION value="N20">N20 - Cable & Harness</OPTION>
+														
+															<OPTION value="N21">N21 - Visual Assembly</OPTION>
+														
+															<OPTION value="N22">N22 - Mechanical Assembly</OPTION>
+														
+															<OPTION value="N23">N23 - Electrical Assembly</OPTION>
+														
+															<OPTION value="N24">N24 - Structural</OPTION>
+														
+															<OPTION value="N25">N25 - Sheet Metal</OPTION>
+														
+															<OPTION value="N26">N26 - Machined Parts</OPTION>
+														
+															<OPTION value="N27">N27 - Precision Assembly</OPTION>
+														
+															<OPTION value="N28">N28 - Test Site</OPTION>
+														
+															<OPTION value="N29">N29 - Paint</OPTION>
+														
+															<OPTION value="N30">N30 - Flight Comp General Assembly</OPTION>
+														
+															<OPTION value="N31">N31 - Motion System Module</OPTION>
+														
+															<OPTION value="N32">N32 - Visual Top Dwg</OPTION>
+														
+															<OPTION value="N33">N33 - Comp. & Peri. Equipment List</OPTION>
+														
+															<OPTION value="N34">N34 - Electrical Master Cable Index</OPTION>
+														
+															<OPTION value="N35">N35 - Master Circuit Card Assembly</OPTION>
+														
+															<OPTION value="N36">N36 - Engineering Designing Test</OPTION>
+														
+															<OPTION value="N37">N37 - General Sim Maintenance</OPTION>
+														</SELECT>
+												</TD>
+												<TD align=right class="infoheader">Severity:</TD>
+												<TD class="infotext">
+													<SPAN id=priority></SPAN>
+													&nbsp;</TD>
+											</TR>
+											
+											<TR>
+												<TD class="infoheader">&nbsp;Reference (Label & Text):</TD>
+												<TD class="infotext">
+												<INPUT type=text id=ftlbl name=ftlbl maxlength=5 size=5 value='' onchange="dirtyIt('Ref Label ',this);">&nbsp;<INPUT type=text id=ftref name=ftref maxlength=50 size=50 value=''  onchange="dirtyIt('Ref Description ',this);">
+												</TD>
+                                                <TD class="infoheader" nowrap="true" align="right">&nbsp; SLC:</TD>
+											    <TD  class="infoheader" align="left"><INPUT type="checkbox" name="slc" id="slc" onclick="this.value=(this.checked)?'on':'';checkSLC(this);" disabled="disabled"/></TD>
+											</TR>
+
+											
+    <tr><th></th><td></td></tr>
+    
+											<TR>
+												<TD class="infoheader">&nbsp;Changes(Category):</TD>
+												<TD class="infotext"><SPAN id=category></SPAN></TD>
+												<TD align=right class="infoheader">Type:
+												</TD>
+												<TD class="infotext" align=left>
+												<SPAN id=isstype></SPAN><SELECT style='width:100px;display:;' name=isstype_sel id=isstype_sel onchange="dirtyIt('Type ',this);" >
+
+																    <OPTION value="2">SNAG</OPTION>
+															    
+																    <OPTION value="3">SPR</OPTION>
+															    
+																    <OPTION value="7">CS-S.Req (Billing)</OPTION>
+															    
+																    <OPTION value="8">CS-S.Req (No Billing)</OPTION>
+															    
+																    <OPTION value="9">Act.Item - Quote</OPTION>
+															    
+																    <OPTION value="10">PM-S.Req(Billing)</OPTION>
+															    
+																    <OPTION value="11">PM-S. Req(No Billing)</OPTION>
+															    
+																    <OPTION value="12">CS-Action Item</OPTION>
+															    
+																    <OPTION value="13">PM-Action Item</OPTION>
+															    
+																    <OPTION value="14">PDS-S.Req(Billing)</OPTION>
+															    
+																    <OPTION value="15">PDS-S.Req(No Billing)</OPTION>
+															    </SELECT>
+
+												</TD>
+											</TR>
+											<!--
+											<TR>
+												<TD class="infoheader">Quote Sts:</TD>
+												<TD class="infoheader">
+													<TABLE width="100%">
+														<TR><TD  class="infoheader" width="50%">
+														<SPAN id=quoteSts></SPAN>N/A <INPUT type=button class=mybutton2 name=modify id=modify value="Modify" onclick="chargeNumber();">
+														</TD><TD class="infoheader" align="right" nowrap="true"></TD>
+														<TD  class="infoheader" align="left" width="50%"></TD>
+														</TR>
+													</TABLE>
+												</TD>
+												<TD class="infoheader" align=right>
+												</TD>
+												<TD class=infotext align=left></TD>
+											</TR>
+											-->
+    										<TR>
+        										<TD class="infoheader">&nbsp;Charge Nbr:</TD>
+												<TD class="infoheader">
+													<TABLE width="100%">
+														<TR><TD  class="infoheader" width="50%">
+														<SPAN id=chargeNbr></SPAN>&nbsp;&nbsp;
+														</TD><TD></TD>
+														<TD></TD>
+														</TR>
+													</TABLE>
+												</TD>
+												<TD class="infoheader" align=right>Product&nbsp;Specific:<br>Project&nbsp;Specific:
+												</TD>
+												<TD class=infotext align=left><SPAN id=prod></SPAN></TD>
+											</TR>
+											<TR>
+											<TD class="infoheader" nowrap="true">&nbsp;S/W Load:</TD>
+											<TD  class="infoheader" align="left" width="50%"><SPAN id=sw_load></SPAN></TD>
+                                            <TD class="infoheader" nowrap="true">&nbsp; If regression, check:</TD>
+											<TD  class="infoheader" align="left"><INPUT type="checkbox" name="Regression" id="Regression" onclick="this.value=(this.checked)?'on':''; dirtyIt('Regression',this);"></TD>
+										    </TR>
+											
+
+											<TR>
+												<TD class="infoheader">&nbsp;Conversion:</TD>
+												<TD class="infoheader"><SPAN id=conversion></SPAN>&nbsp;&nbsp;<INPUT type=button class=mybutton2 name=modify id=modify value="Modify" onclick="changeConv();"></TD>
+												<!--<TD class="infoheader" align=right>&nbsp;ECD:</TD>
+												<TD class="infotext"><SPAN id=ecd></SPAN>
+												</TD>-->
+												<TD class="infoheader" align=right>Attachments:</TD>
+												<TD class="infotext" ><SPAN id=attach></SPAN>
+												</TD>
+											</TR>
+											<TR>
+												<TD class="infoheader" valign=top>&nbsp;Description:</TD>
+												<TD colspan=3 class="infotext" valign=top><SPAN id=descr></SPAN>
+												</TD>
+											</TR>
+											<TR>
+												<TD class="infoheader" valign=top>&nbsp;Last Work &nbsp;Note:<br><br>
+												<INPUT type=button class=myButton2 name=addNote id=addNote value="Add/Edit" onclick="add_note();">
+												</TD>
+												<TD colspan=3 class="infotext" valign=top><SPAN id=worknote></SPAN>
+												</TD>
+											</TR>
+											<TR>
+												<TD class="infoheader" valign=top>&nbsp;Keywords:</TD>
+												<TD colspan=3 class="infotext" valign=top><SPAN id=keywrd></SPAN>
+												</TD>
+											</TR>
+										</TABLE></DIV>
+										<!--<DIV id="issue_request_info" style="display:none;"><TABLE border="0" cellspacing="0" cellpadding="3" width=100% height=100%>
+											<TR>
+												<TD class="infotext" valign=top><FONT color="blue">&nbsp;Requested Info</FONT></TD>
+												<TD colspan=3 class="infotext" valign=top>Additional information required on Problem Description for CAE to action the issue.
+												</TD>
+											</TR>
+											<TR>
+												<TD class="infoheader" valign=top>&nbsp;Description:</TD>
+												<TD colspan=3 class="infotext" valign=top><SPAN id=descr_info></SPAN>
+												</TD>
+											</TR>
+											<TR>
+												<TD class="infoheader" valign=top>&nbsp;Last Work &nbsp;Note:<br>
+												<INPUT type=button class=myButton2 name=addNote id=addNote value="Add/Edit" onclick="add_note();">
+												</TD>
+												<TD colspan=3 class="infotext" valign=top><SPAN id=worknote_info></SPAN>
+												</TD>
+											</TR>
+											<TR>
+												<TD class="infoheader">&nbsp;Attachments:</TD>
+												<TD colspan=3 class="infotext" align=left><SPAN id=attach_info class="infotext"></SPAN>
+												</TD>
+											</TR>
+											<TR>
+												<TD class="infotext" align=center colspan=4>
+												<INPUT type=button class=mybutton name=changes_info id=changes_info  value="Reply" onclick="sendChanges();">
+												<INPUT type=button class=mybutton name=attachments id=attachments  value="Attachments" onclick="addAttachments();">&nbsp;
+												<INPUT type=checkbox name=replyclosed id=replyclosed onclick="if (this.checked){this.value='true';dirtyIt('reply closed',this);}else{this.value='false';dirtyIt('reply closed',this);}">&nbsp;Close on reply.
+												</TD>
+											</TR>
+											</TABLE>
+										</DIV>-->
+									</TD>
+									<TD width=35% valign=top>
+										<FIELDSET " id="fldInformation2">
+											<LEGEND class=infoheader id=refInformation>
+												<FONT color=Maroon><B>Tools:</B></FONT>
+											</LEGEND>
+											<TABLE border="0" cellspacing="0" cellpadding="2" width=100%>
+												<TR><TD class="infotext" align="right" style="font-size:7pt;color:white;">
+													<SELECT name=format>
+														<OPTION value="pdfNEW">Standard View (pdf)</OPTION>
+														<OPTION value="pdf">Detailed View (pdf)</OPTION>
+														<OPTION value="html">Detailed View (html)</OPTION>
+													</SELECT>
+													</TD>
+													<TD class="normtext" align="center">
+														<INPUT type=button class=mybutton name=print_iss id=print_iss value="Print"onclick="printSnag();">
+													</TD></TR>
+													<TR><TD>&nbsp;</TD><TD class="normtext" align="center"><INPUT type=button class=mybutton name=email_iss id=email_iss value="Email This Issue" onclick="emailSnag();"></TD></TABLE>
+										</FIELDSET>
+										<FIELDSET  id="fldInformation3">
+											<LEGEND class=infoheader id=projInformation>
+
+											</LEGEND>
+											<TABLE border="0" cellspacing="0" cellpadding="2" width=100% height=100%>
+											<!--<TR>
+												<TD class="infoheader">Project Description:</TD>
+												<TD class="infotext"><SPAN id=projdescr></SPAN></TD>
+											</TR>
+											<TR>
+												<TD class="infoheader">Aircraft:</TD>
+												<TD class="infotext"><SPAN id=aircraft></SPAN></TD>
+											</TR>
+											<TR>
+												<TD class="infoheader">Project Manager:</TD>
+												<TD class="infotext"><SPAN id=projman></SPAN>
+												</TD>
+											</TR>
+											<TR>
+												<TD class="infoheader">Integration Specialist:</TD>
+												<TD class="infotext"><SPAN id=ispec></SPAN>
+												</TD>
+											</TR>
+											<TR>
+												<TD class="infoheader">Customer Service Rep:</TD>
+												<TD class="infotext"><SPAN id=csr></SPAN>
+												</TD>
+											</TR>-->
+											<TR>
+												<TD class="infotext" style="text-align:center;"><SPAN id=projInfo></SPAN></TD>
+											</TR>
+											</TABLE>
+										</FIELDSET>
+										<FIELDSET id="fldInformation4">
+											<LEGEND class=infoheader id=refInformation>
+												<FONT color=Maroon><B>Raised:</B></FONT>
+											</LEGEND>
+											<TABLE border="0" cellspacing="0" cellpadding="5" width=100% height=100%>
+											<TR>
+												<TD class="infoheader">Date:</TD>
+												<TD class="infotext"><SPAN id=raiseddate></SPAN>
+												</TD>
+											</TR>
+											<TR>
+												<TD class="infoheader">Phase:</TD>
+												<TD class="infotext">
+												
+													<SPAN id=projphase></SPAN>
+												</TD>
+											</TR>
+											</table>
+											</FIELDSET>
+
+											<FIELDSET  id="fldInformation5">
+											<LEGEND class=infoheader id=refInformation>
+												<FONT color=Maroon><B>Time:</B></FONT>
+											</LEGEND>
+											<TABLE border="0" cellspacing="0" cellpadding="5" width=100% height=100%>
+												<TR>
+												<TD class="infoheader">Est.&nbsp;Completion:</TD>
+												<TD class="infotext"><SPAN id=ecd></SPAN>&nbsp;date
+												</TD>
+											</TR>
+										
+											<TR>
+												<TD class="infoheader">Required&nbsp;By:</TD>
+												<TD class="infotext">
+													<SPAN id=reqbydatespan></SPAN>&nbsp;date
+												</TD>
+											</TR>
+											
+											<TR>
+												<TD class="infoheader"><SPAN id=typeiss></SPAN>
+												</TD>
+												<TD class="infotext" ><SPAN id=isslife></SPAN>
+												</TD>
+											</TR>
+											
+											<TR>
+												<TD class="infoheader">TAT excluding on HOLD.<script LANGUAGE='JavaScript'>function showhelp(topic,xURL){var oo = new top.DialogBox(xURL,'','dialogWidth=350px;dialogHeight=500px;scroll=yes;resizable=yes;status=no;'); oo.onClose = function (event, result) { };}</script><img src=https://simissues.cae.com/images/question_2.gif onmouseover=javascript:this.style.cursor='hand' onclick=javascript:showhelp('TAT_active','https://simissues.cae.com/main/help.asp?txt=TAT_active')></a>
+												</TD>
+												<TD class="infotext" ><SPAN id=tatactual></SPAN>
+												</TD>
+											</TR>
+											<TR>
+												<TD class="infoheader">TAT&nbsp;Total:&nbsp;<script LANGUAGE='JavaScript'>function showhelp(topic,xURL){var oo = new top.DialogBox(xURL,'','dialogWidth=350px;dialogHeight=500px;scroll=yes;resizable=yes;status=no;'); oo.onClose = function (event, result) { };}</script><img src=https://simissues.cae.com/images/question_2.gif onmouseover=javascript:this.style.cursor='hand' onclick=javascript:showhelp('TAT_total','https://simissues.cae.com/main/help.asp?txt=TAT_total')></a>
+												</TD>
+												<TD class="infotext" ><SPAN id=tattotal></SPAN>
+												</TD>
+											</TR>
+										
+											<TR>
+												<TD class="infoheader">Last Upd:</TD>
+												<TD class="infotext" ><SPAN id=lastupd></SPAN>
+												</TD>
+											</TR>
+											</table>
+											</FIELDSET>
+
+
+
+
+
+
+										<FIELDSET  id="fldInformation6">
+											<LEGEND class=infoheader id=refInformation>
+												<FONT color=Maroon><B>History:</B></FONT>
+											</LEGEND>
+											<TABLE border="0" cellspacing="0" cellpadding="5" width=100% height=100%>
+											<TR>
+												<TD class="infoheader" width=20%>Originator:</TD>
+												<TD class="infotext" width=80%><SPAN id=origin></SPAN>
+												</TD>
+											</TR>
+											
+											<TR>
+												<TD class="infoheader">Prev Assig:</TD>
+												<TD class="infotext"><SPAN id=prevass></SPAN>
+												</TD>
+											</TR>
+											
+											<TR><TD colspan=2>
+											</td></tr>
+
+											<!--<TR>
+												<TD class="infoheader" valign=top>Attachments:</TD>
+												<TD class="infotext" ><SPAN id=attach></SPAN>
+												</TD>
+											</TR>-->
+
+											<TR>
+												<TD class="infoheader">History:</TD>
+												<TD class="infotext" >
+													<INPUT type=button class=myButton3 name=viewall id=viewall value="View History" onclick="showHistory();">
+												</TD>
+											</TR>
+											</TABLE>
+										</FIELDSET>
+
+                                        <div id="dvAssets">
+                                       </div>
+								</TD>
+								</TR>
+							</TABLE>
+					</FIELDSET>
+				</TD></TR>
+				</FORM>
+				</TABLE>
+				<SCRIPT language="javascript"><!--
+				//var displConv = RSGetASPObject("https://simissues.cae.com/main/conversion_inc.asp");
+
+				var projMnem;
+				function populateForm(index){
+                  	snagGlobal = index;
+					document.snagForm.changes.disabled=true;
+
+                    
+
+					var strShow = "<FONT color=Maroon><B>" + bigArray[index][24] + "</b> #<b>" + bigArray[index][11] + "</B> (" + bigArray[index][19] + ")" + "</FONT>"
+					var whatShow = document.getElementById('refInformation');
+					whatShow.innerHTML = strShow;
+
+					strShow = bigArray[index][2];
+					whatShow = document.getElementById('issueid');
+					whatShow.value = strShow;
+
+					var currIssue;
+					var totalIssue;
+					strShow = "<FONT color=white><B>" + bigArray[index][0] + " of " + bigArray[index][1] + "</B></FONT>"
+					whatShow = document.getElementById('counter');
+					whatShow.innerHTML = strShow;
+
+					if(bigArray[index][0]==1){
+						whatShow = document.getElementById('prev');
+						whatShow.disabled = true;
+					}else{
+						whatShow = document.getElementById('prev');
+						whatShow.disabled = false;
+					}
+
+					if (bigArray[index][0]==bigArray[index][1]){
+						whatShow = document.getElementById('next');
+						whatShow.disabled = true;
+					}else{
+						whatShow = document.getElementById('next');
+						whatShow.disabled = false;
+					}
+
+
+					whatShow = document.getElementById('assignee');
+					
+					strShow = (bigArray[index][35]!= 1)? "<A class='infotext2' href='mailto:" + bigArray[index][29] + "@cae.com'>" +(((bigArray[index][30]!="") && (bigArray[index][31]!=""))?   bigArray[index][31] + "&nbsp;" + bigArray[index][30]: bigArray[index][29]) + "</A>" : bigArray[index][29].toUpperCase() + (((bigArray[index][30]!="")&& (bigArray[index][31]!=""))? ":" + bigArray[index][30] + "&nbsp;" + bigArray[index][31] : "");
+					
+					whatShow.innerHTML = strShow;
+					
+					whatShow = document.getElementById('assGroup');
+					strShow = (bigArray[index][35]!=1)?bigArray[index][4] + " " + bigArray[index][5]:"Customer";
+					
+						if (bigArray[index][29]=="ldesrochers"){
+							strShow = strShow +	((bigArray[index][35]!=1)?"&nbsp;<INPUT type='button' class='myButton2' name='changeOrigin' id='changeOrigin' value='Modify' onclick='change_group();'><INPUT type='hidden' id='entity' name='entity' value=''>":"");
+						}
+					
+					whatShow.innerHTML = strShow;
+					
+					whatShow = document.getElementById('status');
+					strShow = "<font color=blue>" + bigArray[index][18] + "&nbsp;" + bigArray[index][32] + "</font>";
+					if(bigArray[index][44] == 3){strShow = strShow + "<BR># " + bigArray[index][9];}
+					whatShow.innerHTML = strShow;
+
+					whatShow = document.getElementById('refer');
+						for(i=0;i<whatShow.options.length;i++){
+							if(whatShow.options[i].value==bigArray[index][42]){
+								whatShow.options.selectedIndex = i;
+							}
+						}
+
+
+                    if (bigArray[index][18] != 'Requested Info')
+                    {
+                        
+                    }
+                    
+					
+						if ((bigArray[index][39]!=1)&& (bigArray[index][39]!=6)&& (bigArray[index][39]!=4)&& (bigArray[index][39]!=5) && (('false'=='true')||(bigArray[index][54]=='ldesrochers'))){
+							whatShow = document.getElementById('isstype');
+							whatShow.innerHTML = "";
+							whatShow = document.getElementById('isstype_sel');
+							whatShow.style.display="";
+							for(i=0;i<whatShow.options.length;i++){
+								if(whatShow.options[i].value==bigArray[index][39]){
+									whatShow.options.selectedIndex = i;
+								}
+							}
+						}else{strShow = "<font color=blue>" + bigArray[index][19] + "</font>";
+								whatShow = document.getElementById('isstype');
+								whatShow.innerHTML = strShow;
+								whatShow = document.getElementById('isstype_sel');
+								whatShow.style.display="none";
+						}
+					
+
+					whatShow = document.getElementById('priority');
+					
+						strShow = "<font color=blue><b>" + bigArray[index][20] + "</b></font>";
+						whatShow.innerHTML = strShow;
+					
+
+					whatShow = document.getElementById('category');
+					strShow = bigArray[index][21] + ((bigArray[index][3]!='')?"&nbsp;(Reason:&nbsp;" + bigArray[index][3] + ")":"");
+					whatShow.innerHTML = strShow;
+
+					
+						whatShow = document.getElementById('chargeNbr');
+						strShow = bigArray[index][8];
+						whatShow.innerHTML = strShow;
+					
+
+						whatShow = document.getElementById('sw_load');
+						
+						strShow = "<INPUT type='text' size=10 maxlength=10 class=infotext id=swload name=swload  value='" + bigArray[index][67] + "' onchange='dirtyIt(\"SW Load\",this);'>";
+						
+						whatShow.innerHTML = strShow;
+						if(document.getElementById("org_lvl")!=null)
+						{
+						    document.getElementById('org_lvl').options.selectedIndex=(parseInt(bigArray[index][70]));
+						}
+					whatShow = document.getElementById('ecd');
+					if(('70400;'.indexOf(bigArray[index][35]) != -1 || bigArray[index][29]=="ldesrochers" || '1'=='5' || '1'=='7' || '1'=='9') && bigArray[index][18] != "Closed" && "NO"=="NO" && "NO"=="NO"  ){
+						//strShow = "<INPUT type='text' size=12 class=infotext id=ecddate name=ecddate  value='" + parseDate(bigArray[index][10]) + "' onfocus=openCalendar(this,0,0,'dirtyIt(\"ECD\",caller)');>"
+                       strShow = "<INPUT type='text' size=12 class=infotext id=ecddate name=ecddate  value='" + parseDate(bigArray[index][10]) + "' onfocus='getCalendar(\"ecddate\",\"ECD\",this, \"" + parseDate(bigArray[index][10]) + "\"  );'>"
+					} else {
+                        if ("NO"=="YES" && (bigArray[index][18] != "On Offer") && (bigArray[index][18] != "Declined"))
+                        {
+						    strShow = "<INPUT type='text' size=12 class=infotext id=ecddate name=ecddate  value='" + parseDate(bigArray[index][10]) + "' onfocus='getCalendar(\"ecddate\",\"ECD\",this, \"" + parseDate(bigArray[index][10]) + "\"  );'>"
+                        } 
+                        else
+                        {
+                            strShow = "<SPAN id=ecddate>" + parseDate(bigArray[index][10]) + "</SPAN>";
+                        }
+					}
+
+					whatShow.innerHTML = strShow;
+					if (bigArray[index][18] != "Closed" && bigArray[index][18] != "On Offer" && 'NO' == 'NO') escalationECD('ecddate', bigArray[index][10],'11/20/2017');
+
+					
+					whatShow = document.getElementById('prod');
+					
+						if('ldesrochers'== bigArray[index][29]){
+						strShow = "<INPUT type='checkbox' id='isproduct' name='isproduct' disabled value=''  onclick=\"this.value=(this.checked)?'on':''; dirtyIt('Product Specific ',this);\" ";
+						if (bigArray[index][59]== "Y") {strShow = strShow + " checked ";}
+						strShow = strShow + ">";
+
+						strShow = strShow +  "<BR><INPUT type='checkbox' id='isproject' disabled name='isproject' value=''  onclick=\"this.value=(this.checked)?'on':''; dirtyIt('Project Specific ',this);\" ";
+						if (bigArray[index][59]== "N") {strShow = strShow + " checked ";}
+						strShow = strShow + ">";
+
+
+						}else{
+							//strShow = bigArray[index][59];
+							strShow = "<INPUT type='checkbox' id='isproduct' name='isproduct' disabled value=''  onclick=\"this.value=(this.checked)?'on':''; dirtyIt('Product Specific ',this);\" ";
+							if (bigArray[index][59]== "Y") {strShow = strShow + " checked ";}
+							strShow = strShow + ">";
+
+							strShow = strShow +  "<BR><INPUT type='checkbox' id='isproject' disabled name='isproject' value=''  onclick=\"this.value=(this.checked)?'on':''; dirtyIt('Project Specific ',this);\" ";
+							if (bigArray[index][59]== "N") {strShow = strShow + " checked ";}
+							strShow = strShow + ">";
+
+						}
+					
+					whatShow.innerHTML = strShow;
+					
+
+					whatShow = document.getElementById('descr');
+					
+						//strShow = "<DIV style='height:130px;width:518px;border-style:inset;border-width:2px;overflow:auto;'>" + bigArray[index][6] + "</DIV>";
+                        strShow = "<textarea rows=9 cols=83 id=description name=description disabled=disabled>" + bigArray[index][6] + "</textarea>";
+					
+					whatShow.innerHTML = strShow;
+
+
+                 
+					whatShow = document.getElementById('worknote');
+                    
+
+                        var lastNote
+                        var strToSend
+                        
+                        
+                          lastNote = " ";
+                          
+                          strToSend = "&issid=" + bigArray[index][2];
+                          //lastNote = window.showModalDialog('https://simissues.cae.com/system/mCommand.asp?cmd=get_Last_Hidden_Note'+ strToSend,'','dialogWidth=200px;dialogHeight=100px;scroll=yes;status=yes;resize=no;');
+                          
+                          var oo = new top.DialogBox('https://simissues.cae.com/system/mCommand.asp?cmd=get_Last_Hidden_Note'+ strToSend,'','dialogWidth=200px;dialogHeight=100px;scroll=yes;status=yes;resize=no;');
+                          oo.onClose = function (event, result) { 
+                                
+                                if (result != null) lastNote = result;
+                                lastNote = lastNote.replace(/-\.-/g,'<br><br>');
+
+                                strShow = "<DIV  style='height:130px;width:518px;border-style:inset;border-width:2px;overflow:auto;'>" +  lastNote + "</DIV>";      
+                                commontonotes(strShow, index, whatShow);
+                                refreshAssetInfo(bigArray[index][2]);
+                            }
+                    
+                    
+				}
+
+
+
+
+
+                function refreshAssetInfo(issueid)
+                {
+                    $.post('AssetInfo.asp?IssueId=' + issueid, function (result) {
+                         var toShow = document.getElementById('dvAssets');
+                         toShow.innerHTML = result;
+                    });
+                }
+
+                function checkIfItIsRegression(issueid)
+                {
+                    $.post('CheckRegression.asp?IssueId=' + issueid, function (result) {
+                         
+                         var toShow = document.getElementById('Regression');
+                         toShow.checked = false;
+
+                         if (result == 'Y') 
+                         {
+                            toShow.checked = true;
+
+                         }
+                         //toShow.disabled = true;
+                    });
+                }
+
+
+                function checkIfItIsSLC(issueid)
+                {
+                    $.post('CheckSLC.asp?IssueId=' + issueid, function (result) {
+                        document.getElementById("slc").disabled = false;
+                         var toShow = document.getElementById('slc');
+                         toShow.checked = false;
+                         if (result == 'Y') 
+                         {
+                            document.getElementById("slc").checked = true;
+                         }
+                         else
+                         {
+                             toShow.checked = false;
+                         }
+
+                         if ('1'=='7')
+                         {
+                            document.getElementById("slc").disabled = false;
+                         }
+                         else
+                         {
+                            document.getElementById("slc").disabled = true;
+                         }
+
+                         //toShow.disabled = true;
+                    });
+                 
+                }
+
+                function commontonotes(strShow, index, whatShow)
+                {
+                    var re = /\n/g;
+					whatShow.innerHTML = strShow.replace(re,"<BR>");
+                    
+                    
+
+					    whatShow = document.getElementById('projInformation');
+					    strShow = "<FONT color=Maroon><B>Project:&nbsp;</B>" +  bigArray[index][24] + "</FONT>";
+					    whatShow.innerHTML = strShow;
+
+                    
+					    whatShow = document.getElementById('projInfo');
+					    strShow = "<INPUT type=button class=myButton3 value='Get Info For " + bigArray[index][24] + "' onclick=window.open('https://simissues.cae.com/ASPTransition_ProjectDetails.asp?project=" + bigArray[index][24] + "','window','menubar=1,resizable=1,width=1000,height=700');return false;>"
+					    whatShow.innerHTML = strShow;
+
+                    
+
+					projMnem=bigArray[index][24]
+
+					whatShow = document.getElementById('projphase');
+					
+						strShow =  bigArray[index][23] + "&nbsp;";
+						whatShow.innerHTML = strShow;
+					
+
+					whatShow = document.getElementById('origin');
+					strShow =  bigArray[index][17] + "<br>" + ((bigArray[index][7].split(' ')[0]!='TBD')?bigArray[index][7]:bigArray[index][7].split(' ')[1]) + "<br>";
+					
+					whatShow.innerHTML = strShow;
+
+					
+					whatShow = document.getElementById('prevass');
+					strShow =  bigArray[index][53] + "&nbsp;" + bigArray[index][52];
+					whatShow.innerHTML = strShow;
+					
+
+					whatShow = document.getElementById('raiseddate');
+					strShow =  parseDate(bigArray[index][13]) + "&nbsp;";
+					whatShow.innerHTML = strShow;
+
+
+					whatShow = document.getElementById('lastupd');
+					strShow =  parseDate(bigArray[index][14]) + "&nbsp;";
+					whatShow.innerHTML = strShow;
+
+					whatShow = document.getElementById('ftlbl');
+					strShow =  bigArray[index][66];
+					whatShow.value = strShow;
+					whatShow = document.getElementById('ftref');
+					strShow =  bigArray[index][65];
+					whatShow.value = strShow;
+
+
+					
+					whatShow = document.getElementById('reqbydatespan');
+					if(('1'=='5' || '1'=='7' || '1'=='9') && bigArray[index][18] != "Closed" && "NO"=="NO"){
+						//strShow = "<INPUT type='text' size=12 class=infotext id=reqbydate name=reqbydate  value='" + parseDate(bigArray[index][61]) + "' onfocus=openCalendar(this,0,0,'dirtyIt(\"Required_By_Date\",caller)');>"
+                        strShow = "<INPUT type='text' size=12 class=infotext id=reqbydate name=reqbydate  value='" + parseDate(bigArray[index][61]) + "' onfocus='getCalendar(\"reqbydate\",\"Required_By_Date\",this,  \"" + parseDate(bigArray[index][61]) + "\" );'>"
+					} else {
+						strShow = "<SPAN id=reqbydate>" + parseDate(bigArray[index][61])+ "</SPAN>";
+					}
+					whatShow.innerHTML = strShow;
+					
+					if (bigArray[index][18] != "Closed" && bigArray[index][18] != "On Offer" && 'NO' == 'NO') escalationECD('reqbydate', bigArray[index][61],'11/20/2017');
+
+					document.getElementById('keywrd').innerHTML = "<INPUT type='text' style='width:518px;' class=infotext id=keywords maxlength=125 name=keywords  value='" + bigArray[index][60] + "' onkeyup='dirtyIt(\"Keywords\",this);'>"
+
+					whatShow = document.getElementById('attach');
+					var height = screen.height -100;
+					var width = screen.width - 25;
+
+					if (bigArray[index][33]!=""&&bigArray[index][33]!="0") {
+					    strShow =  "<A class=infotext2 href='#' onclick=\"view_att=window.open('https://simissues.cae.com/main/view_att.asp?issueid=" + bigArray[index][2] + "','view_att', 'width=" + width.toString() + ",height=" + height.toString() + ",top=0,left=0');\" >" + bigArray[index][33] + "</A>&nbsp;";
+					}else{
+						strShow =  "&nbsp;";
+					}
+					whatShow.innerHTML = strShow;
+                    
+					    if(document.getElementById('dir')){
+						    document.getElementById('dir').innerHTML =  "<INPUT type=text id=txtDIR name=txtDIR value='"+bigArray[index][9]+"' onchange=dirtyIt('DIR',this); class=infotext style='width:100px'>";
+					    }
+                    
+					whatShow = document.getElementById('typeiss');
+						/*strShow =  bigArray[index][19] + "&nbsp;Life:"; */
+						strShow =  "Issue&nbsp;Life:";
+					whatShow.innerHTML = strShow;
+
+					whatShow = document.getElementById('isslife');
+						strShow = (bigArray[index][38]==9)? getLife(bigArray[index][13],bigArray[index][14]) + "&nbsp;" : getLife(bigArray[index][13],'11/20/2017 8:04:13 AM') + "&nbsp;";
+					whatShow.innerHTML = strShow;
+                    
+					    whatShow = document.getElementById('tatactual');
+						    strShow = bigArray[index][68] + "&nbsp;";
+					    whatShow.innerHTML = strShow;
+					    whatShow = document.getElementById('tattotal');
+						    strShow = bigArray[index][69] + "&nbsp;";
+					    whatShow.innerHTML = strShow;
+                    
+
+
+					var xmlhttp = false;
+					 try {
+                        	xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+						 } 
+                            catch (e) 
+                            {
+                        	    try 
+                                {
+						            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+						        } 
+                                catch (E) 
+                                {
+                                    try 
+                                    {
+                                        xmlhttp = new XMLHttpRequest();
+                                    }
+                                    catch (f)
+                                    {     
+						                xmlhttp = false;
+                                    }
+						        }
+						    }
+					xmlhttp.open("GET", "conv.asp?func=getACConvListForIssue&par="+Array(bigArray[index][2].toString()),true);
+					xmlhttp.onreadystatechange=function() {
+					if (xmlhttp.readyState==4) {
+					myCallback(xmlhttp.responseText)
+					}
+					}
+					xmlhttp.send(null)
+                    checkIfItIsRegression(bigArray[index][2]);
+                     checkIfItIsSLC(bigArray[index][2]);
+                }
+
+               
+
+				function myCallback(what){
+					var whatShow = document.getElementById('conversion');
+					whatShow.innerHTML = what;
+				}
+				function parseDate(what){
+					//alert(what);
+					if(what!=""){
+						what=what.split(" ");
+						var myMonth = new Array("Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec");
+						var myDate = new Date(what[0].split("/")[2],what[0].split("/")[0]-1,what[0].split("/")[1]);
+						var retDate;
+						retDate = myDate.getDate() + "-" + myMonth[myDate.getMonth()] + "-" + myDate.getFullYear();
+							if(what[1]){retDate=retDate + ", " + what[1] + " " + what[2];}
+							return retDate;
+					}else{
+						return "";
+					}
+					//return what;
+				}
+				function escalationECD(mycontrol,what,now) { //background in red if past ecd date or required_by_date
+					if(what!=""){
+						what=what.split(" ");
+						var ecdDate = new Date(what[0].split("/")[2],what[0].split("/")[0]-1,what[0].split("/")[1]);
+						var actDate = new Date(now);
+						if (ecdDate < actDate) {
+							whatShow = document.getElementById(mycontrol);
+							if (whatShow.tagName == "INPUT") {
+								whatShow.style.backgroundColor='red';
+								whatShow.style.color='yellow';
+							}else {
+								whatShow.style.color='red';
+							}
+						}
+					}
+					whatShow = document.getElementById(mycontrol);
+				}
+
+				function fixTime(what){
+					if (what<10){what="0" + what.toString();}
+					return what;
+				}
+				function getLife(what,curr){
+					//alert(what);
+					what = what.split(" ");
+					var tempDate = new Date(what[0].split("/")[2],what[0].split("/")[0]-1,what[0].split("/")[1]);
+					if(what.length>1){
+					    var temph=0;
+					    if(what[2]=='PM')
+					    {
+					        temph=parseInt(what[1].split(":")[0])+12
+					    }
+					    else{
+                            //if Hour equal to 12 AM set temph to 0
+					        if(parseInt(what[1].split(":")[0])==12)
+					        {
+					            temph=0;
+					        }
+					        else
+					        {
+					            temph=parseInt(what[1].split(":")[0]);
+					        }
+					    }
+					
+						var tempm = parseInt(what[1].split(":")[1]);
+						var temps = parseInt(what[1].split(":")[2]);
+						//var raised = new Date(tempDate.getYear(),tempDate.getMonth(),tempDate.getDate(),temph,tempm,temps);
+                        var raised = new Date(tempDate.getFullYear(),tempDate.getMonth(),tempDate.getDate(),temph,tempm,temps);
+					}else{
+						var raised = tempDate;
+					}
+
+					var currDate = curr;//'11/20/2017 8:04:13 AM';
+					currDate = currDate.split(" ");
+					tempDate = new Date(currDate[0]);
+					if(currDate.length>1){
+					    var temph=0;
+					    if(currDate[2]=='PM')
+					    {
+					        temph=parseInt(currDate[1].split(":")[0])+12
+					    }
+					    else{
+					        //if Hour equal to 12 AM set temph to 0
+					        if(parseInt(currDate[1].split(":")[0])==12)
+					        {
+					            temph=0;
+					        }
+					        else
+					        {
+					            temph=parseInt(currDate[1].split(":")[0]);
+					        }
+					    }
+						var tempm = parseInt(currDate[1].split(":")[1]);
+						var temps = parseInt(currDate[1].split(":")[2]);
+						//var curr = new Date(tempDate.getYear(),tempDate.getMonth(),tempDate.getDate(),temph,tempm,temps);
+                        var curr = new Date(tempDate.getFullYear(),tempDate.getMonth(),tempDate.getDate(),temph,tempm,temps);
+					}else{
+						var curr = tempDate;
+					}
+
+					var diff = curr.getTime()-raised.getTime();
+					var diffh = diff/1000/60/60;
+					var diffd = diffh/24;
+					var diffm = diffd/30.416;
+					var retstr;
+					if(diffm>=12){
+						retstr= (Math.floor(diffm/12)==1)? "1 year " : Math.floor(diffm/12) + " years ";
+						retstr1 = (Math.floor(diffm%12)==0) ? "" : "and " + Math.floor(diffm%12) + ((Math.floor(diffm%12)>1)?" months ":" month ");
+						retstr = retstr + retstr1;
+					}else if(diffd>180){
+						retstr=Math.floor(diffm) + " months and " + Math.floor(diffd%30.416) + ((Math.floor(diffd%30.416)>1)?" days ":" day ");
+					}else if(diffh>72){
+						retstr=Math.floor(diffd) + " days and " + Math.floor(diffh%24) + ((Math.floor(diffh%24)>1)?" hours":" hour");
+					}else{
+						retstr=Math.floor(diffh) + " hours";
+					}
+					return retstr;
+				}
+				var snagGlobal;
+				var foundRec = false;
+			//	populateForm(5);
+				
+					for(i=0;i<bigArray.length;i++){
+						if(bigArray[i][2]=="11432200082"){foundRec = true;break;}
+					}
+					if(foundRec){populateForm(i);}
+					else
+						{
+							//alert('0');alert(bigArray.length)
+							if (0 == bigArray.length) { // last issue
+								alert(' Note:  this issue is not part of your filtered view anymore \ndue to the action you just took.');
+								parent.location.href='https://simissues.cae.com/main/snaglist.asp?last_viewed=11432200082'; /*alert('\nALL\nldesrochers\n5;0\n0\n1\n10')*/
+
+							} else if ('' == ""){
+										alert(' Note:  this issue is not part of your filtered view anymore.');
+										parent.location.href='https://simissues.cae.com/main/snaglist.asp?last_viewed=11432200082'; /*alert('\nALL\nldesrochers\n5;0\n0\n1\n10')*/
+							} else {
+								// go to next issue in the list
+								populateForm();
+								alert(' Note:  this issue is not part of your filtered view anymore \ndue to the action you just took.\n\n You are being redirected to the next issue in the list.');
+							}
+						}
+				
+				//-->
+				</SCRIPT>
+				
+</BODY>
+
+</HTML>

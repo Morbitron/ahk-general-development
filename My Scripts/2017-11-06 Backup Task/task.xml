@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ROOT>
+	<DateCreated>2017/03/11</DateCreated>
+	<DateModified>2017/03/11</DateModified>
+	<FolderName>LE Folder Name</FolderName>
+	<IsArchived>0</IsArchived>
+	<Jira>
+		<CreatedDate></CreatedDate>
+		<Description>BLA BLA BLA</Description>
+		<ID>CISTFX-5685</ID>
+		<RBD></RBD>
+		<Status>IN Progress</Status>
+		<Title>C130J RAAF - VCC Viewer 2</Title>
+		<URL>https://jira.caecorp.cae.com/browse/CISTFX-5685</URL>
+	</Jira>
+	<Plane>
+		<Invalid_Name id="1" ahk="True">C130J</Invalid_Name>
+		<Invalid_Name id="2" ahk="True">OTSP</Invalid_Name>
+	</Plane>
+	<Title>This task title</Title>
+	<WorkFolder>WORK RAVE</WorkFolder>
+</ROOT>
