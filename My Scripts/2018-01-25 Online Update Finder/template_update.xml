@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<group>
+		<name>NirSoft</name>
+		<program>
+			<name>Test Program</name>
+			<urls>
+				<url>www1</url>
+				<url>www2</url>
+			</urls>
+			<name_pattern>regex pattern</name_pattern>
+		</program>
+		<program>
+		[...]
+		</program>
+	</group>
+</root>

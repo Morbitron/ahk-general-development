@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	<group>
+		<path>C:\dadas\</path>
+		<program>
+			<name>Test Program</name>
+			<version>34.645.76</version>
+			<path>.\ytiiutu\Test Program.exe</path>
+		</program>
+		<program>
+		[...]
+		</program>
+	</group>
+</root>
