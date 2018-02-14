@@ -1,0 +1,636 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><!--
+ Archive processed by SingleFile 
+ url: https://simissues.cae.com/ProjectInfo/ProjectManagment.aspx?GID=67d55a4f-a674-4a20-b53e-dab35e896229&proj=114322 
+ saved date: Wed Nov 08 2017 13:53:40 GMT-0500 (Est) 
+--><head><title>
+	Project Managment
+</title><style type="text/css" rel="stylesheet" data-href="https://simissues.cae.com/ProjectInfo/StyleSheet1.css">.GridHeader
+{ 
+	/*border-color: #F2F2F2;
+	border-width: 2px;*/
+	background-color: #336699;   
+	color: White;	    
+	font-family:Tahoma;
+	font-size:10pt;
+	height:20px;
+}
+
+.GridCell
+{   
+	font-family:Tahoma;
+	font-size:10pt;
+	height:10px;
+} 
+
+.OddGridCell
+{   
+	color: black; 
+	font-family:Tahoma;
+	font-size:10pt;
+	background-color:#ECECE6;
+	height:10px;
+} 
+
+.SelectedGridCell
+{ 
+	color: black; 
+	font-family:Tahoma;
+	font-size:10pt;
+	background-color:#F9EEA7;
+	height:10px;
+}
+
+.noteCell
+{ 
+	font-family:Tahoma;
+	font-size:10pt; 
+}
+
+.selectedTab
+{ 
+	color: black;
+	font-family: Tahoma;
+	font-size: 10px;
+	font-weight: bold;
+	background-color : White;	/* #AFC7C7;*/
+	width: 100px;
+	border-style: none;
+	border-top-color: #F0BC2F;
+	border-left-style: solid;
+	border-right-style: solid; 
+	border-top-style: solid;
+	border-left-color: #BBBBBB;
+	border-right-color: #BBBBBB;
+	border-top-width: 3px; 
+}
+
+.unSelectedTab
+{ 
+	color: black;
+	font-family: Tahoma;
+	font-size: 10px;
+	width: 100px;
+	border-style: none;
+	background-color : White;	
+	border-left-style: solid;
+	border-right-style: solid; 
+	border-top-style: solid;
+	border-left-color: #BBBBBB;
+	border-right-color: #BBBBBB;
+	border-top-style: solid;
+	border-top-width: 1px; 
+	border-right-width: 1px; 
+	border-left-width: 1px; 
+}
+ 
+.button
+{
+	font-family  : Tahoma;
+    font-size: 12px;
+    font-style:normal; 
+    color:#000000;
+    cursor:hand;
+    border-right: #000000 1px solid;
+    border-top: #000000 1px solid;
+    border-left: #000000 1px solid;
+    border-bottom: #000000 1px solid;
+    background-color: #F5F5F5;
+	/*color: black;
+	font-family: Tahoma;
+	font-size: 12px;
+    border-style:none;
+    width: 100px;*/
+}
+ 
+.smallButton
+{ 
+	font-family  : Tahoma;
+    font-size: 12px;
+    font-style:normal;
+   
+    color:#000000;
+    cursor:hand;
+    border-right: #000000 1px solid;
+    border-top: #000000 1px solid;
+    border-left: #000000 1px solid;
+    border-bottom: #000000 1px solid;
+    background-color: #F5F5F5;
+
+	/*color: black;
+	font-family: Tahoma;
+	font-size: 10px;
+    border-style:none;*/
+}
+
+.listBox
+{
+	color: black;
+	font-family: Tahoma;
+	font-size: 12px;
+    border-style:none;
+    width:280px;
+    z-index:1;
+}
+
+.dropDownBox
+{
+	color: black;
+	font-family: Tahoma;
+	font-size: 12px;
+    border-style:none;
+} 
+
+.noneDisplay
+{
+	display: none;
+	visibility: hidden;
+}  
+  
+
+.errorStyle
+{
+    color:Red;	
+	font-family: Tahoma;
+	font-size: 12px;
+	font-weight:bold;
+}
+
+.helpTitle
+{ 
+	font-family:Tahoma;
+	font-size:11pt; 
+	font-weight:bolder;
+}
+
+.helpSubTitle
+{ 
+	font-family:Tahoma;
+	font-size:10pt; 
+	font-style:oblique;
+}
+
+.helpTable
+{
+	background:#CCCCCC;
+	border-color:#CCCCCC;
+	border-width:0.2px;
+	border-style:solid;  
+}
+
+.panelButton
+{
+   border-style:none;
+   background-color:White;
+   width:30px;
+   height:20px;
+   font-size: 9px;
+}
+.panelSelectedButton
+{
+   border-style:none;
+   background-color:White;
+   width:30px;
+   height:20px;
+   font-size: 11px;
+   font-weight:bold;
+}
+
+.FormLabel
+{
+	font-family: Tahoma;
+	font-size: 8pt;
+	font-style: normal;
+	font-weight: bold;
+	color: #696969; 
+} 
+ </style>
+
+    
+
+<link type="image/x-icon" rel="shortcut icon" href="data:text/html; charset=utf-8;base64,PCFET0NUWVBFIGh0bWwgUFVCTElDICItLy9XM0MvL0RURCBYSFRNTCAxLjAgU3RyaWN0Ly9FTiIgImh0dHA6Ly93d3cudzMub3JnL1RSL3hodG1sMS9EVEQveGh0bWwxLXN0cmljdC5kdGQiPiAKPGh0bWwgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGh0bWwiPiAKPGhlYWQ+IAo8dGl0bGU+SUlTIDcuNSBEZXRhaWxlZCBFcnJvciAtIDQwNC4wIC0gTm90IEZvdW5kPC90aXRsZT4gCjxzdHlsZSB0eXBlPSJ0ZXh0L2NzcyI+IAo8IS0tIApib2R5e21hcmdpbjowO2ZvbnQtc2l6ZTouN2VtO2ZvbnQtZmFtaWx5OlZlcmRhbmEsQXJpYWwsSGVsdmV0aWNhLHNhbnMtc2VyaWY7YmFja2dyb3VuZDojQ0JFMUVGO30gCmNvZGV7bWFyZ2luOjA7Y29sb3I6IzAwNjYwMDtmb250LXNpemU6MS4xZW07Zm9udC13ZWlnaHQ6Ym9sZDt9IAouY29uZmlnX3NvdXJjZSBjb2Rle2ZvbnQtc2l6ZTouOGVtO2NvbG9yOiMwMDAwMDA7fSAKcHJle21hcmdpbjowO2ZvbnQtc2l6ZToxLjRlbTt3b3JkLXdyYXA6YnJlYWstd29yZDt9IAp1bCxvbHttYXJnaW46MTBweCAwIDEwcHggNDBweDt9IAp1bC5maXJzdCxvbC5maXJzdHttYXJnaW4tdG9wOjVweDt9IApmaWVsZHNldHtwYWRkaW5nOjAgMTVweCAxMHB4IDE1cHg7fSAKLnN1bW1hcnktY29udGFpbmVyIGZpZWxkc2V0e3BhZGRpbmctYm90dG9tOjVweDttYXJnaW4tdG9wOjRweDt9IApsZWdlbmQubm8tZXhwYW5kLWFsbHtwYWRkaW5nOjJweCAxNXB4IDRweCAxMHB4O21hcmdpbjowIDAgMCAtMTJweDt9IApsZWdlbmR7Y29sb3I6IzMzMzMzMztwYWRkaW5nOjRweCAxNXB4IDRweCAxMHB4O21hcmdpbjo0cHggMCA4cHggLTEycHg7X21hcmdpbi10b3A6MHB4OyAKIGJvcmRlci10b3A6MXB4IHNvbGlkICNFREVERUQ7Ym9yZGVyLWxlZnQ6MXB4IHNvbGlkICNFREVERUQ7Ym9yZGVyLXJpZ2h0OjFweCBzb2xpZCAjOTY5Njk2OyAKIGJvcmRlci1ib3R0b206MXB4IHNvbGlkICM5Njk2OTY7YmFja2dyb3VuZDojRTdFQ0YwO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zaXplOjFlbTt9IAphOmxpbmssYTp2aXNpdGVke2NvbG9yOiMwMDdFRkY7Zm9udC13ZWlnaHQ6Ym9sZDt9IAphOmhvdmVye3RleHQtZGVjb3JhdGlvbjpub25lO30gCmgxe2ZvbnQtc2l6ZToyLjRlbTttYXJnaW46MDtjb2xvcjojRkZGO30gCmgye2ZvbnQtc2l6ZToxLjdlbTttYXJnaW46MDtjb2xvcjojQ0MwMDAwO30gCmgze2ZvbnQtc2l6ZToxLjRlbTttYXJnaW46MTBweCAwIDAgMDtjb2xvcjojQ0MwMDAwO30gCmg0e2ZvbnQtc2l6ZToxLjJlbTttYXJnaW46MTBweCAwIDVweCAwOyAKfSNoZWFkZXJ7d2lkdGg6OTYlO21hcmdpbjowIDAgMCAwO3BhZGRpbmc6NnB4IDIlIDZweCAyJTtmb250LWZhbWlseToidHJlYnVjaGV0IE1TIixWZXJkYW5hLHNhbnMtc2VyaWY7IAogY29sb3I6I0ZGRjtiYWNrZ3JvdW5kLWNvbG9yOiM1Qzg3QjI7IAp9I2NvbnRlbnR7bWFyZ2luOjAgMCAwIDIlO3Bvc2l0aW9uOnJlbGF0aXZlO30gCi5zdW1tYXJ5LWNvbnRhaW5lciwuY29udGVudC1jb250YWluZXJ7YmFja2dyb3VuZDojRkZGO3dpZHRoOjk2JTttYXJnaW4tdG9wOjhweDtwYWRkaW5nOjEwcHg7cG9zaXRpb246cmVsYXRpdmU7fSAKLmNvbmZpZ19zb3VyY2V7YmFja2dyb3VuZDojZmZmNWM0O30gCi5jb250ZW50LWNvbnRhaW5lciBwe21hcmdpbjowIDAgMTBweCAwOyAKfSNkZXRhaWxzLWxlZnR7d2lkdGg6MzUlO2Zsb2F0OmxlZnQ7bWFyZ2luLXJpZ2h0OjIlOyAKfSNkZXRhaWxzLXJpZ2h0e3dpZHRoOjYzJTtmbG9hdDpsZWZ0O292ZXJmbG93OmhpZGRlbjsgCn0jc2VydmVyX3ZlcnNpb257d2lkdGg6OTYlO19oZWlnaHQ6MXB4O21pbi1oZWlnaHQ6MXB4O21hcmdpbjowIDAgNXB4IDA7cGFkZGluZzoxMXB4IDIlIDhweCAyJTtjb2xvcjojRkZGRkZGOyAKIGJhY2tncm91bmQtY29sb3I6IzVBN0ZBNTtib3JkZXItYm90dG9tOjFweCBzb2xpZCAjQzFDRkREO2JvcmRlci10b3A6MXB4IHNvbGlkICM0QTZDOEU7Zm9udC13ZWlnaHQ6bm9ybWFsOyAKIGZvbnQtc2l6ZToxZW07Y29sb3I6I0ZGRjt0ZXh0LWFsaWduOnJpZ2h0OyAKfSNzZXJ2ZXJfdmVyc2lvbiBwe21hcmdpbjo1cHggMDt9IAp0YWJsZXttYXJnaW46NHB4IDAgNHB4IDA7d2lkdGg6MTAwJTtib3JkZXI6bm9uZTt9IAp0ZCx0aHt2ZXJ0aWNhbC1hbGlnbjp0b3A7cGFkZGluZzozcHggMDt0ZXh0LWFsaWduOmxlZnQ7Zm9udC13ZWlnaHQ6Ym9sZDtib3JkZXI6bm9uZTt9IAp0aHt3aWR0aDozMCU7dGV4dC1hbGlnbjpyaWdodDtwYWRkaW5nLXJpZ2h0OjIlO2ZvbnQtd2VpZ2h0Om5vcm1hbDt9IAp0aGVhZCB0aHtiYWNrZ3JvdW5kLWNvbG9yOiNlYmViZWI7d2lkdGg6MjUlOyAKfSNkZXRhaWxzLXJpZ2h0IHRoe3dpZHRoOjIwJTt9IAp0YWJsZSB0ci5hbHQgdGQsdGFibGUgdHIuYWx0IHRoe2JhY2tncm91bmQtY29sb3I6I2ViZWJlYjt9IAouaGlnaGxpZ2h0LWNvZGV7Y29sb3I6I0NDMDAwMDtmb250LXdlaWdodDpib2xkO2ZvbnQtc3R5bGU6aXRhbGljO30gCi5jbGVhcntjbGVhcjpib3RoO30gCi5wcmVmZXJyZWR7cGFkZGluZzowIDVweCAycHggNXB4O2ZvbnQtd2VpZ2h0Om5vcm1hbDtiYWNrZ3JvdW5kOiMwMDY2MzM7Y29sb3I6I0ZGRjtmb250LXNpemU6LjhlbTt9IAotLT4gCjwvc3R5bGU+IAogCjwvaGVhZD4gCjxib2R5PiAKPGRpdiBpZD0iaGVhZGVyIj48aDE+U2VydmVyIEVycm9yIGluIEFwcGxpY2F0aW9uICJTSU1JU1NVRVMiPC9oMT48L2Rpdj4gCjxkaXYgaWQ9InNlcnZlcl92ZXJzaW9uIj48cD5JbnRlcm5ldCBJbmZvcm1hdGlvbiBTZXJ2aWNlcyA3LjU8L3A+PC9kaXY+IAo8ZGl2IGlkPSJjb250ZW50Ij4gCjxkaXYgY2xhc3M9ImNvbnRlbnQtY29udGFpbmVyIj4gCiA8ZmllbGRzZXQ+PGxlZ2VuZD5FcnJvciBTdW1tYXJ5PC9sZWdlbmQ+IAogIDxoMj5IVFRQIEVycm9yIDQwNC4wIC0gTm90IEZvdW5kPC9oMj4gCiAgPGgzPlRoZSByZXNvdXJjZSB5b3UgYXJlIGxvb2tpbmcgZm9yIGhhcyBiZWVuIHJlbW92ZWQsIGhhZCBpdHMgbmFtZSBjaGFuZ2VkLCBvciBpcyB0ZW1wb3JhcmlseSB1bmF2YWlsYWJsZS48L2gzPiAKIDwvZmllbGRzZXQ+IAo8L2Rpdj4gCjxkaXYgY2xhc3M9ImNvbnRlbnQtY29udGFpbmVyIj4gCiA8ZmllbGRzZXQ+PGxlZ2VuZD5EZXRhaWxlZCBFcnJvciBJbmZvcm1hdGlvbjwvbGVnZW5kPiAKICA8ZGl2IGlkPSJkZXRhaWxzLWxlZnQiPiAKICAgPHRhYmxlIGJvcmRlcj0iMCIgY2VsbHBhZGRpbmc9IjAiIGNlbGxzcGFjaW5nPSIwIj4gCiAgICA8dHIgY2xhc3M9ImFsdCI+PHRoPk1vZHVsZTwvdGg+PHRkPklJUyBXZWIgQ29yZTwvdGQ+PC90cj4gCiAgICA8dHI+PHRoPk5vdGlmaWNhdGlvbjwvdGg+PHRkPk1hcFJlcXVlc3RIYW5kbGVyPC90ZD48L3RyPiAKICAgIDx0ciBjbGFzcz0iYWx0Ij48dGg+SGFuZGxlcjwvdGg+PHRkPlN0YXRpY0ZpbGU8L3RkPjwvdHI+IAogICAgPHRyPjx0aD5FcnJvciBDb2RlPC90aD48dGQ+MHg4MDA3MDAwMjwvdGQ+PC90cj4gCiAgICAgCiAgIDwvdGFibGU+IAogIDwvZGl2PiAKICA8ZGl2IGlkPSJkZXRhaWxzLXJpZ2h0Ij4gCiAgIDx0YWJsZSBib3JkZXI9IjAiIGNlbGxwYWRkaW5nPSIwIiBjZWxsc3BhY2luZz0iMCI+IAogICAgPHRyIGNsYXNzPSJhbHQiPjx0aD5SZXF1ZXN0ZWQgVVJMPC90aD48dGQ+aHR0cDovL3NpbWlzc3Vlcy5jYWUuY29tOjgwL2Zhdmljb24uaWNvPC90ZD48L3RyPiAKICAgIDx0cj48dGg+UGh5c2ljYWwgUGF0aDwvdGg+PHRkPkU6XFBST0RcU2ltSXNzdWVzXEFwcGxpY2F0aW9uXGZhdmljb24uaWNvPC90ZD48L3RyPiAKICAgIDx0ciBjbGFzcz0iYWx0Ij48dGg+TG9nb24gTWV0aG9kPC90aD48dGQ+Rm9ybXM8L3RkPjwvdHI+IAogICAgPHRyPjx0aD5Mb2dvbiBVc2VyPC90aD48dGQ+Q0FFLkNBXGxkZXNyb2NoZXJzPC90ZD48L3RyPiAKICAgICAKICAgPC90YWJsZT4gCiAgIDxkaXYgY2xhc3M9ImNsZWFyIj48L2Rpdj4gCiAgPC9kaXY+IAogPC9maWVsZHNldD4gCjwvZGl2PiAKPGRpdiBjbGFzcz0iY29udGVudC1jb250YWluZXIiPiAKIDxmaWVsZHNldD48bGVnZW5kPk1vc3QgbGlrZWx5IGNhdXNlczo8L2xlZ2VuZD4gCiAgPHVsPiAJPGxpPlRoZSBkaXJlY3Rvcnkgb3IgZmlsZSBzcGVjaWZpZWQgZG9lcyBub3QgZXhpc3Qgb24gdGhlIFdlYiBzZXJ2ZXIuPC9saT4gCTxsaT5UaGUgVVJMIGNvbnRhaW5zIGEgdHlwb2dyYXBoaWNhbCBlcnJvci48L2xpPiAJPGxpPkEgY3VzdG9tIGZpbHRlciBvciBtb2R1bGUsIHN1Y2ggYXMgVVJMU2NhbiwgcmVzdHJpY3RzIGFjY2VzcyB0byB0aGUgZmlsZS48L2xpPiA8L3VsPiAKIDwvZmllbGRzZXQ+IAo8L2Rpdj4gCjxkaXYgY2xhc3M9ImNvbnRlbnQtY29udGFpbmVyIj4gCiA8ZmllbGRzZXQ+PGxlZ2VuZD5UaGluZ3MgeW91IGNhbiB0cnk6PC9sZWdlbmQ+IAogIDx1bD4gCTxsaT5DcmVhdGUgdGhlIGNvbnRlbnQgb24gdGhlIFdlYiBzZXJ2ZXIuPC9saT4gCTxsaT5SZXZpZXcgdGhlIGJyb3dzZXIgVVJMLjwvbGk+IAk8bGk+Q3JlYXRlIGEgdHJhY2luZyBydWxlIHRvIHRyYWNrIGZhaWxlZCByZXF1ZXN0cyBmb3IgdGhpcyBIVFRQIHN0YXR1cyBjb2RlIGFuZCBzZWUgd2hpY2ggbW9kdWxlIGlzIGNhbGxpbmcgU2V0U3RhdHVzLiBGb3IgbW9yZSBpbmZvcm1hdGlvbiBhYm91dCBjcmVhdGluZyBhIHRyYWNpbmcgcnVsZSBmb3IgZmFpbGVkIHJlcXVlc3RzLCBjbGljayA8YSBocmVmPSJodHRwOi8vZ28ubWljcm9zb2Z0LmNvbS9md2xpbmsvP0xpbmtJRD02NjQzOSI+aGVyZTwvYT4uIDwvbGk+IDwvdWw+IAogPC9maWVsZHNldD4gCjwvZGl2PiAKIAogCjxkaXYgY2xhc3M9ImNvbnRlbnQtY29udGFpbmVyIj4gCiA8ZmllbGRzZXQ+PGxlZ2VuZD5MaW5rcyBhbmQgTW9yZSBJbmZvcm1hdGlvbjwvbGVnZW5kPiAKICBUaGlzIGVycm9yIG1lYW5zIHRoYXQgdGhlIGZpbGUgb3IgZGlyZWN0b3J5IGRvZXMgbm90IGV4aXN0IG9uIHRoZSBzZXJ2ZXIuIENyZWF0ZSB0aGUgZmlsZSBvciBkaXJlY3RvcnkgYW5kIHRyeSB0aGUgcmVxdWVzdCBhZ2Fpbi4gCiAgPHA+PGEgaHJlZj0iaHR0cDovL2dvLm1pY3Jvc29mdC5jb20vZndsaW5rLz9MaW5rSUQ9NjIyOTMmYW1wO0lJUzcwRXJyb3I9NDA0LDAsMHg4MDA3MDAwMiw3NjAxIj5WaWV3IG1vcmUgaW5mb3JtYXRpb24gJnJhcXVvOzwvYT48L3A+IAogICAKIDwvZmllbGRzZXQ+IAo8L2Rpdj4gCjwvZGl2PiAKPC9ib2R5PiAKPC9odG1sPiAK"></head>
+<body>
+    <form name="form1" method="post" action="ProjectManagment.aspx?GID=67d55a4f-a674-4a20-b53e-dab35e896229&amp;proj=114322" onsubmit="javascript:return WebForm_OnSubmit();" id="form1" style="font-family: Tahoma; font-size: 10pt">
+<div>
+<input type="hidden" name="__EVENTTARGET" id="__EVENTTARGET" value="">
+<input type="hidden" name="__EVENTARGUMENT" id="__EVENTARGUMENT" value="">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUKMjA3NTc5MTY3Mw9kFgICAw9kFgICCQ9kFgICAQ9kFgJmD2QWBgIBD2QWAmYPZBYCZg9kFgJmD2QWAmYPZBYEZg9kFgJmDxAPFgYeDkRhdGFWYWx1ZUZpZWxkBQpDNTcxOV9NTkVNHg1EYXRhVGV4dEZpZWxkBQRUZXh0HgtfIURhdGFCb3VuZGdkEBUPJzJUMUcgICAgLSBBaXItQ2FuYWRhIEI3ODcgSVBUICMxIChDVCZTKSsyVDVZICAgIC0gQ0FFIE5vcndheSBBUyBTaWtvcnNreSBTLTkyIFZTSU0gHzJUN0ogICAgLSBaRlRDIFNpa29yc2t5IFM5MiBJUFQgMlQ3SyAgICAtIFpGVEMgU2lrb3Jza3kgUzkyIFZTaW03MlRHVyAgICAtIEx1ZnRoYW5zYSAyVEdXIEZQVCBQVDA1IExGVCBNVUMgQTMyMCBTVEQgMS43IDIyVEpBICAgIC0gRUNGVCAtIEJvbWJhcmRpZXIgQ2hhbGxlbmdlciA2MDQvNjA1IEZGUycyVFJKICAgIC0gQWlyLUNhbmFkYSBBMzIwIElQVCAjMiAoQ1QmUyk0MlRTOSAgICAtIEVtaXJhdGVzLUNBRSBGbGlnaHQgVHJhaW5pbmcgQ0w2MDQvNjA1IElQVDUyVFNBICAgIC0gRW1pcmF0ZXMtQ0FFIEZsaWdodCBUcmFpbmluZyBDTDYwNC82MDUgVlNJTS8yVFU0ICAgIC0gWmh1aGFpIFNpa29yc2t5NzZDICsrIDMwMDAgU2VyaWVzIElQVDAyVTRVICAgIC0gRW1pcmF0ZXMgQTM4MCBNRlREIFN0YW5kYXJkIDEuMyBVcGRhdGU5M1dOSiAgICAtIFVzIEFpcndheXMgQTMyMC8zMzAvMzQwIFNURCAxLjcvU1REIDIuMyB1cGRhdGVzMjlUQTkyRCAgLSBBaXJidXMgQTMyMCBTVEQgMS44IE1haW50ZW5hbmNlIENvbnRyYWN0J0EzOFAyMiAgLSBBMzgwIEFTIDEuMyBQcm9kdWN0IEV2b2x1dGlvbjpTQTM0NDIgIC0gU2ltZmluaXR5IEEzMzAvMzQwIFNURCAyLjUgLSBQcm9kdWN0IFJlbGVhc2UgNC4yFQ8HMlQxRyAgIAcyVDVZICAgBzJUN0ogICAHMlQ3SyAgIAcyVEdXICAgBzJUSkEgICAHMlRSSiAgIAcyVFM5ICAgBzJUU0EgICAHMlRVNCAgIAcyVTRVICAgBzNXTkogICAHOVRBOTJEIAdBMzhQMjIgB1NBMzQ0MiAUKwMPZ2dnZ2dnZ2dnZ2dnZ2dnZGQCAQ9kFgRmDw8WAh4HVmlzaWJsZWhkZAICDw8WAh8DaGRkAgMPDxYCHwNnZBYCZg9kFgJmD2QWAgIBD2QWEmYPZBYEAgEPZBYCZg8PFggeBFRleHQFBjExNDMyMh4JQmFja0NvbG9yCqQBHghSZWFkT25seWceBF8hU0ICCBYCHgdvbktleVVwBRBpc1RleHRGaWxsKHRoaXMpZAIFD2QWAmYPDxYEHwUKpAEfBwIIZGQCAQ9kFgICAQ9kFgJmDw8WBB8FCqQBHwcCCBYCHwgFEGlzVGV4dEZpbGwodGhpcylkAgIPZBYCAgEPZBYEZg8QDxYCHwNoZGQWAWZkAgEPDxYGHwUKpAEfBAUxVW5pdGVkIFBhcmNlbCBTZXJ2aWNlIChMb3Vpc3ZpbGxlLCBVbml0ZWQgU3RhdGVzKR8HAghkZAIDD2QWAgIBD2QWBGYPEA8WAh8DaGRkFgFmZAIBDw8WBB8FCqQBHwcCCGRkAgQPZBYEAgEPZBYEZg8QDxYCHwNoZGQWAGQCAQ8PFgYfBQqkAR8EBQxDQUUgTW9udHJlYWwfBwIIZGQCBQ9kFgRmDxAPFgIfA2hkZBYBZmQCAQ8PFgYfBQqkAR8EBQ1EQVZJRCAgUklWQVJEHwcCCGRkAgUPZBYEAgEPZBYEZg8QDxYCHwNoZGQWAWZkAgEPDxYGHwUKpAEfBAUNUkFNWkkgIEhJU1NJTh8HAghkZAIFD2QWBGYPEA8WAh8DaGRkFgFmZAIBDw8WBB8FCqQBHwcCCGRkAgYPZBYEAgEPZBYEZg8QDxYCHwNoZGQWAWZkAgEPDxYEHwUKpAEfBwIIZGQCBQ9kFgRmDxAPFgIfA2hkZBYBZmQCAQ8PFgQfBQqkAR8HAghkZAIHD2QWAmYPZBYEAgEPZBYCZg9kFgRmD2QWAmYPDxYCHwQFA04vQWRkAgEPZBYCZg8PZBYCHgdvbkNsaWNrBRRidG5Nb2RpZnlfT25DbGljaygpO2QCAw8PFgQeCENzc0NsYXNzBQtub25lRGlzcGxheR8HAgJkFgJmD2QWBGYPZBYGAgMPEA8WBh8ABRBDNTg1NF9BQ19DT05WX0lEHwEFB0NvbHVtbjEfAmdkDxbJAWYCAQICAgMCBAIFAgYCBwIIAgkCCgILAgwCDQIOAg8CEAIRAhICEwIUAhUCFgIXAhgCGQIaAhsCHAIdAh4CHwIgAiECIgIjAiQCJQImAicCKAIpAioCKwIsAi0CLgIvAjACMQIyAjMCNAI1AjYCNwI4AjkCOgI7AjwCPQI+Aj8CQAJBAkICQwJEAkUCRgJHAkgCSQJKAksCTAJNAk4CTwJQAlECUgJTAlQCVQJWAlcCWAJZAloCWwJcAl0CXgJfAmACYQJiAmMCZAJlAmYCZwJoAmkCagJrAmwCbQJuAm8CcAJxAnICcwJ0AnUCdgJ3AngCeQJ6AnsCfAJ9An4CfwKAAQKBAQKCAQKDAQKEAQKFAQKGAQKHAQKIAQKJAQKKAQKLAQKMAQKNAQKOAQKPAQKQAQKRAQKSAQKTAQKUAQKVAQKWAQKXAQKYAQKZAQKaAQKbAQKcAQKdAQKeAQKfAQKgAQKhAQKiAQKjAQKkAQKlAQKmAQKnAQKoAQKpAQKqAQKrAQKsAQKtAQKuAQKvAQKwAQKxAQKyAQKzAQK0AQK1AQK2AQK3AQK4AQK5AQK6AQK7AQK8AQK9AQK+AQK/AQLAAQLBAQLCAQLDAQLEAQLFAQLGAQLHAQLIARbJARAFE0Flcm9zcGF0aWFsZSBBVFIgNDIFAjY1ZxAFG0Flcm9zcGF0aWFsZSBBVFIgNDIgLSB0ZXN0MwUDMTc2ZxAFG0Flcm9zcGF0aWFsZSBBVFIgNDIgLSB0ZXN0MwUDMTc3ZxAFIUFlcm9zcGF0aWFsZSBBVFIgNDIgLSBUcm9wb3MgNjAwMAUDMTY3ZxAFE0Flcm9zcGF0aWFsZSBBVFIgNzIFAjY2ZxAFGUFlcm9zcGF0aWFsZSBBVFIgNzIgLSA1MDAFAjY3ZxAFIEFlcm9zcGF0aWFsZSBBVFIgNzIgLSBBVFIgNzItNjAwBQMxOTdnEAUaQWVyb3NwYXRpYWxlIEFUUiA3MiAtIHRlc3QFAzE3MGcQBQtBaXJidXMgQTMwMAUCNTVnEAUSQWlyYnVzIEEzMDAgLSAtMjAwBQMxNjlnEAURQWlyYnVzIEEzMDAgLSA2MDAFAjU2ZxAFEkFpcmJ1cyBBMzAwIC0gdGVzdAUDMTY2ZxAFC0FpcmJ1cyBBMzEwBQExZxAFC0FpcmJ1cyBBMzIwBQEyZxAFEUFpcmJ1cyBBMzIwIC0gMjAwBQI1N2cQBRFBaXJidXMgQTMyMCAtIDIxMgUCNThnEAURQWlyYnVzIEEzMjAgLSAyMTQFAzExMmcQBRFBaXJidXMgQTMyMCAtIDIzMgUCNTlnEAUgQWlyYnVzIEEzMjAgLSAyUkdQIC0gMlJIQSAtIDJSSEIFAzEwOGcQBRJBaXJidXMgQTMyMCAtIDUwMDAFAzE3OGcQBRJBaXJidXMgQTMyMCAtIDcwMDAFAzE3OWcQBRdBaXJidXMgQTMyMCAtIEEzMjAvQTMyMQUDMTE2ZxAFF0FpcmJ1cyBBMzIwIC0gTG9hZCAyLjEwBQMxMjRnEAUXQWlyYnVzIEEzMjAgLSBTSU1GSU5JVFkFAzE3M2cQBRdBaXJidXMgQTMyMCAtIFNJTUZJTklUWQUDMTc0ZxAFF0FpcmJ1cyBBMzIwIC0gU0lNRklOSVRZBQMxNzVnEAUSQWlyYnVzIEEzMjAgW0EzMTldBQI2MGcQBRhBaXJidXMgQTMyMCBbQTMxOV0gLSAxMDAFAjg0ZxAFC0FpcmJ1cyBBMzMwBQEzZxAFF0FpcmJ1cyBBMzMwIC0gIGxvYWQgMi4xBQMxMjZnEAURQWlyYnVzIEEzMzAgLSAyMDAFAjYxZxAFE0FpcmJ1cyBBMzMwIC0gMjAwR0UFAzEzN2cQBRNBaXJidXMgQTMzMCAtIDIwMFBXBQMxMzZnEAUTQWlyYnVzIEEzMzAgLSAyMDBSUgUDMTM1ZxAFEUFpcmJ1cyBBMzMwIC0gMjQzBQMxMjVnEAURQWlyYnVzIEEzMzAgLSAzMDAFAjYyZxAFEkFpcmJ1cyBBMzMwIC0gMzAwRQUDMTMwZxAFEUFpcmJ1cyBBMzMwIC0gMzEzBQMxMTFnEAURQWlyYnVzIEEzMzAgLSAzNDAFAzEwNmcQBRxBaXJidXMgQTMzMCAtIGdlIC0gIGxvYWQgMi4xBQMxMjhnEAUUQWlyYnVzIEEzMzAgLSBMb2FkIDEFAzExOWcQBRZBaXJidXMgQTMzMCAtIExvYWQgMS02BQMxMThnEAUbQWlyYnVzIEEzMzAgLSBwdyAtIGxvYWQgMi4xBQMxMjlnEAUbQWlyYnVzIEEzMzAgLSByciAtIGxvYWQgMi4xBQMxMjdnEAULQWlyYnVzIEEzNDAFATRnEAURQWlyYnVzIEEzNDAgLSAzMDAFAjYzZxAFEUFpcmJ1cyBBMzQwIC0gNjAwBQI2NGcQBRZBaXJidXMgQTM0MCAtIExvYWQgMi0xBQMxMjBnEAURQWlyYnVzIEEzODAgLSBOL0EFAzEzNGcQBQxBVlJPIFJKIC0gODUFAjY4ZxAFCEJlbGwgMjEyBQI3N2cQBQhCZWxsIDQxMgUBNWcQBQpCb2VpbmcgNzE3BQE2ZxAFEEJvZWluZyA3MTcgLSAyMDAFAzExM2cQBQpCb2VpbmcgNzI3BQE3ZxAFCkJvZWluZyA3MzcFAThnEAURQm9laW5nIDczNyAtIC05MDAFAjk2ZxAFEEJvZWluZyA3MzcgLSAyMDAFAjY5ZxAFEEJvZWluZyA3MzcgLSAzMDAFATlnEAUQQm9laW5nIDczNyAtIDQwMAUCMTBnEAUQQm9laW5nIDczNyAtIDUwMAUCMTFnEAUQQm9laW5nIDczNyAtIDYwMAUCMTJnEAUQQm9laW5nIDczNyAtIDcwMAUCMTNnEAUQQm9laW5nIDczNyAtIDgwMAUCMTRnEAURQm9laW5nIDczNyAtIElQVCAFAzExN2cQBRVCb2VpbmcgNzM3IC0gTG9hZCAyLjYFAzEwOWcQBRVCb2VpbmcgNzM3IC0gTG9hZCAyLjcFAzEyMmcQBRVCb2VpbmcgNzM3IC0gTG9hZCAzLjIFAzExMGcQBRVCb2VpbmcgNzM3IC0gTG9hZCAzLjMFAzEyM2cQBRVCb2VpbmcgNzM3IC0gTG9hZCBTV0EFAzExNGcQBRNCb2VpbmcgNzM3IC0gU0lNWFhJBQMxMDdnEAUKQm9laW5nIDc0NwUCMTVnEAUQQm9laW5nIDc0NyAtIDQwMAUCMTZnEAUUQm9laW5nIDc0NyAtIGI3NDcvOEkFAzE2OGcQBSBCb2VpbmcgNzQ3IC0gUGFzc2VuZ2VyL0ZyZWlnaHRlcgUDMTUyZxAFCkJvZWluZyA3NTcFAjE3ZxAFEEJvZWluZyA3NTcgLSAyMDAFAjcwZxAFCkJvZWluZyA3NjcFAjE4ZxAFEEJvZWluZyA3NjcgLSAzMDAFAjcxZxAFEkJvZWluZyA3NjcgLSAzMDBFUgUCNzJnEAUQQm9laW5nIDc2NyAtIDQwMAUCMTlnEAUSQm9laW5nIDc2NyAtIDQwMEVSBQI3M2cQBQpCb2VpbmcgNzc3BQIyMGcQBRBCb2VpbmcgNzc3IC0gMjAwBQI3NGcQBRJCb2VpbmcgNzc3IC0gMjAwRVIFAjc1ZxAFEEJvZWluZyA3NzcgLSAzMDAFAjc2ZxAFEkJvZWluZyA3NzcgLSAzMDBFUgUDMTIxZxAFF0JvZWluZyA3NzcgLSBJT1MgdXBkYXRlBQMxOTJnEAUXQm9laW5nIDc3NyAtIElPUyB1cGRhdGUFAzE5M2cQBRdCb2VpbmcgNzc3IC0gSU9TIHVwZGF0ZQUDMTk0ZxAFHUJvZWluZyA3NzcgLSBQcm9kdWN0IExvYWQgMS4xBQMxMzhnEAUbQm9tYmFyZGllciBDaGFsbGVuZ2VyIC0gNjAxBQIyNGcQBRtCb21iYXJkaWVyIENoYWxsZW5nZXIgLSA2MDQFAjI1ZxAFEUJvbWJhcmRpZXIgRGFzaCA4BQIyMWcQBRdCb21iYXJkaWVyIERhc2ggOCAtIDEwMAUCMjJnEAUeQm9tYmFyZGllciBEYXNoIDggLSAxMDAgQW5hbG9nBQI5NWcQBRdCb21iYXJkaWVyIERhc2ggOCAtIDMwMAUCMjNnEAUXQm9tYmFyZGllciBEYXNoIDggLSA0MDAFAjc5ZxAFH0JvbWJhcmRpZXIgRGFzaCA4IC0gQW5hbG9nIDEwMCAFAjk0ZxAFFEJvbWJhcmRpZXIgR2xvYmFsIEV4BQIyNmcQBRJCb21iYXJkaWVyIExlYXJqZXQFAjgyZxAFHUJvbWJhcmRpZXIgTGVhcmpldCAtIDI1IC8gQzIxBQMxMDVnEAUXQm9tYmFyZGllciBMZWFyamV0IC0gMzEFAjI3ZxAFGEJvbWJhcmRpZXIgTGVhcmpldCAtIDMxQQUCODFnEAUXQm9tYmFyZGllciBMZWFyamV0IC0gNDUFAjI4ZxAFF0JvbWJhcmRpZXIgTGVhcmpldCAtIDYwBQIyOWcQBQ1Cb21iYXJkaWVyIFJKBQI4NWcQBRNCb21iYXJkaWVyIFJKIC0gMTAwBQI4NmcQBRNCb21iYXJkaWVyIFJKIC0gMjAwBQIzMGcQBRNCb21iYXJkaWVyIFJKIC0gNzAwBQIzMWcQBRNCb21iYXJkaWVyIFJKIC0gOTAwBQIzMmcQBQ9DZXNzbmEgQ2l0YXRpb24FAjMzZxAFF0Nlc3NuYSBDaXRhdGlvbiAtIEJyYXZvBQI5OGcQBRVDZXNzbmEgQ2l0YXRpb24gLSBDSjMFAzIwMWcQBRdDZXNzbmEgQ2l0YXRpb24gLSBFeGNlbAUCODdnEAUXQ2Vzc25hIENpdGF0aW9uIC0gVWx0cmEFAjk3ZxAFEUNlc3NuYSBVbHRyYUJyYXZvBQIzNGcQBQtEb3JuaWVyIDMyOAUCMzVnEAURRG9ybmllciAzMjggLSAzMDAFAjc4ZxAFC0Rvcm5pZXIgNzI4BQI4MGcQBRBFbWJyYWVyIFJKIC0gMTQ1BQIzNmcQBRBFbWJyYWVyIFJKIC0gMTcwBQIzN2cQBRBFbWJyYWVyIFJKIC0gMTkwBQIzOGcQBRZFbWJyYWVyIFJKIC0gRXBpYyBMb2FkBQMyMDBnEAUdRW1icmFlciBSSiAtIEVQSUMgVXBkYXRlIEZNU1QFAzE1NmcQBRxFbWJyYWVyIFJKIC0gRVBJQyBVcGRhdGUgSVBUBQMxNTdnEAUfRW1icmFlciBSSiAtIEVSSjE3MCAyMS4zIFVwZGF0ZQUDMTU0ZxAFH0VtYnJhZXIgUkogLSBFUkoxNzAgMjEuNCBVcGRhdGUFAzE2MWcQBSlFbWJyYWVyIFJKIC0gRVJKMTcwIEZGUyAxOS40IFVwZGF0ZSAgIEhHUwUDMTUzZxAFLEVtYnJhZXIgUkogLSBFUkoxNzAvMTkwIEZGUyAyMS4zIEVQSUMgVXBkYXRlBQMxNTlnEAUlRW1icmFlciBSSiAtIEVSSjE3MC8xOTAgRkZTIEVQSUMgMjEuMwUDMTU4ZxAFI0VtYnJhZXIgUkogLSBFUkoxOTAgMjEuMyBDb252ZXJzaW9uBQMxNTVnEAUfRW1icmFlciBSSiAtIEVSSjE5MCAyMS4zIFVwZGF0ZQUDMTYwZxAFKUVtYnJhZXIgUkogLSBFUkoxOTAgMjEuNCBVcGRhdGUgZnJvbSAyMS4zBQMxNjJnEAUSRXZhY3VhdGlvbiBUcmFpbmVyBQIzOWcQBQxGb2trZXIgLSAxMDAFAjQyZxAFC0Zva2tlciAtIDI4BQI0MGcQBQtGb2trZXIgLSA1MAUCNDFnEAUSRm9ra2VyIC0gNTAgQmVuZGl4BQMxNjRnEAUVRm9ra2VyIC0gNTAgSG9uZXl3ZWxsBQMxNjVnEAUPRm9ra2VyIC0gQmVuZGl4BQMxNjNnEAUQR3VsZnN0cmVhbSAtIDQ1MAUDMTQwZxAFFEd1bGZzdHJlYW0gLSA0NTAvNTUwBQMxMzlnEAUQR3VsZnN0cmVhbSAtIDU1MAUDMTQxZxAFD0d1bGZzdHJlYW0gLSBJVgUCNDNnEAUOR3VsZnN0cmVhbSAtIFYFAjQ0ZxAFGE1jRG9ubmVsbCBEb3VnbGFzIERDIC0gOQUCNDVnEAUZTWNEb25uZWxsIERvdWdsYXMgTUQgLSAxMAUCNDZnEAUZTWNEb25uZWxsIERvdWdsYXMgTUQgLSAxMQUCNDdnEAUZTWNEb25uZWxsIERvdWdsYXMgTUQgLSA4MAUCNDhnEAUZTWNEb25uZWxsIERvdWdsYXMgTUQgLSA4MgUCNDlnEAUZTWNEb25uZWxsIERvdWdsYXMgTUQgLSA4OAUCNTBnEAUZTWNEb25uZWxsIERvdWdsYXMgTUQgLSA5MAUCNTFnEAUhTWNEb25uZWxsIERvdWdsYXMgTUQgLSBBQyByZWxhdGVkBQMxNDVnEAUkTWNEb25uZWxsIERvdWdsYXMgTUQgLSBEb2N1bWVudGF0aW9uBQMxNDZnEAUbTWNEb25uZWxsIERvdWdsYXMgTUQgLSBNaXNjBQMxNTFnEAUqTWNEb25uZWxsIERvdWdsYXMgTUQgLSBSZXF1aXJlbWVudC1SZXF1ZXN0BQMxNDhnEAUqTWNEb25uZWxsIERvdWdsYXMgTUQgLSBSZXF1aXJlbWVudC9SZXF1ZXN0BQMxNDlnEAUoTWNEb25uZWxsIERvdWdsYXMgTUQgLSBSZXF1aXJlbWVudHMvTWlzYwUDMTUwZxAFGk1jRG9ubmVsbCBEb3VnbGFzIE1EIC0gU0lNBQMxNDRnEAUaTWNEb25uZWxsIERvdWdsYXMgTUQgLSBWSVQFAzE0M2cQBSdNY0Rvbm5lbGwgRG91Z2xhcyBNRCAtIFZTSU0gRW52aXJvbm1lbnQFAzE0N2cQBQxQaGVub20gLSAxMDAFAzE4N2cQBQxQaGVub20gLSAxMDAFAzE4M2cQBQxQaGVub20gLSAxMDAFAzE5MGcQBQxQaGVub20gLSAxMDAFAzE5MWcQBRBQaGVub20gLSAxMDAvMzAwBQMxODlnEAUQUGhlbm9tIC0gMTAwLzMwMAUDMTg1ZxAFDFBoZW5vbSAtIDMwMAUDMTg2ZxAFDFBoZW5vbSAtIDMwMAUDMTg4ZxAFDFBoZW5vbSAtIDMwMAUDMTg0ZxAFEFBpbGF0dXMgUEMtNyAtIDcFAjUyZxAFDlBpcGVyIENoZXllbm5lBQI1M2cQBQ9SYXl0aGVvbiBIYXdrZXIFAjg4ZxAFFVJheXRoZW9uIEhhd2tlciAtIDgwMAUCODlnEAUbUmF5dGhlb24gSGF3a2VyIC0gODAwLzgwMFhQBQMxMDRnEAUXUmF5dGhlb24gSGF3a2VyIC0gODAwWFAFAjkwZxAFCFNhYWIgMzQwBQI1NGcQBQlTYWFiIDM0MEIFAjgzZxAFDVNpa29yc2t5IFMtNzYFAjkxZxAFElNpa29yc2t5IFMtNzYgLSBDKwUCOTJnEAUMVEJEIC0gJDMwMDAwBQMxODFnEAUJVEJEIC0gQ01TBQMxMDJnEAULVEJEIC0gRjIwMDAFAzE3MmcQBRJUQkQgLSBGMjAwMEVYIEVBU3kFAzEzMmcQBQpUQkQgLSBGOTAwBQMxNzFnEAURVEJEIC0gRjkwMEVYIEVBU3kFAzEzMWcQBRFUQkQgLSBGYWxjb24gMjAwMAUDMTk1ZxAFEVRCRCAtIEZhbGNvbiAyMDAwBQMxOTZnEAUPVEJEIC0gRmFsY29uIDdYBQMxOThnEAUJVEJEIC0gSUFUBQMxMDFnEAUJVEJEIC0gSVBUBQMxMDNnEAUMVEJEIC0gTUFYVlVFBQI5OWcQBQlUQkQgLSBOL0EFAzEzM2cQBQxUQkQgLSBQaGVub20FAzE4MmcQBQlUQkQgLSBTOTIFAzE5OWcQBQlUQkQgLSBUQkQFAi0xZxAFDFRCRCAtIFRST1BPUwUDMTAwZxAFFVRCRCAtIFZJU1FVT1RFICQzMTAwMAUDMTgwZxAFFVRCRCAtIFZpc3VhbCBEYXRhYmFzZQUDMTE1ZxAFCVRCRCAtIFZJVAUDMTQyZ2RkAgYPDxYEHwoFC25vbmVEaXNwbGF5HwcCAmQWAmYPZBYCZg9kFgICAQ9kFgJmD2QWAmYPZBYGAgMPD2QWAh8IBRRzaG93TmV3Q29udmVyc2lvbigpO2QCBw8PFgIfBAUXQnVpbGQgYW5kIEFkZCB0byAxMTQzMjJkZAIJDw9kFgIfCQUmYnRuQnVpbGROZXdDb252ZXJzaW9uQ2FuY2VsX09uQ2xpY2soKTtkAggPDxYCHwQFDUFkZCB0byAxMTQzMjJkZAICD2QWAgIBD2QWAmYPZBYEZg9kFgJmDxAPFgYfAAUQQzU4NTRfQUNfQ09OVl9JRB8BBQdDb2x1bW4xHwJnZBAVABUAFCsDAGRkAgEPZBYCAgQPD2QWAh8JBR5idG5Db252ZXJzaW9uQ2FuY2VsX09uQ2xpY2soKTtkAggPZBYCZg9kFgICAQ9kFgpmD2QWBAIBD2QWAmYPDxYEHwUKpAEfBwIIFggeCG9uQ2hhbmdlBRBpc0RhdGVGaWxsKHRoaXMpHgdvbmZvY3VzBSlTaG93Q2FsZW5kYXIodGhpcyx0aGlzLCd5eXl5LW1tLWRkJywwLDApOx4Gb25ibHVyBRJBdXRvSGlkZUNhbGVuZGFyKCkeB29uY2xpY2sFKVNob3dDYWxlbmRhcih0aGlzLHRoaXMsJ3l5eXktbW0tZGQnLDAsMCk7ZAIFD2QWAmYPDxYEHwUKpAEfBwIIFgYfDAUpU2hvd0NhbGVuZGFyKHRoaXMsdGhpcywneXl5eS1tbS1kZCcsMCwwKTsfDQUSQXV0b0hpZGVDYWxlbmRhcigpHw4FKVNob3dDYWxlbmRhcih0aGlzLHRoaXMsJ3l5eXktbW0tZGQnLDAsMCk7ZAIBD2QWBAIBD2QWAmYPDxYEHwUKpAEfBwIIFggfCwUQaXNEYXRlRmlsbCh0aGlzKR8MBSlTaG93Q2FsZW5kYXIodGhpcyx0aGlzLCd5eXl5LW1tLWRkJywwLDApOx8NBRJBdXRvSGlkZUNhbGVuZGFyKCkfDgUpU2hvd0NhbGVuZGFyKHRoaXMsdGhpcywneXl5eS1tbS1kZCcsMCwwKTtkAgUPZBYCZg8PFgQfBQqkAR8HAggWCB8LBRBpc0RhdGVGaWxsKHRoaXMpHwwFKVNob3dDYWxlbmRhcih0aGlzLHRoaXMsJ3l5eXktbW0tZGQnLDAsMCk7Hw0FEkF1dG9IaWRlQ2FsZW5kYXIoKR8OBSlTaG93Q2FsZW5kYXIodGhpcyx0aGlzLCd5eXl5LW1tLWRkJywwLDApO2QCAg9kFgQCAQ9kFgJmDw8WBB8FCqQBHwcCCBYIHwsFEGlzRGF0ZUZpbGwodGhpcykfDAUpU2hvd0NhbGVuZGFyKHRoaXMsdGhpcywneXl5eS1tbS1kZCcsMCwwKTsfDQUSQXV0b0hpZGVDYWxlbmRhcigpHw4FKVNob3dDYWxlbmRhcih0aGlzLHRoaXMsJ3l5eXktbW0tZGQnLDAsMCk7ZAIFD2QWAmYPDxYEHwUKpAEfBwIIFggfCwUQaXNEYXRlRmlsbCh0aGlzKR8MBSlTaG93Q2FsZW5kYXIodGhpcyx0aGlzLCd5eXl5LW1tLWRkJywwLDApOx8NBRJBdXRvSGlkZUNhbGVuZGFyKCkfDgUpU2hvd0NhbGVuZGFyKHRoaXMsdGhpcywneXl5eS1tbS1kZCcsMCwwKTtkAgMPZBYEAgEPZBYCZg8PFgQfBQqkAR8HAggWCB8LBRBpc0RhdGVGaWxsKHRoaXMpHwwFKVNob3dDYWxlbmRhcih0aGlzLHRoaXMsJ3l5eXktbW0tZGQnLDAsMCk7Hw0FEkF1dG9IaWRlQ2FsZW5kYXIoKR8OBSlTaG93Q2FsZW5kYXIodGhpcyx0aGlzLCd5eXl5LW1tLWRkJywwLDApO2QCBQ9kFgJmDw8WBB8FCqQBHwcCCBYIHwsFEGlzRGF0ZUZpbGwodGhpcykfDAUpU2hvd0NhbGVuZGFyKHRoaXMsdGhpcywneXl5eS1tbS1kZCcsMCwwKTsfDQUSQXV0b0hpZGVDYWxlbmRhcigpHw4FKVNob3dDYWxlbmRhcih0aGlzLHRoaXMsJ3l5eXktbW0tZGQnLDAsMCk7ZAIED2QWAgIBD2QWAmYPDxYEHwUKpAEfBwIIFggfCwUQaXNEYXRlRmlsbCh0aGlzKR8MBSlTaG93Q2FsZW5kYXIodGhpcyx0aGlzLCd5eXl5LW1tLWRkJywwLDApOx8NBRJBdXRvSGlkZUNhbGVuZGFyKCkfDgUpU2hvd0NhbGVuZGFyKHRoaXMsdGhpcywneXl5eS1tbS1kZCcsMCwwKTtkAgUPDxYCHwRlZGQYAQUeX19Db250cm9sc1JlcXVpcmVQb3N0QmFja0tleV9fFgIFDGltZ0J0bkxvZ091dAUQbHN0U2VsQ29udmVyc2lvbh/dG7oOkYSynKJ+tIJ3kFsxZX3/">
+</div>
+
+
+
+
+
+
+
+
+
+
+<div>
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="43E5B8C7">
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="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">
+</div>
+        <div>
+        <input type="hidden" name="hdnFldVersion" id="hdnFldVersion" value="0">
+        <input type="hidden" name="hdnMode" id="hdnMode" value="1">
+        <input type="hidden" name="hdnUserPriv" id="hdnUserPriv" value="1">
+        <input type="hidden" name="hdnFldProjectMnemonic" id="hdnFldProjectMnemonic" value="114322"> 
+        
+            <table id="tblMain" border="0">
+	<tbody><tr>
+		<td align="left" style="width:50%;"><a id="hlBackToSum" href="https://simissues.cae.com/index.asp">Back to Summary Page</a></td><td align="right" style="width:50%;"><a id="hlHelp" title="Help" target="_blank"><img title="Help" src="data:image/gif;base64,R0lGODdhHwAfAPcAAP///4CAgP//AICAAIAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACwAAAAAHwAfAAAI8wADCBxIkCABAgUKKlzIMAABhwgTNpxoEOLBiBQnPrzIEWPGghs7diwg8WNIkSJJZjx5cICAlwNQqmTIksDLmy9ReqzY8eaAnzd1lhRY06UAjkFTgrTYMWbLpBxnEmUq0ijUiwlL1uRoFaZSABK3XrT6U2YAAGAdUkVZ1izatCQL6HTp1O3brAJJirza8exbsCTR5pU7VkDdqH7vRvw7WCfWxGjlZv0rOIBeu4olFqD8tjFiypIHHhTIGYDnhKARErxMmvNgyGBVK2QNu3LqobMJty4dWTZF2rxDf/S8uzfu4cBjHx9OXDhzhpeXPy8odWJAAAA7" style="border-width:0px;"></a>
+           &nbsp;
+           <input type="image" name="imgBtnLogOut" id="imgBtnLogOut" title="Logout" src="data:image/gif;base64,R0lGODdhEAAQAPf/AAAAAP///290eZKeqqCmq62ur52doYmLmm5na9eeSuynRo9XGWhtc5WwylJWWR4eHiIjI0BBQ5SFcqKgq6Wpo/m1UatmHHR/iYGWqlpYVpSXmru3s+TJqP7xt+bhm4aLq9STS9yMLQwHApqam+Dg4N7f4dnLvPvauv/rxv/KctTBd36EoL9/Nf+xR107D6Kiourp6ZeboL+gdv/1sf+rTcyHO4OFm5OKd+awZv+6VJdoIpOTk9jY2JeZm5aQifbYcv+3SduMN7ClafXiif+vScaAKSYYBYuLi8zMzLGxsdrc4ujNn//MYf+sQ//1jP/pgOOaM79+JBoRA3R0dK+vr7y8vKmpqrCvst6zZv/CU7eEMrCGN/3CXduRKplrIEFBQSwsLDY2Nri6vJWQiZR8VwcEATwnCNGiSemoRtiiPjQhAygoKJGRkaKkpnR3fW1HDOnFcO6yTG5QFYqKir+/v46OjgQEBUgrAbmRRf3Kc6N6KomJicfHx6OjowoKC5RnGuvEfduxWo+Pj8vLy7W1tRkZGkUrAMqraMCqWYSEhNra2sHBwRsbGxgQAUsyAiYaAGdnZ3t7e0ZGRgEBAQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACH5BAEAAAAALAAAAAAQABAABwiqAAEAEDCAQAEDBxAkULBAoEMGDTRI1CBhAoUKFhwKhIRB4gYOQIB8ABFCjkZIJEqYOBESyAoWLUw6hAQjhoyWNm7gyCFzI48ePloKGUKkSE8AkJAkUdLSyRMoUY5ColLFyhUsQLRs4dLlKFJIkMSMIQP2DJo0Xr+2cQMJKZo4aZHSqdMWEho0cSHx6dPWLV6NG/f2BfsXMKRBhPq6TQtJ0SLFYBXPjAxYYEAAOw==" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;imgBtnLogOut&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" style="border-width:0px;"></td>
+	</tr><tr>
+		<td>
+                        <fieldset>
+                            <legend>Projects In Your Profile</legend>
+                            <table id="Table1" border="0" style="width:100%;">
+			<tbody><tr>
+				<td style="width:50%;"><table id="tblTop" border="0" style="width:100%;">
+					<tbody><tr>
+						<td style="width:50%;"><select size="4" name="lstProject" id="lstProject" style="width:500px;" data-cip-id="cIPJQ342845639">
+							<option value="2T1G   ">2T1G    - Air-Canada B787 IPT #1 (CT&amp;S)</option>
+							<option value="2T5Y   ">2T5Y    - CAE Norway AS Sikorsky S-92 VSIM </option>
+							<option value="2T7J   ">2T7J    - ZFTC Sikorsky S92 IPT</option>
+							<option value="2T7K   ">2T7K    - ZFTC Sikorsky S92 VSim</option>
+							<option value="2TGW   ">2TGW    - Lufthansa 2TGW FPT PT05 LFT MUC A320 STD 1.7 </option>
+							<option value="2TJA   ">2TJA    - ECFT - Bombardier Challenger 604/605 FFS</option>
+							<option value="2TRJ   ">2TRJ    - Air-Canada A320 IPT #2 (CT&amp;S)</option>
+							<option value="2TS9   ">2TS9    - Emirates-CAE Flight Training CL604/605 IPT</option>
+							<option value="2TSA   ">2TSA    - Emirates-CAE Flight Training CL604/605 VSIM</option>
+							<option value="2TU4   ">2TU4    - Zhuhai Sikorsky76C ++ 3000 Series IPT</option>
+							<option value="2U4U   ">2U4U    - Emirates A380 MFTD Standard 1.3 Update</option>
+							<option value="3WNJ   ">3WNJ    - Us Airways A320/330/340 STD 1.7/STD 2.3 updates</option>
+							<option value="9TA92D ">9TA92D  - Airbus A320 STD 1.8 Maintenance Contract</option>
+							<option value="A38P22 ">A38P22  - A380 AS 1.3 Product Evolution</option>
+							<option value="SA3442 ">SA3442  - Simfinity A330/340 STD 2.5 - Product Release 4.2</option>
+
+						</select></td><td style="width:50%;"><br>
+                                        <br>
+                                        <input type="submit" name="btnViewProject" value="View Project" id="btnViewProject" class="button" style="width:90px;"></td>
+					</tr>
+				</tbody></table></td><td style="width:50%;"></td>
+			</tr>
+		</tbody></table>
+                        </fieldset>
+                        <br>
+                        <table id="tblWholeProject" border="0">
+			<tbody><tr>
+				<td>
+                        <fieldset>
+                            <legend>Project Information</legend>
+                            <table id="tblProjectInfo" border="0">
+					<tbody><tr>
+						<td><span id="lblMnemonic" class="FormLabel" style="display:inline-block;width:120px;">Mnemonic</span></td><td><input name="txtMnemonic" type="text" value="114322" readonly="readonly" id="txtMnemonic" onkeyup="isTextFill(this)" style="background-color:White;width:260px;" data-cip-id="txtMnemonic"></td><td style="width:120px;"></td><td></td><td><span id="lblBAAN" class="FormLabel" style="display:inline-block;width:120px;">BAAN#</span></td><td><input name="txtBAAN" type="text" value="      " maxlength="6" id="txtBAAN" style="background-color:White;width:260px;" data-cip-id="txtBAAN"></td>
+					</tr><tr>
+						<td><span id="lblProjectDesc" class="FormLabel" style="display:inline-block;width:120px;">Project Description</span></td><td colspan="5"><input name="txtProjectDesc" type="text" value="UPS B747-8F IPT #1 " id="txtProjectDesc" onkeyup="isTextFill(this)" style="background-color:White;width:98.5%;" data-cip-id="txtProjectDesc"></td>
+					</tr><tr>
+						<td><span id="lblCustomerSite" class="FormLabel" style="display:inline-block;width:120px;">Customer Site</span></td><td colspan="5"><input name="txtCustomerSite" type="text" value="United Parcel Service (Louisville, United States)" readonly="readonly" id="txtCustomerSite" style="background-color:White;width:98.5%;" data-cip-id="txtCustomerSite"></td><td></td>
+					</tr><tr>
+						<td><span id="lblProductRelease" class="FormLabel" style="display:inline-block;width:120px;">Product Release</span></td><td colspan="5"><input name="txtProductRelease" type="text" readonly="readonly" id="txtProductRelease" style="background-color:White;width:98.5%;" data-cip-id="txtProductRelease"></td>
+					</tr><tr>
+						<td><span id="lblInterCompany" class="FormLabel" style="display:inline-block;width:120px;">InterCompany</span></td><td><input name="txtInterCompany" type="text" value="CAE Montreal" readonly="readonly" id="txtInterCompany" style="background-color:White;width:260px;" data-cip-id="txtInterCompany"></td><td></td><td></td><td><span id="lblPM" class="FormLabel" style="display:inline-block;width:120px;">PM</span></td><td><input name="txtPM" type="text" value="DAVID  RIVARD" readonly="readonly" id="txtPM" style="background-color:White;width:260px;" data-cip-id="txtPM"></td>
+					</tr><tr>
+						<td><span id="lblIS" class="FormLabel" style="display:inline-block;width:120px;">IS</span></td><td><input name="txtIS" type="text" value="RAMZI  HISSIN" readonly="readonly" id="txtIS" style="background-color:White;width:260px;" data-cip-id="txtIS"></td><td></td><td></td><td><span id="lblCSR" class="FormLabel" style="display:inline-block;width:120px;">CSR</span></td><td><input name="txtCSR" type="text" readonly="readonly" id="txtCSR" style="background-color:White;width:260px;" data-cip-id="txtCSR"></td>
+					</tr><tr>
+						<td><span id="lblSiteChief" class="FormLabel" style="display:inline-block;width:120px;">Site Chief</span></td><td><input name="txtSiteChief" type="text" readonly="readonly" id="txtSiteChief" style="background-color:White;width:260px;" data-cip-id="txtSiteChief"></td><td></td><td></td><td><span id="lblTestEng" class="FormLabel" style="display:inline-block;width:120px;">Test Enginner</span></td><td><input name="txtTestEng" type="text" readonly="readonly" id="txtTestEng" style="background-color:White;width:260px;" data-cip-id="txtTestEng"></td>
+					</tr><tr id="trAirCraftSection">
+						<td colspan="6">
+                                        <fieldset>
+                                            <legend>Aircraft/Conversions</legend>
+                                            <table id="tblAirCraftConversion" border="0">
+							<tbody><tr>
+								<td><span id="lblAirCraftConversion" style="display:inline-block;width:800px;">N/A</span></td><td align="right" style="width:80px;"><input type="submit" name="btnModify" value="Modify" onclick="btnModify_OnClick();" id="btnModify" class="button"></td>
+							</tr>
+						</tbody></table>
+                                            <!-- SELECT CONVERSION FIELDSET -->
+                                            <table id="tblModAirCraftConvension" class="noneDisplay" border="0">
+							<tbody><tr>
+								<td style="width:40%;">
+                                                        
+                                                        
+                                                        <fieldset>
+                                                            <legend>Select Conversion</legend>
+                                                            <span id="lblConvensionAvail" class="FormLabel">Conversion available</span>
+                                                            <br>
+                                                            <br>
+                                                            <select name="ddlConvensionAvail" id="ddlConvensionAvail" style="width:266px;">
+									<option value="65">Aerospatiale ATR 42</option>
+									<option value="176">Aerospatiale ATR 42 - test3</option>
+									<option value="177">Aerospatiale ATR 42 - test3</option>
+									<option value="167">Aerospatiale ATR 42 - Tropos 6000</option>
+									<option value="66">Aerospatiale ATR 72</option>
+									<option value="67">Aerospatiale ATR 72 - 500</option>
+									<option value="197">Aerospatiale ATR 72 - ATR 72-600</option>
+									<option value="170">Aerospatiale ATR 72 - test</option>
+									<option value="55">Airbus A300</option>
+									<option value="169">Airbus A300 - -200</option>
+									<option value="56">Airbus A300 - 600</option>
+									<option value="166">Airbus A300 - test</option>
+									<option value="1">Airbus A310</option>
+									<option value="2">Airbus A320</option>
+									<option value="57">Airbus A320 - 200</option>
+									<option value="58">Airbus A320 - 212</option>
+									<option value="112">Airbus A320 - 214</option>
+									<option value="59">Airbus A320 - 232</option>
+									<option value="108">Airbus A320 - 2RGP - 2RHA - 2RHB</option>
+									<option value="178">Airbus A320 - 5000</option>
+									<option value="179">Airbus A320 - 7000</option>
+									<option value="116">Airbus A320 - A320/A321</option>
+									<option value="124">Airbus A320 - Load 2.10</option>
+									<option value="173">Airbus A320 - SIMFINITY</option>
+									<option value="174">Airbus A320 - SIMFINITY</option>
+									<option value="175">Airbus A320 - SIMFINITY</option>
+									<option value="60">Airbus A320 [A319]</option>
+									<option value="84">Airbus A320 [A319] - 100</option>
+									<option value="3">Airbus A330</option>
+									<option value="126">Airbus A330 -  load 2.1</option>
+									<option value="61">Airbus A330 - 200</option>
+									<option value="137">Airbus A330 - 200GE</option>
+									<option value="136">Airbus A330 - 200PW</option>
+									<option value="135">Airbus A330 - 200RR</option>
+									<option value="125">Airbus A330 - 243</option>
+									<option value="62">Airbus A330 - 300</option>
+									<option value="130">Airbus A330 - 300E</option>
+									<option value="111">Airbus A330 - 313</option>
+									<option value="106">Airbus A330 - 340</option>
+									<option value="128">Airbus A330 - ge -  load 2.1</option>
+									<option value="119">Airbus A330 - Load 1</option>
+									<option value="118">Airbus A330 - Load 1-6</option>
+									<option value="129">Airbus A330 - pw - load 2.1</option>
+									<option value="127">Airbus A330 - rr - load 2.1</option>
+									<option value="4">Airbus A340</option>
+									<option value="63">Airbus A340 - 300</option>
+									<option value="64">Airbus A340 - 600</option>
+									<option value="120">Airbus A340 - Load 2-1</option>
+									<option value="134">Airbus A380 - N/A</option>
+									<option value="68">AVRO RJ - 85</option>
+									<option value="77">Bell 212</option>
+									<option value="5">Bell 412</option>
+									<option value="6">Boeing 717</option>
+									<option value="113">Boeing 717 - 200</option>
+									<option value="7">Boeing 727</option>
+									<option value="8">Boeing 737</option>
+									<option value="96">Boeing 737 - -900</option>
+									<option value="69">Boeing 737 - 200</option>
+									<option value="9">Boeing 737 - 300</option>
+									<option value="10">Boeing 737 - 400</option>
+									<option value="11">Boeing 737 - 500</option>
+									<option value="12">Boeing 737 - 600</option>
+									<option value="13">Boeing 737 - 700</option>
+									<option value="14">Boeing 737 - 800</option>
+									<option value="117">Boeing 737 - IPT </option>
+									<option value="109">Boeing 737 - Load 2.6</option>
+									<option value="122">Boeing 737 - Load 2.7</option>
+									<option value="110">Boeing 737 - Load 3.2</option>
+									<option value="123">Boeing 737 - Load 3.3</option>
+									<option value="114">Boeing 737 - Load SWA</option>
+									<option value="107">Boeing 737 - SIMXXI</option>
+									<option value="15">Boeing 747</option>
+									<option value="16">Boeing 747 - 400</option>
+									<option value="168">Boeing 747 - b747/8I</option>
+									<option value="152">Boeing 747 - Passenger/Freighter</option>
+									<option value="17">Boeing 757</option>
+									<option value="70">Boeing 757 - 200</option>
+									<option value="18">Boeing 767</option>
+									<option value="71">Boeing 767 - 300</option>
+									<option value="72">Boeing 767 - 300ER</option>
+									<option value="19">Boeing 767 - 400</option>
+									<option value="73">Boeing 767 - 400ER</option>
+									<option value="20">Boeing 777</option>
+									<option value="74">Boeing 777 - 200</option>
+									<option value="75">Boeing 777 - 200ER</option>
+									<option value="76">Boeing 777 - 300</option>
+									<option value="121">Boeing 777 - 300ER</option>
+									<option value="192">Boeing 777 - IOS update</option>
+									<option value="193">Boeing 777 - IOS update</option>
+									<option value="194">Boeing 777 - IOS update</option>
+									<option value="138">Boeing 777 - Product Load 1.1</option>
+									<option value="24">Bombardier Challenger - 601</option>
+									<option value="25">Bombardier Challenger - 604</option>
+									<option value="21">Bombardier Dash 8</option>
+									<option value="22">Bombardier Dash 8 - 100</option>
+									<option value="95">Bombardier Dash 8 - 100 Analog</option>
+									<option value="23">Bombardier Dash 8 - 300</option>
+									<option value="79">Bombardier Dash 8 - 400</option>
+									<option value="94">Bombardier Dash 8 - Analog 100 </option>
+									<option value="26">Bombardier Global Ex</option>
+									<option value="82">Bombardier Learjet</option>
+									<option value="105">Bombardier Learjet - 25 / C21</option>
+									<option value="27">Bombardier Learjet - 31</option>
+									<option value="81">Bombardier Learjet - 31A</option>
+									<option value="28">Bombardier Learjet - 45</option>
+									<option value="29">Bombardier Learjet - 60</option>
+									<option value="85">Bombardier RJ</option>
+									<option value="86">Bombardier RJ - 100</option>
+									<option value="30">Bombardier RJ - 200</option>
+									<option value="31">Bombardier RJ - 700</option>
+									<option value="32">Bombardier RJ - 900</option>
+									<option value="33">Cessna Citation</option>
+									<option value="98">Cessna Citation - Bravo</option>
+									<option value="201">Cessna Citation - CJ3</option>
+									<option value="87">Cessna Citation - Excel</option>
+									<option value="97">Cessna Citation - Ultra</option>
+									<option value="34">Cessna UltraBravo</option>
+									<option value="35">Dornier 328</option>
+									<option value="78">Dornier 328 - 300</option>
+									<option value="80">Dornier 728</option>
+									<option value="36">Embraer RJ - 145</option>
+									<option value="37">Embraer RJ - 170</option>
+									<option value="38">Embraer RJ - 190</option>
+									<option value="200">Embraer RJ - Epic Load</option>
+									<option value="156">Embraer RJ - EPIC Update FMST</option>
+									<option value="157">Embraer RJ - EPIC Update IPT</option>
+									<option value="154">Embraer RJ - ERJ170 21.3 Update</option>
+									<option value="161">Embraer RJ - ERJ170 21.4 Update</option>
+									<option value="153">Embraer RJ - ERJ170 FFS 19.4 Update   HGS</option>
+									<option value="159">Embraer RJ - ERJ170/190 FFS 21.3 EPIC Update</option>
+									<option value="158">Embraer RJ - ERJ170/190 FFS EPIC 21.3</option>
+									<option value="155">Embraer RJ - ERJ190 21.3 Conversion</option>
+									<option value="160">Embraer RJ - ERJ190 21.3 Update</option>
+									<option value="162">Embraer RJ - ERJ190 21.4 Update from 21.3</option>
+									<option value="39">Evacuation Trainer</option>
+									<option value="42">Fokker - 100</option>
+									<option value="40">Fokker - 28</option>
+									<option value="41">Fokker - 50</option>
+									<option value="164">Fokker - 50 Bendix</option>
+									<option value="165">Fokker - 50 Honeywell</option>
+									<option value="163">Fokker - Bendix</option>
+									<option value="140">Gulfstream - 450</option>
+									<option value="139">Gulfstream - 450/550</option>
+									<option value="141">Gulfstream - 550</option>
+									<option value="43">Gulfstream - IV</option>
+									<option value="44">Gulfstream - V</option>
+									<option value="45">McDonnell Douglas DC - 9</option>
+									<option value="46">McDonnell Douglas MD - 10</option>
+									<option value="47">McDonnell Douglas MD - 11</option>
+									<option value="48">McDonnell Douglas MD - 80</option>
+									<option value="49">McDonnell Douglas MD - 82</option>
+									<option value="50">McDonnell Douglas MD - 88</option>
+									<option value="51">McDonnell Douglas MD - 90</option>
+									<option value="145">McDonnell Douglas MD - AC related</option>
+									<option value="146">McDonnell Douglas MD - Documentation</option>
+									<option value="151">McDonnell Douglas MD - Misc</option>
+									<option value="148">McDonnell Douglas MD - Requirement-Request</option>
+									<option value="149">McDonnell Douglas MD - Requirement/Request</option>
+									<option value="150">McDonnell Douglas MD - Requirements/Misc</option>
+									<option value="144">McDonnell Douglas MD - SIM</option>
+									<option value="143">McDonnell Douglas MD - VIT</option>
+									<option value="147">McDonnell Douglas MD - VSIM Environment</option>
+									<option value="187">Phenom - 100</option>
+									<option value="183">Phenom - 100</option>
+									<option value="190">Phenom - 100</option>
+									<option value="191">Phenom - 100</option>
+									<option value="189">Phenom - 100/300</option>
+									<option value="185">Phenom - 100/300</option>
+									<option value="186">Phenom - 300</option>
+									<option value="188">Phenom - 300</option>
+									<option value="184">Phenom - 300</option>
+									<option value="52">Pilatus PC-7 - 7</option>
+									<option value="53">Piper Cheyenne</option>
+									<option value="88">Raytheon Hawker</option>
+									<option value="89">Raytheon Hawker - 800</option>
+									<option value="104">Raytheon Hawker - 800/800XP</option>
+									<option value="90">Raytheon Hawker - 800XP</option>
+									<option value="54">Saab 340</option>
+									<option value="83">Saab 340B</option>
+									<option value="91">Sikorsky S-76</option>
+									<option value="92">Sikorsky S-76 - C+</option>
+									<option value="181">TBD - $30000</option>
+									<option value="102">TBD - CMS</option>
+									<option value="172">TBD - F2000</option>
+									<option value="132">TBD - F2000EX EASy</option>
+									<option value="171">TBD - F900</option>
+									<option value="131">TBD - F900EX EASy</option>
+									<option value="195">TBD - Falcon 2000</option>
+									<option value="196">TBD - Falcon 2000</option>
+									<option value="198">TBD - Falcon 7X</option>
+									<option value="101">TBD - IAT</option>
+									<option value="103">TBD - IPT</option>
+									<option value="99">TBD - MAXVUE</option>
+									<option value="133">TBD - N/A</option>
+									<option value="182">TBD - Phenom</option>
+									<option value="199">TBD - S92</option>
+									<option value="-1">TBD - TBD</option>
+									<option value="100">TBD - TROPOS</option>
+									<option value="180">TBD - VISQUOTE $31000</option>
+									<option value="115">TBD - Visual Database</option>
+									<option value="142">TBD - VIT</option>
+
+								</select>
+                                                            <br>
+                                                            <br>
+                                                            <input type="submit" name="btnBuildNewConverstion" value="Build New Conversion" id="btnBuildNewConverstion" class="button" style="width:200px;"><table id="tblBuildNewConv" class="noneDisplay" border="0">
+									<tbody><tr>
+										<td>
+                                                                        <fieldset style="width: 230px">
+                                                                            <legend>Build New Conversion</legend>
+                                                                            <table id="tblSubBuildNewConv" border="0">
+											<tbody><tr>
+												<td class="FormLabel">
+                                                                                        Aircraft:
+                                                                                        <br>
+                                                                                        <select name="ddlSubAirCraft" id="ddlSubAirCraft" style="width:200px;">
+
+												</select>
+                                                                                        <br>
+                                                                                        <br>
+                                                                                        Conversion attribute:<br>
+                                                                                        <input name="txtConvAttr" type="text" id="txtConvAttr" onkeyup="showNewConversion();" style="width:200px;"><br>
+                                                                                        <br>
+                                                                                        This is how new conversion looks:<br>
+                                                                                        <input name="txtNewConvLook" type="text" readonly="readonly" id="txtNewConvLook" style="border-color:Transparent;border-style:None;width:200px;"> 
+                                                                                        <br>
+                                                                                        <br>
+                                                                                        <input type="submit" name="btnBuildAndAddNewConversion" value="Build and Add to 114322" id="btnBuildAndAddNewConversion" class="button" style="width:200px;">
+                                                                                        <br>
+                                                                                        <input type="submit" name="btnBuildNewConversionCancel" value="Cancel" onclick="btnBuildNewConversionCancel_OnClick();" id="btnBuildNewConversionCancel" class="button" style="width:200px;"></td>
+											</tr>
+										</tbody></table>
+                                                                        </fieldset>
+                                                                    </td>
+									</tr>
+								</tbody></table>
+                                                            <br>
+                                                            <br>
+                                                            <input type="submit" name="btnAddConversion" value="Add to 114322" id="btnAddConversion" class="button" style="width:200px;">
+                                                        </fieldset>
+                                                    </td><td align="center" valign="middle" style="width:20%;">&gt;&gt;</td><td style="width:40%;">
+                                                        
+                                                        
+                                                        <fieldset>
+                                                            <legend id="lgConversions">Conversions </legend>
+                                                            <table id="tblSubConversion" border="0">
+									<tbody><tr>
+										<td><select size="4" name="lstSelConversion" multiple="multiple" id="lstSelConversion" style="height:120px;width:200px;">
+
+										</select></td><td><input type="submit" name="btnConversionEditRemove" value="Remove" id="btnConversionEditRemove" class="button" style="width:100px;">
+                                                                        <br>
+                                                                        <br>
+                                                                        <input type="submit" name="btnConversionSave" value="Save" id="btnConversionSave" class="button" style="width:100px;"><br>
+                                                                        <input type="submit" name="btnConversionCancel" value="Cancel" onclick="btnConversionCancel_OnClick();" id="btnConversionCancel" class="button" style="width:100px;"></td>
+									</tr>
+								</tbody></table>
+                                                        </fieldset>
+                                                    </td>
+							</tr>
+						</tbody></table>
+                                        </fieldset>
+                                    </td>
+					</tr><tr>
+						<td colspan="6">
+                                        <fieldset>
+                                            <legend>Project Phases</legend>
+                                            <table id="tblProjectPhase" border="0">
+							<tbody><tr>
+								<td><span id="lblManufacturing" class="FormLabel" style="display:inline-block;width:120px;">Manufacturing</span></td><td><input name="txtManufacturing" type="text" value="2017-08-25" id="txtManufacturing" onchange="isDateFill(this)" onfocus="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" onblur="AutoHideCalendar()" onclick="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" style="background-color:White;width:250px;padding-right: 16px;
+                                                            background-position: right; background-image: url(data:image/gif;base64,R0lGODlhGAAYAMQAABghGDFKYzFr1kJ750pje1qM52uU53N7e3OMtXucxnuc54SlzoSt94yUnIyt1pS195ytvZy93qXG97UpALXO/73W/87e/87n997n/+c5AOfv//dSIfeEWvf3/////wAAACH5BAEAAB8ALAAAAAAYABgAAAX/4CeOZGmeaFoCH+u28CuLjVfftnfoPOH5PtHjwVgwFEiDssBkDp4DgUDEsFgtlQqFIpFEhkSGWDn9VLPbrhcsVjCUZJFxjlQsmwVoVCqKeP5+Hh1+HRqEGBEaGBYRBH2Cg4IYDoUXlBoVC4sUCY4fhBoOHhoXC6QXCZsIFlwIASIQEREOC7MLCbMJHBwbGxmzCK6wf4aChoUYHIoWGRcXjK8fEJKXlssbzxUTWBIL0dOLCRpWqawb3BMVEg8J37kI7xG3GRkT9vLB35CJihHPjP8ioInwrZIDUhYWPKOg0EI3dd0KjitHYZW6BKwkIODyQJi0CvjwwVsQTKTIbwcIDwRYybKly5YqYsqcSXNmCAA7); background-repeat: no-repeat;" data-cip-id="txtManufacturing"><span id="cvManufacturing" style="color:Red;display:none;"><br> Please enter a valid Manufacturing date</span></td><td style="width:120px;"></td><td></td><td><span id="lblTestSite" class="FormLabel" style="display:inline-block;width:120px;">Test Site</span></td><td><input name="txtTestSite" type="text" value="2017-08-25" id="txtTestSite" onfocus="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" onblur="AutoHideCalendar()" onclick="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" style="background-color:White;width:250px;padding-right: 16px;
+                                                            background-position: right; background-image: url(data:image/gif;base64,R0lGODlhGAAYAMQAABghGDFKYzFr1kJ750pje1qM52uU53N7e3OMtXucxnuc54SlzoSt94yUnIyt1pS195ytvZy93qXG97UpALXO/73W/87e/87n997n/+c5AOfv//dSIfeEWvf3/////wAAACH5BAEAAB8ALAAAAAAYABgAAAX/4CeOZGmeaFoCH+u28CuLjVfftnfoPOH5PtHjwVgwFEiDssBkDp4DgUDEsFgtlQqFIpFEhkSGWDn9VLPbrhcsVjCUZJFxjlQsmwVoVCqKeP5+Hh1+HRqEGBEaGBYRBH2Cg4IYDoUXlBoVC4sUCY4fhBoOHhoXC6QXCZsIFlwIASIQEREOC7MLCbMJHBwbGxmzCK6wf4aChoUYHIoWGRcXjK8fEJKXlssbzxUTWBIL0dOLCRpWqawb3BMVEg8J37kI7xG3GRkT9vLB35CJihHPjP8ioInwrZIDUhYWPKOg0EI3dd0KjitHYZW6BKwkIODyQJi0CvjwwVsQTKTIbwcIDwRYybKly5YqYsqcSXNmCAA7); background-repeat: no-repeat;" data-cip-id="txtTestSite"></td>
+							</tr><tr>
+								<td><span id="lblIntegration" class="FormLabel" style="display:inline-block;width:120px;">Integration</span></td><td><input name="txtIntegration" type="text" value="2017-09-04" id="txtIntegration" onchange="isDateFill(this)" onfocus="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" onblur="AutoHideCalendar()" onclick="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" style="background-color:White;width:250px;padding-right: 16px;
+                                                            background-position: right; background-image: url(data:image/gif;base64,R0lGODlhGAAYAMQAABghGDFKYzFr1kJ750pje1qM52uU53N7e3OMtXucxnuc54SlzoSt94yUnIyt1pS195ytvZy93qXG97UpALXO/73W/87e/87n997n/+c5AOfv//dSIfeEWvf3/////wAAACH5BAEAAB8ALAAAAAAYABgAAAX/4CeOZGmeaFoCH+u28CuLjVfftnfoPOH5PtHjwVgwFEiDssBkDp4DgUDEsFgtlQqFIpFEhkSGWDn9VLPbrhcsVjCUZJFxjlQsmwVoVCqKeP5+Hh1+HRqEGBEaGBYRBH2Cg4IYDoUXlBoVC4sUCY4fhBoOHhoXC6QXCZsIFlwIASIQEREOC7MLCbMJHBwbGxmzCK6wf4aChoUYHIoWGRcXjK8fEJKXlssbzxUTWBIL0dOLCRpWqawb3BMVEg8J37kI7xG3GRkT9vLB35CJihHPjP8ioInwrZIDUhYWPKOg0EI3dd0KjitHYZW6BKwkIODyQJi0CvjwwVsQTKTIbwcIDwRYybKly5YqYsqcSXNmCAA7); background-repeat: no-repeat;" data-cip-id="txtIntegration"><span id="cvIntegration" style="color:Red;display:none;"><br>Please enter a valid Integration date</span></td><td style="width:120px;"></td><td></td><td><span id="lblCAETestPilot" class="FormLabel" style="display:inline-block;width:120px;">CAE Test Pilot</span></td><td><input name="txtCAETestPilot" type="text" value="2017-09-25" id="txtCAETestPilot" onchange="isDateFill(this)" onfocus="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" onblur="AutoHideCalendar()" onclick="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" style="background-color:White;width:250px;padding-right: 16px;
+                                                            background-position: right; background-image: url(data:image/gif;base64,R0lGODlhGAAYAMQAABghGDFKYzFr1kJ750pje1qM52uU53N7e3OMtXucxnuc54SlzoSt94yUnIyt1pS195ytvZy93qXG97UpALXO/73W/87e/87n997n/+c5AOfv//dSIfeEWvf3/////wAAACH5BAEAAB8ALAAAAAAYABgAAAX/4CeOZGmeaFoCH+u28CuLjVfftnfoPOH5PtHjwVgwFEiDssBkDp4DgUDEsFgtlQqFIpFEhkSGWDn9VLPbrhcsVjCUZJFxjlQsmwVoVCqKeP5+Hh1+HRqEGBEaGBYRBH2Cg4IYDoUXlBoVC4sUCY4fhBoOHhoXC6QXCZsIFlwIASIQEREOC7MLCbMJHBwbGxmzCK6wf4aChoUYHIoWGRcXjK8fEJKXlssbzxUTWBIL0dOLCRpWqawb3BMVEg8J37kI7xG3GRkT9vLB35CJihHPjP8ioInwrZIDUhYWPKOg0EI3dd0KjitHYZW6BKwkIODyQJi0CvjwwVsQTKTIbwcIDwRYybKly5YqYsqcSXNmCAA7); background-repeat: no-repeat;" data-cip-id="txtCAETestPilot"><span id="cvCAETestPilot" style="color:Red;display:none;"><br>Please enter a valid CAE Test Pilot date</span></td>
+							</tr><tr>
+								<td><span id="lblInHouseAcc" class="FormLabel" style="display:inline-block;width:120px;">In-House Acceptance</span></td><td><input name="txtInHouseAcc" type="text" value="2017-10-09" id="txtInHouseAcc" onchange="isDateFill(this)" onfocus="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" onblur="AutoHideCalendar()" onclick="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" style="background-color:White;width:250px;padding-right: 16px;
+                                                            background-position: right; background-image: url(data:image/gif;base64,R0lGODlhGAAYAMQAABghGDFKYzFr1kJ750pje1qM52uU53N7e3OMtXucxnuc54SlzoSt94yUnIyt1pS195ytvZy93qXG97UpALXO/73W/87e/87n997n/+c5AOfv//dSIfeEWvf3/////wAAACH5BAEAAB8ALAAAAAAYABgAAAX/4CeOZGmeaFoCH+u28CuLjVfftnfoPOH5PtHjwVgwFEiDssBkDp4DgUDEsFgtlQqFIpFEhkSGWDn9VLPbrhcsVjCUZJFxjlQsmwVoVCqKeP5+Hh1+HRqEGBEaGBYRBH2Cg4IYDoUXlBoVC4sUCY4fhBoOHhoXC6QXCZsIFlwIASIQEREOC7MLCbMJHBwbGxmzCK6wf4aChoUYHIoWGRcXjK8fEJKXlssbzxUTWBIL0dOLCRpWqawb3BMVEg8J37kI7xG3GRkT9vLB35CJihHPjP8ioInwrZIDUhYWPKOg0EI3dd0KjitHYZW6BKwkIODyQJi0CvjwwVsQTKTIbwcIDwRYybKly5YqYsqcSXNmCAA7); background-repeat: no-repeat;" data-cip-id="txtInHouseAcc"><span id="cvInHouseAcc" style="color:Red;display:none;"><br>Please enter a valid In-House Acceptance date</span></td><td style="width:120px;"></td><td></td><td><span id="lblPowerOff" class="FormLabel" style="display:inline-block;width:120px;">Power-Off</span></td><td><input name="txtPowerOff" type="text" value="2017-10-23" id="txtPowerOff" onchange="isDateFill(this)" onfocus="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" onblur="AutoHideCalendar()" onclick="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" style="background-color:White;width:250px;padding-right: 16px;
+                                                            background-position: right; background-image: url(data:image/gif;base64,R0lGODlhGAAYAMQAABghGDFKYzFr1kJ750pje1qM52uU53N7e3OMtXucxnuc54SlzoSt94yUnIyt1pS195ytvZy93qXG97UpALXO/73W/87e/87n997n/+c5AOfv//dSIfeEWvf3/////wAAACH5BAEAAB8ALAAAAAAYABgAAAX/4CeOZGmeaFoCH+u28CuLjVfftnfoPOH5PtHjwVgwFEiDssBkDp4DgUDEsFgtlQqFIpFEhkSGWDn9VLPbrhcsVjCUZJFxjlQsmwVoVCqKeP5+Hh1+HRqEGBEaGBYRBH2Cg4IYDoUXlBoVC4sUCY4fhBoOHhoXC6QXCZsIFlwIASIQEREOC7MLCbMJHBwbGxmzCK6wf4aChoUYHIoWGRcXjK8fEJKXlssbzxUTWBIL0dOLCRpWqawb3BMVEg8J37kI7xG3GRkT9vLB35CJihHPjP8ioInwrZIDUhYWPKOg0EI3dd0KjitHYZW6BKwkIODyQJi0CvjwwVsQTKTIbwcIDwRYybKly5YqYsqcSXNmCAA7); background-repeat: no-repeat;" data-cip-id="txtPowerOff"><span id="cvPowerOff" style="color:Red;display:none;"><br>Please enter a valid Power-Off date</span></td>
+							</tr><tr>
+								<td><span id="lblInFieldAcc" class="FormLabel" style="display:inline-block;width:120px;">In Field Acceptance</span></td><td><input name="txtInFieldAcc" type="text" value="2017-11-23" id="txtInFieldAcc" onchange="isDateFill(this)" onfocus="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" onblur="AutoHideCalendar()" onclick="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" style="background-color:White;width:250px;padding-right: 16px;
+                                                            background-position: right; background-image: url(data:image/gif;base64,R0lGODlhGAAYAMQAABghGDFKYzFr1kJ750pje1qM52uU53N7e3OMtXucxnuc54SlzoSt94yUnIyt1pS195ytvZy93qXG97UpALXO/73W/87e/87n997n/+c5AOfv//dSIfeEWvf3/////wAAACH5BAEAAB8ALAAAAAAYABgAAAX/4CeOZGmeaFoCH+u28CuLjVfftnfoPOH5PtHjwVgwFEiDssBkDp4DgUDEsFgtlQqFIpFEhkSGWDn9VLPbrhcsVjCUZJFxjlQsmwVoVCqKeP5+Hh1+HRqEGBEaGBYRBH2Cg4IYDoUXlBoVC4sUCY4fhBoOHhoXC6QXCZsIFlwIASIQEREOC7MLCbMJHBwbGxmzCK6wf4aChoUYHIoWGRcXjK8fEJKXlssbzxUTWBIL0dOLCRpWqawb3BMVEg8J37kI7xG3GRkT9vLB35CJihHPjP8ioInwrZIDUhYWPKOg0EI3dd0KjitHYZW6BKwkIODyQJi0CvjwwVsQTKTIbwcIDwRYybKly5YqYsqcSXNmCAA7); background-repeat: no-repeat;" data-cip-id="txtInFieldAcc"><span id="cvInFieldAcceptance" style="color:Red;display:none;"><br>Please enter a valid In Field Acceptance date</span></td><td style="width:120px;"></td><td></td><td><span id="lblRFT" class="FormLabel" style="display:inline-block;width:120px;">RFT</span></td><td><input name="txtRFT" type="text" value="2017-12-04" id="txtRFT" onchange="isDateFill(this)" onfocus="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" onblur="AutoHideCalendar()" onclick="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" style="background-color:White;width:250px;padding-right: 16px;
+                                                            background-position: right; background-image: url(data:image/gif;base64,R0lGODlhGAAYAMQAABghGDFKYzFr1kJ750pje1qM52uU53N7e3OMtXucxnuc54SlzoSt94yUnIyt1pS195ytvZy93qXG97UpALXO/73W/87e/87n997n/+c5AOfv//dSIfeEWvf3/////wAAACH5BAEAAB8ALAAAAAAYABgAAAX/4CeOZGmeaFoCH+u28CuLjVfftnfoPOH5PtHjwVgwFEiDssBkDp4DgUDEsFgtlQqFIpFEhkSGWDn9VLPbrhcsVjCUZJFxjlQsmwVoVCqKeP5+Hh1+HRqEGBEaGBYRBH2Cg4IYDoUXlBoVC4sUCY4fhBoOHhoXC6QXCZsIFlwIASIQEREOC7MLCbMJHBwbGxmzCK6wf4aChoUYHIoWGRcXjK8fEJKXlssbzxUTWBIL0dOLCRpWqawb3BMVEg8J37kI7xG3GRkT9vLB35CJihHPjP8ioInwrZIDUhYWPKOg0EI3dd0KjitHYZW6BKwkIODyQJi0CvjwwVsQTKTIbwcIDwRYybKly5YqYsqcSXNmCAA7); background-repeat: no-repeat;" data-cip-id="txtRFT"><span id="cvRFT" style="color:Red;display:none;"><br>Please enter a valid RFT date</span></td>
+							</tr><tr>
+								<td><span id="lblEndOfWarranty" class="FormLabel" style="display:inline-block;width:120px;">End-Of-Warranty</span></td><td><input name="txtEndOfWarranty" type="text" value="2019-12-04" id="txtEndOfWarranty" onchange="isDateFill(this)" onfocus="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" onblur="AutoHideCalendar()" onclick="ShowCalendar(this,this,'yyyy-mm-dd',0,0);" style="background-color:White;width:250px;padding-right: 16px;
+                                                            background-position: right; background-image: url(data:image/gif;base64,R0lGODlhGAAYAMQAABghGDFKYzFr1kJ750pje1qM52uU53N7e3OMtXucxnuc54SlzoSt94yUnIyt1pS195ytvZy93qXG97UpALXO/73W/87e/87n997n/+c5AOfv//dSIfeEWvf3/////wAAACH5BAEAAB8ALAAAAAAYABgAAAX/4CeOZGmeaFoCH+u28CuLjVfftnfoPOH5PtHjwVgwFEiDssBkDp4DgUDEsFgtlQqFIpFEhkSGWDn9VLPbrhcsVjCUZJFxjlQsmwVoVCqKeP5+Hh1+HRqEGBEaGBYRBH2Cg4IYDoUXlBoVC4sUCY4fhBoOHhoXC6QXCZsIFlwIASIQEREOC7MLCbMJHBwbGxmzCK6wf4aChoUYHIoWGRcXjK8fEJKXlssbzxUTWBIL0dOLCRpWqawb3BMVEg8J37kI7xG3GRkT9vLB35CJihHPjP8ioInwrZIDUhYWPKOg0EI3dd0KjitHYZW6BKwkIODyQJi0CvjwwVsQTKTIbwcIDwRYybKly5YqYsqcSXNmCAA7); background-repeat: no-repeat;" data-cip-id="txtEndOfWarranty"><span id="cvEnfOfWarranty" style="color:Red;display:none;"> <br>Please enter a valid End-Of-Warranty date</span></td><td style="width:120px;"></td><td></td><td></td><td></td>
+							</tr>
+						</tbody></table>
+                                        </fieldset>
+                                    </td>
+					</tr>
+				</tbody></table><table id="tblButton" border="0" style="width:920px;">
+					<tbody><tr>
+						<td align="right"><input type="submit" name="btnProjectManagReset" value="Reset" id="btnProjectManagReset" class="button">&nbsp;
+                                        <input type="submit" name="btnProjectManagSave" value="Save" onclick="javascript:WebForm_DoPostBackWithOptions(new WebForm_PostBackOptions(&quot;btnProjectManagSave&quot;, &quot;&quot;, true, &quot;&quot;, &quot;&quot;, false, false))" id="btnProjectManagSave" class="button">&nbsp;
+                                        <input type="submit" name="btnProjectManagDone" value="Done" id="btnProjectManagDone" class="button"></td>
+					</tr>
+				</tbody></table>
+                        </fieldset></td>
+			</tr>
+		</tbody></table>     
+                        <br>   <br>
+                      <span id="rfvMnemonic" style="color:Red;display:none;"></span><span id="rfvProjectDesc" style="color:Red;display:none;"></span><span id="rfvddlCustomerSite" style="color:Red;display:none;"></span><span id="rfvManufacturing" style="color:Red;display:none;"></span><span id="rfvIntegration" style="color:Red;display:none;"></span><span id="rfvCAETestPilot" style="color:Red;display:none;"></span><span id="rfvInHouseAcc" style="color:Red;display:none;"></span><span id="rfvPowerOff" style="color:Red;display:none;"></span><span id="rfvInFieldAcceptance" style="color:Red;display:none;"></span><span id="rfvRFT" style="color:Red;display:none;"></span><span id="rfvEnfOfWarranty" style="color:Red;display:none;"></span></td>
+	</tr>
+</tbody></table>
+        </div>
+    
+
+
+
+
+
+
+</form>
+
+
+</body></html>

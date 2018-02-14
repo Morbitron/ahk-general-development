@@ -1,0 +1,23 @@
+Save vars in ini
+
+Names
+-
+-
+-
+-
+
+
+Paths
+-
+-
+-
+-
+
+REgex
+-
+-
+-
+-
+-
+
+https://autohotkey.com/docs/commands/IniRead.htm

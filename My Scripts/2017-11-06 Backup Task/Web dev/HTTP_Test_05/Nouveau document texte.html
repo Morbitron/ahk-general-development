@@ -1,0 +1,636 @@
+
+<!--COPYRIGHT CAE ELECTRONICS Ltd.-->
+
+
+
+
+<!DOCTYPE HTML>
+<HTML>
+<HEAD>
+<meta http-equiv='X-UA-Compatible' content='IE=Edge' />	
+	<meta name=vs_targetSchema content="http://schemas.microsoft.com/intellisense/ie5">
+<META http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+	<TITLE>Snag Details</TITLE>
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui.js"></script>    
+    <script type="text/javascript" src="../js/Dialog.js"></script>
+
+    <link type="text/css" rel="Stylesheet" href="../js/Dialog.css" />
+    <link href="../js/datepicker.css" rel="stylesheet" type="text/css" />
+    <script src="../js/datepicker.js" type="text/javascript"></script>
+	<SCRIPT language="JavaScript" src="https://simissues.cae.com/main/utilscripts.js"></SCRIPT>
+	<LINK href="https://simissues.cae.com/Scripts/styles.css" rel=stylesheet type=text/css>
+	<SCRIPT language="Javascript")>
+		var strStatus
+		strStatus = "Version 5.0a" + "  -  User: ldesrochers  -  Privilege: User         "
+		var i=1;
+		setTimeout("setStatus(i);",1000);
+		function setStatus(a){
+			window.status = strStatus//.substr(0,a);
+			i++;
+			if(i>strStatus.length){i=1;}
+			//setTimeout("setStatus(i);",100);
+		}
+		var old_priority=0;
+		var view_att=null;
+		var dirty=0;
+		var change="";
+		var arrSnags=new Array();
+		var strChanges="";
+		var strWorkNotes="";
+		function dirtyIt(addchange, what){
+			//alert(addchange);
+			if(addchange.toLowerCase()!="keywords"){
+				var objArgs = new Object();
+				objArgs.Change = addchange;
+				objArgs.WorkNotes = strWorkNotes;
+				//var result = window.showModalDialog('worknotes.asp',objArgs,'dialogWidth:400px;dialogHeight:300px;status:no;');
+                var result = null;
+                var oo = new top.DialogBox('worknotes.asp',objArgs,'dialogWidth:400px;dialogHeight:300px;status:no;');
+                oo.onClose = function (event, result) { 
+				    if(result){strWorkNotes=result;}
+                    dlgdirtyIt(addchange, what);
+                }
+			}
+			else
+            {
+                dlgdirtyIt(addchange, what);
+            }
+			//alert(strChanges); return false;
+		}
+
+
+        function getCalendar(txtDate,addchange, what, oldval)
+        {   this.IsDirtyDate = true;
+            var txtDt = document.getElementById(txtDate);
+            $(txtDt).datepicker({ format: 'dd-M-yyyy', autoclose: true, todayHighlight: true });
+            
+            $(txtDt).datepicker().on('hide', function(ev){
+               IsDirty(txtDate,addchange, what, oldval);
+                
+            });
+
+            $(txtDt).datepicker('show');
+         }
+
+         function IsDirty(txtDate,addchange, what, oldval)
+         {
+            var txtctrl =  document.getElementById(txtDate);
+            if ((txtctrl.value) != oldval)  
+            {
+                if (this.IsDirtyDate == true)
+                {
+                    dirtyIt(addchange, what);
+                    this.IsDirtyDate = false;
+                }
+            }
+            
+         }
+
+        function dlgdirtyIt(addchange, what)
+        {
+            if (addchange=='severity ') {
+				    if  (what.value=='') {
+					    alert('ERROR:  You cannot remove the severity of this item');
+					    document.getElementById('priority').options.selectedIndex = old_priority;
+					    return false;
+				    }else{
+					    document.getElementById('isstype_sel').disabled=false;
+					    old_priority = document.getElementById('priority').options.selectedIndex;
+				    }
+			    }
+			    if ((addchange=='ECD') || (addchange=='Required_By_Date')){
+				    ecdChange();
+			    }
+			    document.snagForm.changes.disabled=false;
+			    //document.snagForm.changes_info.disabled=false;
+			    dirty = 1;
+			    var arrWhat = what.id.split("_");
+			    var index = strChanges.indexOf(arrWhat[0] + "=");
+
+			    if (addchange=='DIR') {
+				    if(what.value == ''){
+					    what.value = ' '
+				    }
+			    }
+
+			    if (index != -1) {   // already in string, need to override value
+				    strStart = strChanges.substring(0, index);
+				    strEnd = strChanges.substring(index, strChanges.length);
+				    strStart = strStart + strEnd.substring(0, strEnd.indexOf("=") + 1);
+				    strEnd = strEnd.substring(strEnd.indexOf("&"), strEnd.length);
+                    strChanges = strStart + escape(what.value) + strEnd;
+ 
+			    }
+			    else if(addchange=='org_lvl'){
+			        change = change + addchange + " ";
+			        strChanges = strChanges + "org_lvl" + "=" + escape(what.value) + "&";
+			    }
+			    else {
+				    change = change + addchange + " ";
+                    strChanges = strChanges + arrWhat[0] + "=" + escape(what.value) + "&";
+       
+				  
+			    }
+
+
+        }
+
+		function updateWarning(issueid) {
+				if (issueid != 'general') {
+					if(confirm("Issue info ( " + change + ") was changed. Click <OK> to save the changes or <Cancel> to quit without saving.")) {
+						updateChanges(issueid);
+					}
+				} else {
+					alert ("Changes were not saved.");
+					return false;
+				}
+				dirty = 0;
+				change = "";
+				strChanges = "";
+				return true;
+		}
+
+		function updateChanges(issueid){
+                
+                
+				strChanges = strChanges + "issueid=" + issueid;
+				if(strWorkNotes!=""){strChanges = strChanges + "&worknotes=" + escape(strWorkNotes);}
+
+				strTosendAll = 'https://simissues.cae.com/system/mcommand.asp?cmd=update_issue_info&' + strChanges;
+				strTosendAll = strTosendAll + "&ecdflag=" + document.getElementById("ecd_gt_rbd").value;
+
+				if (strTosendAll.length > 2070 ) {
+
+   						alert("You reach the limit of characters you can enter.  There might be different reasons for it:  \n1- under Tools, Internet Options, Advanced, make sure 'use JAVA (SUN) for <applet id=Applet1> requires restart' is NOT CHECKED.  \n2- your setup does not support the length of your input:  please strip it down or add an attachment instead. \nLimit: 2070 encoded characters;  You entered: " + strTosendAll.length + " encoded characters.");
+						return false;
+
+				} else 
+                {
+                        var updateResult = null;
+                        
+                        var oo = new top.DialogBox(strTosendAll);
+                        oo.onClose = function (event, result) { 
+                            updateResult = result;
+                            if (updateResult == 0)
+                            {
+							    alert("Error! Try again later, please.")
+							    return false;
+						    }
+                            else
+                            {
+    							parent.window.location.href='https://simissues.cae.com/system/mCommand.asp?cmd=issue_details&issueid=' + bigArray[snagGlobal][2] + '&index=' + snagGlobal;
+						    }
+               				dirty = 0;
+				            change = "";
+				            strChanges = "";
+				            return true;
+                        }
+				
+				}
+		}
+
+		function pageSnags(cursnag, action){
+			
+				if(dirty==1){updateWarning(bigArray[snagGlobal][2]);}
+				if((snagGlobal!=0) &&(cursnag.id=="prev")){
+                   
+                   
+					populateForm(parseInt(snagGlobal)-1);
+                   
+
+				}else if((cursnag.id=="next")&& (parseInt(snagGlobal)!=bigArray.length-1)){
+                    
+					populateForm(parseInt(snagGlobal)+1);
+                    
+				}else{
+				var c=document.getElementById('myMessage');
+				var prev_bt=document.getElementById('prev');
+				var next_bt=document.getElementById('next');
+				prev_bt.disabled=true;
+				next_bt.disabled=true;
+				c.style.visibility = "visible";//"<FONT size=2 color=red>Please, wait...</FONT>";
+				self.location.href="https://simissues.cae.com/main/snagdetails.asp?page="+cursnag.id;
+				}
+		}
+
+	var serverURL = "https://simissues.cae.com/main/simple.asp";
+	var aspObject;
+	var co;
+
+	function ecdChange(){
+		var rbdElem = document.getElementById('reqbydate');
+		var ecdElem = document.getElementById('ecddate');
+		var ecdFlag = document.getElementById('ecd_gt_rbd');
+		if(rbdElem.tagName.toUpperCase()=="SPAN"){
+			var rbdDateVal = rbdElem.innerHTML;//parseDate(bigArray[index][61])
+		}else{
+			var rbdDateVal = rbdElem.value;
+		}
+		var i;
+		var arrMonths=new Array('January','February','March','April','May','June','July','August','September','October','November','December');
+		for(i=0;i<arrMonths.length;i++){
+			if(arrMonths[i].substr(0,3)==ecdElem.value.split('-')[1]){break;}
+		}
+		var ecdDate = new Date(ecdElem.value.split('-')[2],i,ecdElem.value.split('-')[0]);
+		//if (rbdElem.value!=null){
+			if(rbdDateVal!=''){
+				for(i=0;i<arrMonths.length;i++){
+					if(arrMonths[i].substr(0,3)==rbdDateVal.split('-')[1]){break;}
+				}
+				var rbdDate = new Date(rbdDateVal.split('-')[2],i,rbdDateVal.split('-')[0]);
+				if(ecdDate>rbdDate){
+					alert("Your ECD date is beyond the Required by Date.\nThis issue will be escalated to your immediate supervisor if it is categorized as an issue where escalation occurs (according to severity, Post-RFT).\nPlease, explain the reasons for this in Work Notes.");
+					ecdFlag.value="true";
+				}else{
+					ecdFlag.value="";
+				}
+			}
+		//}
+
+	}
+
+ function adjustFrames()
+    {
+       
+        if (!(window.navigator.appName == "Microsoft Internet Explorer"))
+            {
+               try
+               {
+                    var btn = document.getElementById("changes");
+                    btn.value = btn.value + "  ";
+                    var fr = document.getElementById("fldInformation1");
+                    fr.style.width = "94%";
+                    var fr = document.getElementById("fldInformation2");
+                    fr.style.width = "94%";
+                    var fr = document.getElementById("fldInformation3");
+                    fr.style.width = "94%";
+                    var fr = document.getElementById("fldInformation4");
+                    fr.style.width = "94%";
+                    var fr = document.getElementById("fldInformation5");
+                    fr.style.width = "94%";
+               }
+               catch (e)
+               {
+               }
+
+
+            }
+        else
+            {
+               try
+               {
+                var btn = document.getElementById("changes");
+                btn.value = btn.value + "  ";
+                var fr = document.getElementById("fldInformation1");
+                fr.style.width = "98%";
+                var fr = document.getElementById("fldInformation2");
+                fr.style.width = "98%";
+                var fr = document.getElementById("fldInformation3");
+                fr.style.width = "98%";
+                var fr = document.getElementById("fldInformation4");
+                fr.style.width = "98%";
+                var fr = document.getElementById("fldInformation5");
+                fr.style.width = "98%";
+               }
+               catch (r)
+               {
+               }
+
+            }
+    }
+	function changePhase(what){
+
+		var myelem = document.getElementById(what);
+		var priorElem = document.getElementById('priority');
+		var rbdElem = document.getElementById('reqbydate');
+		var ecdElem = document.getElementById('ecddate');
+		var rdElem = document.getElementById('raiseddate');
+		var selVal=myelem.options[myelem.options.selectedIndex].value;
+		var arrMonths=new Array('January','February','March','April','May','June','July','August','September','October','November','December');
+		var rbdDate=new Date();
+
+
+
+		if((selVal=="8") || (selVal=="9") || (selVal=="10")){
+			if(priorElem.options.selectedIndex!=0){
+				var selIndPrior = priorElem.options.selectedIndex;
+				var strRdate= rdElem.innerHTML.split(',')[0];
+				for(i=0;i<arrMonths.length;i++){
+					if(arrMonths[i].substr(0,3)==strRdate.split('-')[1]){break;}
+				}
+
+				//Here is the change made 10/18/2006
+				var toDay = new Date(strRdate.replace('&nbsp;','').split('-')[2],i,strRdate.split('-')[0]);
+
+				//alert(toDay)
+
+				if(priorElem.options[selIndPrior].value==1){
+					rbdDate=DateAdd(toDay,"10",0,0);
+
+					alert(rbdDate)
+
+					rbdElem.value=DateAdd(toDay,"10",0,0).getDate() + "-" + arrMonths[DateAdd(toDay,"10",0,0).getMonth()].substr(0,3) + "-" + DateAdd(toDay,"10",0,0).getFullYear();
+				}else if(priorElem.options[selIndPrior].value==2){
+					rbdDate=DateAdd(toDay,"30",0,0);
+
+					alert(rbdDate)
+
+					rbdElem.value=DateAdd(toDay,"30",0,0).getDate() + "-" + arrMonths[DateAdd(toDay,"30",0,0).getMonth()].substr(0,3) + "-" + DateAdd(toDay,"30",0,0).getFullYear();
+				}else if(priorElem.options[selIndPrior].value==3){
+					rbdDate=DateAdd(toDay,"40",0,0);
+
+					alert(rbdDate)
+
+					rbdElem.value=DateAdd(toDay,"40",0,0).getDate() + "-" + arrMonths[DateAdd(toDay,"40",0,0).getMonth()].substr(0,3) + "-" + DateAdd(toDay,"40",0,0).getFullYear();
+				}else if(priorElem.options[selIndPrior].value==4){
+					rbdDate=DateAdd(toDay,"60",0,0);
+
+					alert(rbdDate)
+
+					rbdElem.value=DateAdd(toDay,"60",0,0).getDate() + "-" + arrMonths[DateAdd(toDay,"60",0,0).getMonth()].substr(0,3) + "-" + DateAdd(toDay,"60",0,0).getFullYear();
+				}
+
+
+				dirtyIt("RequiredByDate",rbdElem);
+			}
+			ecdChange();
+
+		}
+	}
+
+	function checkSLC(slc)
+    {
+        if (slc.checked == true)
+         {
+            var strKeywords = document.getElementById("keywords").value;
+            document.getElementById("keywords").value  = strKeywords + ' ' + 'flightcrew';
+            }
+         else
+         {
+            var strKeywords = document.getElementById("keywords").value;
+            document.getElementById("keywords").value   = strKeywords.replace('flightcrew','');
+         }
+     
+         dirtyIt("slc",slc);
+         var objKeyWord = document.getElementById("keywords");
+         dirtyIt("keywords",objKeyWord);
+        
+    }
+	</SCRIPT>
+
+<SCRIPT language="JavaScript1.2" type="text/javascript">
+    function setCols(txt) {
+        if (navigator.userAgent.toLowerCase().indexOf("firefox") > -1) {
+            txt.cols = "69";
+        }
+        else {
+            txt.cols = "83";
+
+        }
+
+    }
+function add_note() {
+	if (window.open('https://simissues.cae.com/main/add_work_note.asp?issue_id=' + bigArray[snagGlobal][2],'','Width=850px,Height=600px,scrollbars=yes,statusbar=no,resize=no') ) {
+		//parent.window.location.href='https://simissues.cae.com/system/mCommand.asp?cmd=issue_details&issueid=' + bigArray[snagGlobal][2];
+		return;
+	}
+}
+
+function change_user(what) {
+    //if (window.showModalDialog('https://simissues.cae.com/main/change_user.asp?snagID=' + bigArray[snagGlobal][2] + '&what=' + what,'','dialogWidth=600px;dialogHeight=300px;scroll=no;status=no;resize=no;') ) {
+    
+    var oo = new top.DialogBox('https://simissues.cae.com/main/change_user.asp?snagID=' + bigArray[snagGlobal][2] + '&what=' + what + '&mnem=' + bigArray[snagGlobal][24] , '', 'dialogWidth=600px;dialogHeight=300px;scroll=no;status=no;resize=no;');
+    oo.onClose = function (event, result) 
+    { 
+            if (result == true)
+            {
+		        parent.window.location.href='https://simissues.cae.com/system/mCommand.asp?cmd=issue_details&issueid=' + bigArray[snagGlobal][2];
+		        return;
+            }
+	}
+}
+function change_group(what) {
+    //var newGroup = 	window.showModalDialog('https://simissues.cae.com/main/group_empl.asp?act=name&empl=' + bigArray[snagGlobal][29],'','dialogWidth=600px;dialogHeight=300px;scroll=no;status=no;resize=no;')
+    var oo = new top.DialogBox('https://simissues.cae.com/main/group_empl.asp?act=name&empl=' + bigArray[snagGlobal][29],'','dialogWidth=600px;dialogHeight=300px;scroll=no;status=no;resize=no;');
+    oo.onClose = function (event, result) {
+        var newGroup = result;
+        if (newGroup) {
+            if (newGroup == "onlyone") {
+                alert("You can not modify assignee's group because he is registered in one group only.");
+            } else {
+                var whatShow = document.getElementById('assGroup');
+                var strShow = newGroup.split("___")[1] + "&nbsp;<INPUT type='button' class='myButton2' name='changeOrigin' id='changeOrigin' value='Modify' onclick='change_group();'><INPUT type='hidden' id='entity' name='entity' value=''>";
+                whatShow.innerHTML = strShow;
+                whatShow = document.getElementById('entity');
+                whatShow.value = newGroup.split("___")[0];
+                dirtyIt("assigne group", whatShow);
+            }
+
+            //parent.window.location.href='https://simissues.cae.com/system/mCommand.asp?cmd=issue_details&issueid=' + bigArray[snagGlobal][2];
+            return;
+        }
+    }
+}
+function printSnag(){
+	//var printformat=snagForm.format;
+	//for(var i=0;i<printformat.length;i++){
+	//	if(printformat[i].checked)break;
+	//}
+	var format = snagForm.format.options[snagForm.format.options.selectedIndex].value;
+	if(format=='pdfNEW')window.open('https://simissues.cae.com/main/action_report4.asp?issueid='+ bigArray[snagGlobal][2],'pdf_page','status=no, toolbar=no, menubar=no, location=no, scrollbars=yes, resizable=yes');
+	if(format=='pdf')window.open('https://simissues.cae.com/main/action_report.asp?issueid='+ bigArray[snagGlobal][2],'pdf_page','status=no, toolbar=no, menubar=no, location=no, scrollbars=yes, resizable=yes');
+	if(format=='html')window.open('https://simissues.cae.com/main/action_report_html.asp?issueid='+ bigArray[snagGlobal][2],'pdf_page','status=no, toolbar=no, menubar=no, location=no, scrollbars=yes, resizable=yes');
+}
+function backToList(){
+	if (dirty==1){updateWarning(bigArray[snagGlobal][2]);}
+	top.window.location.href='https://simissues.cae.com/main/snaglist.asp?last_viewed='+ bigArray[snagGlobal][2];
+}
+function sendChanges(){
+	if (dirty==1) {updateChanges(bigArray[snagGlobal][2]);}
+}
+
+function showHistory(){
+	w=screen.width-1;
+	h=screen.height-1;
+	window.open('https://simissues.cae.com/system/mcommand.asp?cmd=history_view&issue_id='+bigArray[snagGlobal][2],'history_window','toolbar=no,menubar=no,location=no,top=0,left=0,width='+w+',height='+h+',status=yes,resizable=yes,scrollbars=yes');
+}
+
+function ManageAssets() {
+    w = screen.width - 1;
+    h = screen.height - 1;
+    window.open('https://simissues.cae.com/main/ManageAssets.aspx?issue_id=' + bigArray[snagGlobal][2], 'ManageAssets', 'toolbar=no,menubar=no,location=no,top=0,left=0,width=' + w + ',height=' + h + ',status=yes,resizable=yes,scrollbars=yes');
+}
+
+
+function checktakeaction(currentassignee, sessionuser) {
+    $(function () {
+        if (currentassignee != sessionuser) {
+            $("#action").attr('disabled', 'disabled');
+        }
+        else {
+            $("#action").removeAttr('disabled');
+        }
+    });
+}
+
+function takeAction(){
+	//if (dirty==1){updateChanges(bigArray[snagGlobal][2]);}
+    //returnValue = window.showModalDialog('https://simissues.cae.com/main/snagaction1_4.asp?snagnum=' + bigArray[snagGlobal][2] + '&mnem=' + bigArray[snagGlobal][24], '', 'dialogWidth=600px;dialogHeight=350px;scroll=no;status=no;resize=no;dialogLeft:500;dialogTop:10');
+    var oo = new top.DialogBox('https://simissues.cae.com/main/snagaction1_4.asp?snagnum=' + bigArray[snagGlobal][2] + '&mnem=' + bigArray[snagGlobal][24], '', 'dialogWidth=600px;dialogHeight=350px;scroll=no;status=no;resize=no;dialogLeft:500;dialogTop:10');
+    oo.onClose = function (event, result) {
+        returnValue = result;
+        if (returnValue == 'refresh') {
+
+            parent.window.location.href = 'https://simissues.cae.com/system/mCommand.asp?cmd=issue_details&issueid=' + bigArray[snagGlobal][2] + '&index=' + snagGlobal;
+
+        } else if (returnValue == 'reply') {
+            strChanges += "req_info=response&";
+            strChanges += "replyclosed=false&";
+            dirty = 1;
+            sendChanges();
+        } else if (returnValue == 'reply_closed') {
+            strChanges += "req_info=response&";
+            strChanges += "replyclosed=true&";
+            dirty = 1;
+            sendChanges();
+        }
+    }
+}
+var attach_window;
+function addAttachments() {
+    //window.open('https://simissues.cae.com/main/snagaction6.asp?snagnum=' + bigArray[snagGlobal][2],'attach_window','width=600,height=200');
+    if (attach_window == null) {
+        attach_window = window.open('https://simissues.cae.com/main/ASPTransitionUpload.asp?snagnum=' + bigArray[snagGlobal][2], 'attach_window', 'Width=600px,Height=350px,scrollbars=yes,statusbar=no,resize=no');
+        attach_window.moveTo(30, 30);
+    }
+    else {
+        attach_window.focus();
+    }
+}
+function addIntNotes() {
+	window.open('https://simissues.cae.com/main/add_int_note.asp?issue_id=' + bigArray[snagGlobal][2],'','Width=700px,Height=600px,scrollbars=yes,statusbar=no,resize=no') ;
+	//window.showModalDialog('https://simissues.cae.com/main/snagaction5.asp?snagnum=' + bigArray[snagGlobal][2],'','dialogWidth=800px;dialogHeight=300px;scroll=no;status=no;resize=no;');
+}
+function changeConv(){
+    //var convReturn=window.showModalDialog('assign_conv.asp?projid='+projMnem+'&iss_id='+bigArray[snagGlobal][2] ,'','dialogWidth:700px;dialogHeight:200px;status:no;scroll:no');
+    var oo = new top.DialogBox('assign_conv.asp?projid=' + projMnem + '&iss_id=' + bigArray[snagGlobal][2], '', 'dialogWidth:700px;dialogHeight:200px;status:no;scroll:no');
+    oo.onClose = function (event, result) {
+        var convReturn = result;
+        if (convReturn != " _ " && convReturn != "") {
+            var xmlhttp = false;
+            try {
+                xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+            } catch (e) {
+                try {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                } catch (E) {
+                    try {
+                        xmlhttp = new XMLHttpRequest();
+                    }
+                    catch (f) {
+                        xmlhttp = false;
+                    }
+                }
+            }
+
+            if (convReturn != null) {
+                if (convReturn.split('_')[0] == '0') {
+                    xmlhttp.open("GET", "conv.asp?func=removeLinkToIssue&par=" + bigArray[snagGlobal][2], true);
+                } else {
+                    xmlhttp.open("GET", "conv.asp?func=linkACConvIssue&par=" + bigArray[snagGlobal][2] + "&par2=" + convReturn.split('_')[0], true);
+                }
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4) {
+                        if (xmlhttp.responseText == 'true') {
+                            document.all.conversion.innerHTML = (convReturn != '') ? '<B>' + convReturn.split('_')[1] + '</B>' : document.all.conversion.innerHTML;
+                        } else {
+                            alert(xmlhttp.responseText);
+                        }
+                    }
+                }
+                xmlhttp.send(null);
+            }
+            
+        }
+    }
+}
+
+
+
+function chargeNumber(){
+	//if (window.showModalDialog('https://simissues.cae.com/main/chargeNumber.asp?issue_id=' + bigArray[snagGlobal][2] + '&number=' + bigArray[snagGlobal][8],'','dialogWidth=300px;dialogHeight=150px;scroll=no;status=no;resize=no;') ) {
+
+    var oo = new top.DialogBox('https://simissues.cae.com/main/chargeNumber.asp?issue_id=' + bigArray[snagGlobal][2] + '&number=' + bigArray[snagGlobal][8], '', 'dialogWidth=300px;dialogHeight=150px;scroll=no;status=no;resize=no;');
+    oo.onClose = function (event, result) {
+        if (result == true) {
+            parent.window.location.href = 'https://simissues.cae.com/system/mCommand.asp?cmd=issue_details&issueid=' + bigArray[snagGlobal][2];
+            return;
+        }
+    }
+}
+function getConversions(issid){
+	co=displConv.getACConvListForIssue(issid.toString());
+	return co.return_value;
+}
+function getDIRinfo() {
+	window.open('dir_display.asp?snagnum=' + bigArray[snagGlobal][2],'dir_window','width=600,height=600');
+}
+function projectInfo(){
+var mnemonic = window.showModalDialog('https://simissues.cae.com/main/select_project.asp','','dialogWidth=550px;dialogHeight=250px;scroll=no;resizable=yes;status=no;');
+if (mnemonic != "cancel"){
+if (window.showModalDialog('https://simissues.cae.com/main/project_left.asp?project='+mnemonic,'','dialogWidth=750px;dialogHeight=550px;scroll=no;resizable=yes;status=no;')!=0){parent.location.reload();}
+}
+}
+function emailSnag() {
+
+    //var tocc=window.showModalDialog('https://simissues.cae.com/main/ccselect.asp?cmd=email_issue&project='+bigArray[snagGlobal][24]+'','','dialogWidth:550px;dialogHeight:600px');
+    var oo = new top.DialogBox('https://simissues.cae.com/main/ccselect.asp?cmd=email_issue&project='+bigArray[snagGlobal][24]+'','','dialogWidth:550px;dialogHeight:600px');
+    oo.onClose = function (event, result) {
+        var tocc = result;
+        if (tocc != "") {
+            //if(confirm(tocc)){
+            //window.showModalDialog('https://simissues.cae.com/system/mcommand.asp?cmd=email_issue&iss_id=' + bigArray[snagGlobal][2] + '&' + tocc, '', 'dialogWidth:100px;dialogHeight:100px');
+            var oo1 = new top.DialogBox('https://simissues.cae.com/system/mcommand.asp?cmd=email_issue&iss_id=' + bigArray[snagGlobal][2] + '&' + tocc, '', 'dialogWidth:100px;dialogHeight:100px');
+            oo1.onClose = function (event, result) { }
+
+            //}
+        }
+    }
+}
+//-->
+</script>
+<style>
+	.infoheader {font-family:verdana; font-size:10pt; }
+	.normtext {font-family:verdana; font-size:10pt; }
+	textarea {font-family:verdana; font-size:8pt; }
+	.infotext	{font-family:verdana; font-size:8pt; font-weight:bold; }
+	.infotext2	{font-family:verdana; font-size:8pt; text-decoration:underline;}
+	.myButton {width:100px; font-family:verdana; font-size:8pt; }
+	.myButton2 {width:70px; font-family:verdana; font-size:8pt; }
+	.myButton3 {width:125px; font-family:verdana; font-size:8pt; }
+	select	{font-family:verdana; font-size:8pt; }
+</style>
+<STYLE>
+	TD{font-family:Verdana,Arial;font-size:10px;}
+
+	body {font-family:verdana; font-size:10px;}
+	select	{width:150px; font-family:verdana; font-size:8pt; }
+	#usermessage {font-family:verdana; font-size:10px;font-weight:bold;}
+</STYLE>
+
+</HEAD>
+
+<BODY  bgcolor="#D8D5D5"  leftmargin="0" topmargin="0" marginwidth="0" marginheight="0"  onunload="if (dirty==1){updateWarning('general');} adjustFrames();" onclick="//closeCalendar();">
+<SCRIPT language="JavaScript1.2" type="text/javascript" src="https://simissues.cae.com/scripts/calendar2.js"></SCRIPT>
+				<!--<script language="javascript" src="java_rs/jsrsClient.js"></script>
+<script language="JavaScript" src="https://simissues.cae.com/_ScriptLibrary/rs.htm"></script>
+<script language="JavaScript">RSEnableRemoteScripting("https://simissues.cae.com/_ScriptLibrary");</script>-->
+<FORM id=form1 name=form1 ><INPUT type=hidden id=issueid name=issueid value=""></FORM>
+
+	 <font face="Arial" size=2>
+<p>SimIssuesComponents</font> <font face="Arial" size=2>error '80004005'</font>
+<p>
+<font face="Arial" size=2>Error: Object reference not set to an instance of an object.</font>
+<p>
+<font face="Arial" size=2>/main/snagdetails.asp</font><font face="Arial" size=2>, line 0</font> 

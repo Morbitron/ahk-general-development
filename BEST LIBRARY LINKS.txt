@@ -1,0 +1,56 @@
+Link pages
+2018	https://github.com/ahkscript/awesome-AutoHotkey#gui-wysiwyg-builders
+
+
+GIT Libraries
+2014	https://github.com/aviaryan/autohotkey-scripts
+2016	https://github.com/joedf/ahk-libs
+2016	https://github.com/joedf/LibCon.ahk
+2016	https://github.com/joedf/Autohotkey-scripts-.ahk
+2013	https://github.com/joedf/AutoHotkey-Scripts
+2016	https://github.com/Drugoy/Autohotkey-scripts-.ahk
+2017	https://autohotkey.com/joe_df/autohotkey_scripts_archive/
+2018	https://github.com/bayandin/awesome-awesomeness
+2012	https://github.com/TLMcode/AHKs
+2012	https://github.com/camerb/AHKs
+2012	https://github.com/camerb/AHKs/tree/master/thirdParty
+2015	https://github.com/ttnnkkrr/COM.AHK
+2016	https://github.com/IsNull/ahkDBA
+2014	https://github.com/AfterLemon/LibCon.ahk
+2012	https://github.com/cswoyer/AutoHotkey
+2012	https://github.com/maul-esel/CGUI
+2012	https://github.com/maul-esel/ahk_library
+2012	https://github.com/maul-esel/AHK-Util-Funcs
+2012	https://github.com/maul-esel/FormsFramework
+2012	https://github.com/maul-esel/ImportTypeLib
+2012	https://github.com/maul-esel/COM-Classes
+
+
+
+GIT Single script/library
+2017	https://github.com/joedf/Webapp.ahk
+2017	https://github.com/joedf/taskbarInterface
+2014	https://github.com/joedf/Console
+2014	https://github.com/joedf/ahk_LoaderBar
+2015	https://github.com/jNizM/AHK_DllCall_WinAPI
+			https://autohotkey.com/boards/viewtopic.php?t=406
+2016	https://github.com/ahkscript/libcrypt.ahk
+2014	https://github.com/evilC/AHK-Library-Setup
+2014	https://github.com/AfterLemon/Class_Console
+2011	https://github.com/maul-esel/AeroThumbnail
+
+
+
+Tools
+2018	https://github.com/maestrith/AHK-Studio/
+2018	https://github.com/maestrith/AHK-Studio-Plugins
+2018	https://github.com/maestrith/GUI_Creator
+2015	https://github.com/maestrith/Github
+2014	https://github.com/maestrith/AHK_Github
+2017	https://github.com/joedf/AEI.ahk
+2015	https://github.com/joedf/Ahk2Exe
+		http://aspdm.ahkscript.org/
+
+
+Sample file to download
+https://github.com/maestrith/AHK-Studio/archive/master.zip
